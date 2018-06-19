@@ -1,0 +1,78 @@
+[
+  {
+    "key": "dc",
+    "value": "2"
+  },
+  {
+    "key": "dc1_auth_key",
+    "value": "\"9ca10f13e665a6fe9d9461b8bd94e4b00b185f98648f51401c9643673d86b9028f2239c80c582d1dc0df23a79eeab60e35f44efc737d5ede1aa8c9cadde3cab40b714618925d271bce4e17a2c354683c02157377bfbce2440395d6f14b42ddc52b293090194f229170b6541203b3a5c3170c7800b3bdc38c3273506d17c8dc618ed37fd650487acb24e437843b2b426a2ebd325c5425fa61a02f84170c4f85462020f6042fe332b8fe541da3b0348f24f6391083ec0ba71a2dd95a6e2b1f6f17f5189e8d9c9fb04a5dbedae589641eefd5e0bf9a031f5f24090096afaa987bbee4fa59f829dce36a253dbd30e45bfadf5e11138b50f3f75e514f35a93bef9659\""
+  },
+  {
+    "key": "dc1_server_salt",
+    "value": "\"0ae3bdd41441998b\""
+  },
+  {
+    "key": "dc2_auth_key",
+    "value": "\"71d915f14aa8c98af91fa30166cb717d68d5d5613bd0dd397234660f301c6a5967a29b118e188d28205a221471cd646bdf0a1050e40d849d9bceb8dbfda6d7935ccc5abc0741e1f5160c9dc372c13b6faa1f3f80ad49f810a487c95ad3be5926b4717155006e3954e6c8052ff97e17c872d27e976b190711f42cef0faf81b875f3089415dcf5e8a56d72c475f73981649e4d411e0db229e364e1c1ba8710d1bd34b123a051fdec93145aa667d58713f8fab714dbd9dc6267961dc3f5b555f60fab9696cb433ecc50b311b23607be50e3d758a79b3a2f4169878e1ba40fc399641ed45c6e9f21590b6c611f7f6945cd4f158e689bfbba60d40da7199015ad1b47\""
+  },
+  {
+    "key": "dc2_server_salt",
+    "value": "\"a3fe09bde55d5d8e\""
+  },
+  {
+    "key": "dc4_auth_key",
+    "value": "\"b97bc57524ac8aac144787fc38d55d1dea9446f65c27a4ffcc0ec1dc69a5fbfc0d12727f3864417253ece23c492772690c6141db80409421e2a557f953b315997e39a6060ed2dcc726c4e2972df74eb81ee6bf6c74b3e2c0d7e444f7699e3bf3b29114c8cb9b896e4d098e077065754bd81ca37bcad8ef25faf380b2697e2ecc3065ae251e18b9b769925a8d8d601fe2c39bd732953b3543e67bf41442a017ac08d5cd108146cf77652e5a9e8e8aa1fc2c14661c51bb7263dca722855508090bcb94a9c8e883058ef867a3c7f52cb8f3ad6317cde46cce2fd8d2795dd0f74d3e79474cca9ead9dc6c9afeb268f2f0f891f855167b1e5ba16b968f4466660781e\""
+  },
+  {
+    "key": "dc4_server_salt",
+    "value": "\"6c2b8d1b3da9aa08\""
+  },
+  {
+    "key": "last_version",
+    "value": "\"0.7.0\""
+  },
+  {
+    "key": "max_seen_msg",
+    "value": "53636"
+  },
+  {
+    "key": "server_time_offset",
+    "value": "0"
+  },
+  {
+    "key": "tgme_sync",
+    "value": "{\"canRedirect\":true,\"ts\":1529272229}"
+  },
+  {
+    "key": "user_auth",
+    "value": "{\"dcID\":2,\"id\":328790098}"
+  },
+  {
+    "key": "xt_instance",
+    "value": "{\"id\":473738607,\"idle\":true,\"time\":1529273520131}"
+  },
+  {
+    "key": "length",
+    "value": null
+  },
+  {
+    "key": "key",
+    "value": null
+  },
+  {
+    "key": "getItem",
+    "value": null
+  },
+  {
+    "key": "setItem",
+    "value": null
+  },
+  {
+    "key": "removeItem",
+    "value": null
+  },
+  {
+    "key": "clear",
+    "value": null
+  }
+]
