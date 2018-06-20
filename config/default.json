@@ -1,0 +1,24 @@
+{
+  "dbConfig": {
+    "database": "",
+    "username": "",
+    "password": "",
+    "host": "",
+    "dialect": "",
+    "port": 0,
+    "define": {
+      "timestamps": true
+    },
+    "dialectOptions": {
+      "socketPath": ""
+    },
+    "operatorsAliases": false,
+    "pool": {
+      "max": 5,
+      "min": 0,
+      "acquire": 40000,
+      "idle": 40000,
+      "evict": 40000
+    }
+  }
+}

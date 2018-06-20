@@ -18,30 +18,16 @@ consumes:
 produces:
   - application/json
 paths:
-  /bye:
-    # binds a127 app logic to a route
-    x-swagger-router-controller: bye_world
+  /channels:
+    x-swagger-router-controller: channel
     get:
-      description: Returns 'Bye' to the caller
-      # used as the method name of the controller
-      operationId: bye
-      parameters:
-        - name: name
-          in: query
-          description: The name of the person to whom to say hello
-          required: false
-          type: string
+      description: Returns list of channels to the caller
+      operationId: getChannels
       responses:
         "200":
           description: Success
           schema:
-            # a pointer to a definition
-            $ref: "#/definitions/HelloWorldResponse"
-        # responses may fall through to errors
-        default:
-          description: Error
-          schema:
-            $ref: "#/definitions/ErrorResponse"
+            $ref: "#/definitions/BaseResponse"
   /hello:
     # binds a127 app logic to a route
     x-swagger-router-controller: hello_world
@@ -70,6 +56,23 @@ paths:
     x-swagger-pipe: swagger_raw
 # complex objects have schema definitions
 definitions:
+  BaseResponse:
+    required:
+      - current_timestamp
+      - error
+      - data
+    properties:
+      current_timestamp:
+        type: string
+      error:
+        type: 
+          - object
+          - 'null'
+      data:
+        type: 
+          - object
+          - 'null'
+
   HelloWorldResponse:
     required:
       - message

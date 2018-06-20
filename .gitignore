@@ -1,6 +1,7 @@
 .idea/
 node_modules/
 .vscode/
+config/dbConfig.json
 yarn.lock
 package-lock.json
 swagger.txt
@@ -17,3 +18,4 @@ build/Release
 node_modules
 .lock-wscript
 config/runtime.yaml
+varlamov_tg.json
