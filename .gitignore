@@ -4,3 +4,16 @@ node_modules/
 yarn.lock
 package-lock.json
 swagger.txt
+.idea
+logs
+*.log
+pids
+*.pid
+*.seed
+lib-cov
+coverage
+.grunt
+build/Release
+node_modules
+.lock-wscript
+config/runtime.yaml

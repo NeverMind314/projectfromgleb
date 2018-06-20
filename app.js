@@ -1,20 +1,23 @@
-const {Builder} = require('selenium-webdriver');
-const auth = require('./actions/auth');
-const Channel = require('./actions/channel');
+'use strict';
 
-(async () => {
-  let driver = await new Builder().forBrowser('firefox').build();
-  try {
-    const authKeys = auth.getAuthKeys();
-    await driver.get('https://web.telegram.org/#/im');
-    authKeys.forEach(async item =>
-      await driver.executeScript('localStorage.setItem(\'' + item.key + '\', \'' + item.value + '\');')
-    )
-    const channel = new Channel(driver);
-    await channel.find('@readme');
-    // await driver.sendKeys('webdriver', Key.RETURN);
-    // await driver.wait(until.titleIs('webdriver - Google Search'), 1000);
-  } finally {
-    // await driver.quit();
+var SwaggerExpress = require('swagger-express-mw');
+var app = require('express')();
+module.exports = app; // for testing
+
+var config = {
+  appRoot: __dirname // required config
+};
+
+SwaggerExpress.create(config, function(err, swaggerExpress) {
+  if (err) { throw err; }
+
+  // install middleware
+  swaggerExpress.register(app);
+
+  var port = process.env.PORT || 10010;
+  app.listen(port);
+
+  if (swaggerExpress.runner.swagger.paths['/hello']) {
+    console.log('try this:\ncurl http://127.0.0.1:' + port + '/hello?name=Scott');
   }
-})();
+});

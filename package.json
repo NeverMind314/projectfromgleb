@@ -1,4 +1,5 @@
-{  "name": "api-service",
+{  
+  "name": "api-service",
   "version": "0.0.1",
   "private": true,
   "description": "New Swagger API Project",
