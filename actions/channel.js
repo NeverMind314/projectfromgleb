@@ -1,5 +1,6 @@
 const {By} = require('selenium-webdriver');
 const {timeout} = require('../commons/helper');
+const md5 = require('md5');
 const tries = 50;
 const fs = require('fs');
 
@@ -10,6 +11,7 @@ class Channel {
 
   async find(name) {
     let result = [];
+    let uniqIds = [];
     let items = null;
     for (let t = 0; t < tries; t++) {
       items = await this.driver.findElements(By.className('im_dialog_wrap'));
@@ -26,13 +28,16 @@ class Channel {
     }
     await this.driver.executeScript('$(".im_dialogs_contacts_wrap li a").mousedown();');
     let loadingTries = 0;
-    while (loadingTries < 100) {
-      await this.driver.executeScript('$(".im_history_scrollable_wrap").scrollTop(200)');
+    while (loadingTries < 50) {
       let messagesCont = await this.driver.findElement(By.className('im_history_messages_peer'));
       let items = await messagesCont.findElements(By.className('im_history_message_wrap'));
       let count = 0;
       items.forEach(() => count++);
+      // if (count < 51) {
+      //   await this.driver.executeScript('$(".im_history_scrollable_wrap").scrollTop(150)');
+      // }
       const tmpArr = [];
+      const idForRemoving = [];
       for (let i = 0; i < count; i++) {
         let time = null;
         let date = null;
@@ -40,33 +45,46 @@ class Channel {
         try {
           const el = await items[i].findElement(By.className('im_message_date_text'));
           time = await el.getAttribute('data-content');
-        } catch (e) {
-          // console.log(e);
+        } catch (_) {
         }
         try {
           const el = await items[i].findElement(By.className('im_message_text'));
           text = await el.getText();
-        } catch (e) {
-          // console.log(e);
+          // console.log('find2', text.length);
+        } catch (_) {
         }
         try {
           const el = await items[i].findElement(By.className('im_message_date_split_text'));
           date = await el.getText();
-        } catch (e) {
-          // console.log(e);
+        } catch (_) {
         }
-        // console.log(time, date);
-        if (date) {
-          tmpArr.push({
-            date
-          });
-        } else {
-          tmpArr.push({
-            time,
-            text
-          });
+        if (!time || !text) {
+          continue;
         }
+        const hash = md5(date + time);
+        if (~uniqIds.indexOf(hash)) {
+          // console.log(1, hash);
+          continue;
+        }
+        // console.log(2, hash);
+        idForRemoving.push(i);
+        uniqIds.push(hash);
+        tmpArr.push({
+          date,
+          time,
+          text
+        });
+
       }
+      // for (let i = idForRemoving.length - 1; i > 0; i--) {
+      //   console.log('delete', idForRemoving[i], count, result.length);
+      //   await this.driver.executeScript('$(".im_history_messages_peer .im_history_message_wrap")[' + idForRemoving[i] + '].remove()');
+      // }
+      console.log(count, result.length);
+      // for (let i = count - 1; i > 50; i--) {
+        await this.driver.executeScript('$(".im_history_messages_peer .im_history_message_wrap").last().remove()');
+      // }
+
       result = result.concat(tmpArr.reverse());
       const loading = await this.driver.executeScript('return $(".im_history_loading_more_active").length;');
       if (loading === 0) {
@@ -75,7 +93,6 @@ class Channel {
         loadingTries = 0;
       }
       await timeout(100);
-      // await this.driver.executeScript('$(".im_history_messages_peer .im_history_message_wrap").remove()');
     }
     console.log('FINISH');
     fs.writeFile("data.json", JSON.stringify(result), function (err) {

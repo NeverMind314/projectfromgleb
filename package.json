@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "md5": "^2.2.1",
     "selenium-webdriver": "^4.0.0-alpha.1"
   }
 }
