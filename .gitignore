@@ -1,4 +1,6 @@
 .idea/
 node_modules/
+.vscode/
 yarn.lock
 package-lock.json
+swagger.txt
