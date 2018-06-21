@@ -19,3 +19,4 @@ node_modules
 .lock-wscript
 config/runtime.yaml
 varlamov_tg.json
+test.js
