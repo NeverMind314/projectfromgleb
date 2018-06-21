@@ -4,7 +4,7 @@ const sendStatus = require('../services/sendStatus')
 
 module.exports = {
     getChannels(req, res) {
-        res.json(sendStatus.responceObj({
+        res.json(sendStatus.responseObj({
             msg: 'белеберда'
         }));
     }

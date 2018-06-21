@@ -18,11 +18,11 @@ consumes:
 produces:
   - application/json
 paths:
-  /account/addAccount:
+  /addAccount:
     x-swagger-router-controller: account
     post:
       description: Adding row in account table with certain parameters
-      operationId: addAcount
+      operationId: addAccount
       parameters:
         - in: body
           name: user
