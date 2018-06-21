@@ -1,6 +1,6 @@
 'use strict';
 
-const userChannel = require('../models/userChannel');
+const userChannel = require('../../models/userChannel');
 
 module.exports = {
     addBind (newBind) {

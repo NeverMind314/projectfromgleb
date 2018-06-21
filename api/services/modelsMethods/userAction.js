@@ -1,6 +1,6 @@
 'use strict';
 
-const userAction = require('../models/userAction');
+const userAction = require('../../models/userAction');
 
 module.exports = {
     addAction (newAction) {

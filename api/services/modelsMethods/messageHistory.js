@@ -1,6 +1,6 @@
 'use strict';
 
-const messageHistory = require('../models/messageHistory');
+const messageHistory = require('../../models/messageHistory');
 
 module.exports = {
     addMessage (newMessage) {

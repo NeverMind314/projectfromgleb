@@ -1,6 +1,6 @@
 'use strict';
 
-const channel = require('../models/channel');
+const channel = require('../../models/channel');
 
 module.exports = {
     addChannel (newChannel) {

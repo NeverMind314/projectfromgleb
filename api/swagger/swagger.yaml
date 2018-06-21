@@ -18,6 +18,34 @@ consumes:
 produces:
   - application/json
 paths:
+  /account/addAccount:
+    x-swagger-router-controller: account
+    post:
+      description: Adding row in account table with certain parameters
+      operationId: addAcount
+      parameters:
+        - in: body
+          name: user
+          required: true
+          schema:
+            type: object
+            required:
+              - name
+              - login
+              - phone
+            properties:
+              name:
+                type: string
+              login:
+                type: string
+              phone:
+                type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/BaseResponse"
+
   /channels:
     x-swagger-router-controller: channel
     get:
@@ -29,7 +57,7 @@ paths:
           schema:
             $ref: "#/definitions/BaseResponse"
   /tests:
-    x-swagger-router-controller: test
+    x-swagger-router-controller: tests
     get:
       description: For testing and development. Must be deleted on production stage
       operationId: devTests

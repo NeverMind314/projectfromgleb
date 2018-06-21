@@ -1,6 +1,6 @@
 'use strict';
 
-const account = require('../models/account');
+const account = require('../../models/account');
 
 module.exports = {
     addAccount (newAccount) {
