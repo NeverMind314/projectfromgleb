@@ -4,7 +4,7 @@ const channelModel = require('../models/channel');
 const channelMethods = require('../services/channel');
 
 module.exports = {
-    getChannels(req, res) {
+    devTests(req, res) {
 
         // !!!!!!!!!!!!!! chanel methods work example !!!!!!!!!!!!!!!!!!
 
@@ -14,7 +14,7 @@ module.exports = {
             channel_type_id: '2'
         };
 
-        channelMethods.addChannel(channel);
+        // channelMethods.addChannel(channel);
 
         channelMethods.getChannels(function (channels) {
             console.log(channels);
@@ -44,6 +44,13 @@ module.exports = {
         //         })
         //     ];
         //   });
+
+        res.json(sendOk({
+            msg: 'белеберда'
+        }));
+    },
+
+    getChannels(req, res) {
 
         res.json(sendOk({
             msg: 'белеберда'
