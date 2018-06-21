@@ -1,6 +1,7 @@
 .idea/
 node_modules/
 .vscode/
+api-service/
 config/dbConfig.json
 yarn.lock
 package-lock.json
