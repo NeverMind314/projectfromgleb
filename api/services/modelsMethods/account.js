@@ -8,7 +8,7 @@ module.exports = {
     },
 
     getAccount (callback, selectParams) {
-        account.findAll(selectParams).then(accounts => {
+        account.findAll({where: selectParams}).then(accounts => {
             callback(accounts);
         }); 
     }

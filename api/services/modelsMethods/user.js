@@ -8,7 +8,7 @@ module.exports = {
     },
 
     getUsers (callback, selectParams) {
-        user.findAll(selectParams).then(users => {
+        user.findAll({where: selectParams}).then(users => {
             callback(users);
         }); 
     }

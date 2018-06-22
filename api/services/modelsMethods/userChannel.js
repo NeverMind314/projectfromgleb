@@ -8,7 +8,7 @@ module.exports = {
     },
 
     getBind (callback, selectParams) {
-        userChannel.findAll(selectParams).then(binds => {
+        userChannel.findAll({where: selectParams}).then(binds => {
             callback(binds);
         }); 
     }

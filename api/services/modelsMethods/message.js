@@ -8,7 +8,7 @@ module.exports = {
     },
 
     getMessages (callback, selectParams) {
-        message.findAll(selectParams).then(messages => {
+        message.findAll({where: selectParams}).then(messages => {
             callback(messages);
         }); 
     }

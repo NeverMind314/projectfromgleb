@@ -8,7 +8,7 @@ module.exports = {
     },
 
     getChannels (callback, selectParams) {
-        channel.findAll(selectParams).then(channels => {
+        channel.findAll({where: selectParams}).then(channels => {
             callback(channels);
         }); 
     }
