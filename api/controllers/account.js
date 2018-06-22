@@ -6,16 +6,11 @@ const sendStatus = require('../services/sendStatus')
 module.exports = {
     addAccount(req, res) {
         try {
-            accountMethods.addAccount(req.body);
+            accountMethods.addAcount(req.body);
 
-            res.json(sendStatus.responseObj());
+            res.json(sendStatus.responseOk());
         } catch (e) {
-            res.json(
-                sendStatus.responseObj(
-                    null,
-                    sendStatus.errConstructor('error occured at inserting account into DB. ' + e)
-                )
-            );
+            res.json(sendStatus.responseErr('error occured at inserting account into DB. ' + e));
         }
     }
 }

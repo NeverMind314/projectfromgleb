@@ -1,16 +1,20 @@
 module.exports = {
-    responseObj(data, error) {
+    responseOk(data) {
         return {
             current_timestamp: new Date(),
-            error: error || null,
+            error: null,
             data: data || null
         }
     }, 
 
-    errConstructor(msg, errCode) {
+    responseErr(errMsg, errorCode,  data) {
         return {
-            err_code: errCode || 500,
-            message: msg || 'Internal server error'
+            current_timestamp: new Date(),
+            error: {
+                err_code: errorCode || 500,
+                message: errMsg || 'Internal server error'
+            } || null,
+            data: data || null
         }
     }
 }

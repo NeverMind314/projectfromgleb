@@ -4,7 +4,7 @@ const account = require('../../models/account');
 
 module.exports = {
     addAccount (newAccount) {
-        account.create(newAccount);
+        // account.create(newAccount);
     },
 
     getAccount (callback, selectParams) {
