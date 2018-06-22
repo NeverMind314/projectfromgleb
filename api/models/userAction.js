@@ -9,6 +9,7 @@ module.exports = db.define('user_action', {
         primaryKey: true,
         autoIncrement: true
     },
+    action_dt: Sequelize.DATE,
     action: Sequelize.CHAR,
 }, {
     freezeTableName: true

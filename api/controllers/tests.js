@@ -1,5 +1,7 @@
 'use strict';
 
+const creator = require('../models/userAction');
+const creatorMethods = require('../services/modelsMethods/userAction');
 const channelModel = require('../models/channel');
 const channelMethods = require('../services/modelsMethods/channel');
 const sendStatus = require('../services/sendStatus')
@@ -15,7 +17,7 @@ module.exports = {
             channel_type_id: '2'
         };
 
-        // // channelMethods.addChannel(channel);
+        // channelMethods.addChannel(channel);
 
         channelMethods.getChannels(function (channels) {
             console.log(channels);
@@ -28,26 +30,23 @@ module.exports = {
         // creator.sync({force: true}).then(() => {
         //     // Table created
         //     return [
-        //         creator.create({
-        //             user_id: 2,
-        //             channel_id: 3,
-        //             user_action_id: 2,
+        //         creatorMethods.addAction({
+        //             action_dt: new Date(),
+        //             action: 'join',
         //         }),
-        //         creator.create({
-        //             user_id: 1,
-        //             channel_id: 1,
-        //             user_action_id: 1,
+        //         creatorMethods.addAction({
+        //             action_dt: new Date(),
+        //             action: 'out',
         //         }),
-        //         creator.create({
-        //             user_id: 3,
-        //             channel_id: 2,
-        //             user_action_id: 2,
+        //         creatorMethods.addAction({
+        //             action_dt: new Date(),
+        //             action: 'join',
         //         })
         //     ];
         //   });
 
-        res.json(sendStatus.responceObj({
-            msg: 'белеберда'
-        }));
+        // res.json(sendStatus.responseObj({
+        //     msg: 'белеберда'
+        // }));
     }
 }

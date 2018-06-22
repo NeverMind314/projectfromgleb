@@ -3,7 +3,7 @@
 const Sequelize = require('sequelize');
 const db = require('../../config/dbConfig');
 
-module.exports = db.define('message_history', {
+module.exports = db.define('message', {
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
