@@ -2,8 +2,9 @@
 
 const Sequelize = require('sequelize');
 const db = require('../../config/dbConfig');
+const channel = require('./channel.model')
 
-module.exports = db.define('channel_type', {
+let channelType = db.define('channel_type', {
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -13,3 +14,5 @@ module.exports = db.define('channel_type', {
 }, {
     freezeTableName: true
 });
+
+module.exports = channelType;

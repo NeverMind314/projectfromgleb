@@ -1,60 +1,58 @@
 'use strict';
 
-const creator = require('../models/userAction');
-const creatorMethods = require('../services/modelsMethods/userAction');
-const channelModel = require('../models/channel');
-const channelMethods = require('../services/modelsMethods/channel');
+const creator = require('../models/message.model');
+const mediaType = require('../models/mediaType.model');
+const channelModel = require('../models/channel.model');
 const sendStatus = require('../services/sendStatus')
-const test = require('../services/channelHistroy');
+const ChannelHistory = require('../services/channel.service');
+
 
 
 module.exports = {
     devTests(req, res) {
 
-        let result;
-        test.channelHistory()
-        .then(rslt => {
-            result = rslt;
-            // console.log(result);
-           res.json(sendStatus.responseOk({
-               history: rslt
-            }));
-        });
+        // creator.findOne({
+        //     include: ['mediaType']
+        // }).then(res => {
+        //     console.log(res.mediaType)
+        // })
+
+        // let a = new ChannelHistory();
+
+        // a.addChannelHistory();
+
+        // let result;
+        // test.channelHistory()
+        // .then(rslt => {
+        //     result = rslt;
+        //     // console.log(result);
+        //    res.json(sendStatus.responseOk({
+        //        history: rslt
+        //     }));
+        // });
 
         // console.log(channelHistory)
-
-        // !!!!!!!!!!!!!! chanel methods work example !!!!!!!!!!!!!!!!!!
-
-        // let channel = {
-        //     name: 'methodTest1',
-        //     link: 'http://test4',
-        //     channel_type_id: '2'
-        // };
-
-        // // channelMethods.addChannel(channel);
-
-        // channelMethods.getChannels(function (channels) {
-        //     console.log(channels);
-        // }, {
-        //     where: {
-        //         link: 'http://test4'
-        //     }
-        // });
 
         // creator.sync({force: true}).then(() => {
         //     // Table created
         //     return [
-        //         creatorMethods.addAction({
-        //             action_dt: new Date(),
-        //             action: 'join',
+        //         creator.create({
+        //             channel_id: 2,
+        //             user_id: 3,
+        //             post_dt: new Date(),
+        //             message: 'msg1',
         //         }),
-        //         creatorMethods.addAction({
-        //             action_dt: new Date(),
-        //             action: 'out',
+        //         creator.create({
+        //             channel_id: 3,
+        //             user_id: 2,
+        //             post_dt: new Date(),
+        //             message: 'msg2',
         //         }),
-        //         creatorMethods.addAction({
-        //             action_dt: new Date(),
-        //             action: 'join',
+        //         creator.create({
+        //             channel_id: 1,
+        //             user_id: 1,
+        //             post_dt: new Date(),
+        //             message: 'msg3',
         //         })
         //     ];
         //   });
