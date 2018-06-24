@@ -7,6 +7,7 @@ const moment = require('moment');
 const joinlink = require('../actions/constants').joinlink;
 const joinMask = require('../actions/constants').joinMask;
 const Auth = require('./auth');
+const channelService = require('../api/services/channel.service');
 
 class Channel {
   constructor(driver) {
@@ -146,25 +147,25 @@ class Channel {
       if (messages.length % 30 === 0) {
         console.log(name, messages.length);
       }
-      if (messages.length > 100) break;
+      if (messages.length > 10) break;
       if (count === 0) {
         loadingTries++;
       } else {
         loadingTries = 0;
       }
     }
-    fs.writeFile("data.json", JSON.stringify({
+
+    const channel = {
       id: channelID,
       type_id: channelTypeId,
       link: channelLink,
       name: channelName,
       description: channelDescription,
       history: messages
-    }), function (err) {
-      if (err) {
-        return console.log(err);
-      }
-    });
+    };
+    console.log(channel);
+    const cs = new channelService();
+    await cs.addChannelHistory(channel);
   }
 }
 

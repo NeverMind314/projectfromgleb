@@ -11,7 +11,7 @@ class ChannelService{
     async addChannelHistory(channelHistory) {
         let channel = this.addNewChannel(channelHistory);
         let userService = new UserService;
-        channelHistory.messageHistory.forEach(async message => {
+        channelHistory.history.forEach(async message => {
             let user = userService.addNewUser(message.author);
             this.addNewMessage(channel, user, message);
         })
@@ -34,7 +34,7 @@ class ChannelService{
         let message = await messageModel.findOrCreate({
             where: {
                 post_dt: newMessage.date,
-                message: newMessage.text.trim(),
+                message: newMessage.text,
                 user_id: user.id
             },
             defaults: {
