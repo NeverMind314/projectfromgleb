@@ -10,11 +10,11 @@ const Op = Sequelize.Op;
 
 class ChannelService{
     async addChannelHistory(channelHistory) {
-        let channel = this.addNewChannel(channel);
+        let channel = await this.addNewChannel(channelHistory);
         let userService = new UserService;
-        channel.history.forEach(async message => {
-            let user = userService.addNewUser(channelHistory.message.author);
-            this.addNewMessage(channel, user, message);
+        channelHistory.history.forEach(async message => {
+            let user = await userService.addNewUser(message.author);
+            await this.addNewMessage(channel[0], user[0], message);
         })
     }
 
@@ -26,12 +26,15 @@ class ChannelService{
             defaults: {
                 name: channel.name,
                 link: channel.link,
-                channel_type_id: type_id
+                channel_type_id: channel.type_id
             }
         });
     }
 
     async addNewMessage (channel, user, newMessage) {
+        // console.log('channel 11111', channel.id);
+        // console.log('user 2222222', user.id);
+        // console.log('message 333333', newMessage.views_cnt);
         let message = await messageModel.findOrCreate({
             where: {
                 post_dt: newMessage.date,
@@ -41,12 +44,13 @@ class ChannelService{
                 channel_id: channel.id,
                 user_id: user.id,
                 post_dt: newMessage.date,
+                views_count: newMessage.views_cnt || 0,
                 message: newMessage.text
             }
         })
 
-        if (newMessage.media.some(item => !!item.content_id)) {
-            let media = await mediaModel.findOrCreate({
+        if (mediaNotEmpty(newMessage.media)) {
+            await mediaModel.findOrCreate({
                 where: {
                     [Op.or]: [
                         {content_id: message.media.photo.content_id},
@@ -56,7 +60,7 @@ class ChannelService{
                 },
                 defaults: {
                     message_id: message.id,
-                    type_id: 777,
+                    type_id: identifyMediaTypeId(message.media),
                     content_id: message.media.content_id,
                     caption: message.media.caption
                 }
