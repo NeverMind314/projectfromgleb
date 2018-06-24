@@ -91,7 +91,6 @@ class Channel {
       }
       if (!author.login && users[userID]) {
         author = users[userID];
-        console.log('Use cached', author);
       } else if(author.login) {
         users[userID] = author;
       }

@@ -1,7 +1,9 @@
 const {Builder} = require('selenium-webdriver');
+const chrome = require('selenium-webdriver/chrome');
 const Auth = require('./actions/auth');
 const Channel = require('./actions/channel');
 const process = require('process');
+const {join} = require('path');
 const os = require('os');
 
 switch (os.platform()) {
@@ -16,6 +18,24 @@ switch (os.platform()) {
     break;
 }
 
+const webdriver = require('selenium-webdriver');
+const options = new chrome.Options();
+options.addArguments('headless');
+options.addArguments('disable-gpu');
+options.addArguments("--no-sandbox");
+options.addArguments("--blink-settings=imagesEnabled=false");
+chrome.setDefaultService(
+  new chrome.ServiceBuilder(join(process.env.PWD, process.env['PATH'], 'chromedriver')).build()
+);
+
+function getDriver() {
+  return new webdriver.Builder()
+    .forBrowser('chrome')
+    .withCapabilities(webdriver.Capabilities.chrome())
+    .setChromeOptions(options)
+    .build()
+}
+
 const schedule = [];
 let runnerBusy = false;
 async function demon() {
@@ -27,7 +47,7 @@ async function demon() {
     if (schedule[i].stage === 0 && runnerBusy === false) {
       runnerBusy = true;
       console.log('Start: ' + schedule[i].addr);
-      schedule[i].driver = await new Builder().forBrowser('chrome').build();
+      schedule[i].driver = getDriver();
       const auth = new Auth(schedule[i].driver);
       auth.open().then(() => {
         schedule[i].stage = 1;
@@ -61,8 +81,8 @@ async function demon() {
 setInterval(demon, 3000);
 
 
-schedule.push({addr: 'https://t.me/joinchat/E5jwUlL2wZVG7grfCpVaxw'});
-// schedule.push({addr: '@breakingmash'});
+// schedule.push({addr: 'https://t.me/joinchat/E5jwUlL2wZVG7grfCpVaxw'});
+schedule.push({addr: '@breakingmash'});
 // schedule.push({addr: '@lentachold'});
 // schedule.push({addr: '@meduzalive'});
 // schedule.push({addr: '@ru_FTP'});
