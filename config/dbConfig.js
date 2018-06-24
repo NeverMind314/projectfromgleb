@@ -7,7 +7,7 @@ const db = new Sequelize('prisyazhnuk-andr_tgcrawler', 'prisyazhnuk-andr_tgcrawl
   operatorsAliases: false,
 
   pool: {
-    max: 20,
+    max: 50,
     min: 0,
     acquire: 30000,
     idle: 10000

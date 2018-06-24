@@ -13,7 +13,8 @@ let message = db.define('message', {
     channel_id: Sequelize.INTEGER,
     user_id: Sequelize.INTEGER,
     post_dt: Sequelize.DATE,
-    message: Sequelize.TEXT,
+    views_count: Sequelize.INTEGER,
+    message: Sequelize.TEXT
 }, {
     freezeTableName: true
 });

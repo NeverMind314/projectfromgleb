@@ -9,23 +9,23 @@ const Op = Sequelize.Op;
 
 class ChannelService{
     async addChannelHistory(channelHistory) {
-        let channel = this.addNewChannel(channel);
+        let channel = this.addNewChannel(channelHistory);
         let userService = new UserService;
-        channel.history.forEach(async message => {
-            let user = userService.addNewUser(channelHistory.message.author);
+        channelHistory.messageHistory.forEach(async message => {
+            let user = userService.addNewUser(message.author);
             this.addNewMessage(channel, user, message);
         })
     }
 
-    async addNewChannel(channel) {
+    async addNewChannel(channelHistory) {
         return await channelModel.findOrCreate({
             where: {
-                link: channel.link
+                link: channelHistory.link.trim()
             },
             defaults: {
-                name: channel.name,
-                link: channel.link,
-                channel_type_id: 'group' || 'supergroup' || 'channel'
+                name: channelHistory.name.trim(),
+                link: channelHistory.link.trim(),
+                channel_type_id: identifyChannelTypeId(channelHistory.channel_type.trim())
             }
         });
     }
@@ -34,19 +34,20 @@ class ChannelService{
         let message = await messageModel.findOrCreate({
             where: {
                 post_dt: newMessage.date,
-                message: newMessage.text,
+                message: newMessage.text.trim(),
                 user_id: user.id
             },
-            default: {
+            defaults: {
                 channel_id: channel.id,
                 user_id: user.id,
                 post_dt: newMessage.date,
-                message: newMessage.text
+                views_count: newMessage.views_cnt,
+                message: newMessage.text.trim()
             }
         })
 
-        if (newMessage.media.some(item => !!item.content_id)) {
-            let media = await mediaModel.findOrCreate({
+        if (mediaNotEmpty(newMessage.media)) {
+            await mediaModel.findOrCreate({
                 where: {
                     [Op.or]: [
                         {content_id: message.media.photo.content_id},
@@ -56,14 +57,49 @@ class ChannelService{
                 },
                 defaults: {
                     message_id: message.id,
-                    type_id: 777,
+                    type_id: identifyMediaTypeId(newMessage.media),
                     content_id: message.media.content_id,
                     caption: message.media.caption
                 }
             })
         }
+        return messageModel.findOne({
+            include: ['media'],
+            where: {
+                id: message.id
+            }
+        })
     }
 }
 
 module.exports = ChannelService;
 
+function identifyChannelTypeId (channelType) {
+    switch(channelType) {
+        case 'группа': return 1;
+        case 'супергруппа': return 2;
+        case 'канал': return 3;
+        default: throw 'invalid channel type'
+    }
+}
+
+function identifyMediaTypeId (media) {
+    if (!!media.photo.content_id) {
+        return 1;
+    }
+    if (!!media.video.content_id) {
+        return 2;
+    }
+    if (!!media.audio.content_id) {
+        return 3;
+    }
+}
+
+function mediaNotEmpty (media) {
+    if (!!media.photo.content_id || 
+        !!media.video.content_id ||
+        !!media.audio.content_id) {
+            return true;
+    }
+    return false;
+}
