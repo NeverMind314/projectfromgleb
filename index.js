@@ -20,8 +20,8 @@ switch (os.platform()) {
 
 const webdriver = require('selenium-webdriver');
 const options = new chrome.Options();
-options.addArguments('headless');
-options.addArguments('disable-gpu');
+// options.addArguments('headless');
+// options.addArguments('disable-gpu');
 options.addArguments("--no-sandbox");
 options.addArguments("--blink-settings=imagesEnabled=false");
 chrome.setDefaultService(
@@ -82,12 +82,11 @@ setInterval(demon, 3000);
 
 
 // schedule.push({addr: 'https://t.me/joinchat/E5jwUlL2wZVG7grfCpVaxw'});
-schedule.push({addr: '@breakingmash'});
+// schedule.push({addr: '@breakingmash'});
 // schedule.push({addr: '@lentachold'});
 // schedule.push({addr: '@meduzalive'});
 // schedule.push({addr: '@ru_FTP'});
 // schedule.push({addr: '@MRZLKVK'});
 // schedule.push({addr: '@DavydovIn'});
 // schedule.push({addr: '@oldlentach'});
-// schedule.push({addr: '@varlamov'});
-// 03 13
+schedule.push({addr: '@varlamov'});
