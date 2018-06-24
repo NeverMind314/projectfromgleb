@@ -7,90 +7,61 @@ const mediaModel = require('../models/media.model');
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op;
 
-class ChannelService {
-    addChannelHistory(channelHistory) {
-        this.addNewChannel(channelHistory)
-            .then(channel => {
-                let userService = new UserService;
-                channelHistory.history.forEach(message => {
-                    // console.log('1 2 3', message);
-                    userService.addNewUser(message.author)
-                        .then(user => {
-                            this.addNewMessage(channel[0], user[0], message)
-                            .then();
-                        })
-                })
 
-                function recursion() {
-                    userService.addNewUser(message.author)
-                        .then(user => {
-                            this.addNewMessage(channel[0], user[0], message);
-                        })
-                }
-            })
-    }
-
-    addNewChannel(channelHistory) {
-        return new Promise(res => {
-            res(channelModel.findOrCreate({
-                where: {
-                    link: channelHistory.link
-                },
-                defaults: {
-                    name: channelHistory.name,
-                    link: channelHistory.link,
-                    channel_type_id: channelHistory.type_id
-                }
-            }));
+class ChannelService{
+    async addChannelHistory(channelHistory) {
+        let channel = this.addNewChannel(channel);
+        let userService = new UserService;
+        channel.history.forEach(async message => {
+            let user = userService.addNewUser(channelHistory.message.author);
+            this.addNewMessage(channel, user, message);
         })
     }
 
-    addNewMessage(channel, user, newMessage) {
-        return new Promise(res => {
-            console.log('1 2 3', newMessage);
-            messageModel.findOrCreate({
+    async addNewChannel(channel) {
+        return await channelModel.findOrCreate({
+            where: {
+                link: channel.link
+            },
+            defaults: {
+                name: channel.name,
+                link: channel.link,
+                channel_type_id: type_id
+            }
+        });
+    }
+
+    async addNewMessage (channel, user, newMessage) {
+        let message = await messageModel.findOrCreate({
+            where: {
+                post_dt: newMessage.date,
+                channel_id: channel.id
+            },
+            default: {
+                channel_id: channel.id,
+                user_id: user.id,
+                post_dt: newMessage.date,
+                message: newMessage.text
+            }
+        })
+
+        if (newMessage.media.some(item => !!item.content_id)) {
+            let media = await mediaModel.findOrCreate({
                 where: {
-                    post_dt: newMessage.date,
-                    channel_id: channel.id
+                    [Op.or]: [
+                        {content_id: message.media.photo.content_id},
+                        {content_id: message.media.video.content_id},
+                        {content_id: message.media.audio.content_id}
+                    ]
                 },
                 defaults: {
-                    channel_id: channel.id,
-                    user_id: user.id,
-                    post_dt: newMessage.date,
-                    views_count: newMessage.views_cnt || 0,
-                    message: newMessage.text.trim()
+                    message_id: message.id,
+                    type_id: 777,
+                    content_id: message.media.content_id,
+                    caption: message.media.caption
                 }
-            }).then(message => {
-                if (mediaNotEmpty(newMessage.media)) {
-                    mediaModel.findOrCreate({
-                        where: {
-                            [Op.or]: [{
-                                    content_id: message.media.photo.content_id
-                                },
-                                {
-                                    content_id: message.media.video.content_id
-                                },
-                                {
-                                    content_id: message.media.audio.content_id
-                                }
-                            ]
-                        },
-                        defaults: {
-                            message_id: message.id,
-                            type_id: identifyMediaTypeId(newMessage.media),
-                            content_id: message.media.content_id,
-                            caption: message.media.caption
-                        }
-                    })
-                }
-                res(messageModel.findOne({
-                    include: ['media'],
-                    where: {
-                        id: message.id
-                    }
-                }));
             })
-        })
+        }
     }
 }
 
