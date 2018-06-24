@@ -7,83 +7,109 @@ const mediaModel = require('../models/media.model');
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op;
 
-class ChannelService{
-    async addChannelHistory(channelHistory) {
-        let channel = this.addNewChannel(channelHistory);
-        let userService = new UserService;
-        channelHistory.messageHistory.forEach(async message => {
-            let user = userService.addNewUser(message.author);
-            this.addNewMessage(channel, user, message);
-        })
-    }
+class ChannelService {
+    addChannelHistory(channelHistory) {
+        this.addNewChannel(channelHistory)
+            .then(channel => {
+                let userService = new UserService;
+                channelHistory.history.forEach(message => {
+                    // console.log('1 2 3', message);
+                    userService.addNewUser(message.author)
+                        .then(user => {
+                            this.addNewMessage(channel[0], user[0], message)
+                            .then();
+                        })
+                })
 
-    async addNewChannel(channelHistory) {
-        return await channelModel.findOrCreate({
-            where: {
-                link: channelHistory.link.trim()
-            },
-            defaults: {
-                name: channelHistory.name.trim(),
-                link: channelHistory.link.trim(),
-                channel_type_id: identifyChannelTypeId(channelHistory.channel_type.trim())
-            }
-        });
-    }
-
-    async addNewMessage (channel, user, newMessage) {
-        let message = await messageModel.findOrCreate({
-            where: {
-                post_dt: newMessage.date,
-                message: newMessage.text.trim(),
-                user_id: user.id
-            },
-            defaults: {
-                channel_id: channel.id,
-                user_id: user.id,
-                post_dt: newMessage.date,
-                views_count: newMessage.views_cnt,
-                message: newMessage.text.trim()
-            }
-        })
-
-        if (mediaNotEmpty(newMessage.media)) {
-            await mediaModel.findOrCreate({
-                where: {
-                    [Op.or]: [
-                        {content_id: message.media.photo.content_id},
-                        {content_id: message.media.video.content_id},
-                        {content_id: message.media.audio.content_id}
-                    ]
-                },
-                defaults: {
-                    message_id: message.id,
-                    type_id: identifyMediaTypeId(newMessage.media),
-                    content_id: message.media.content_id,
-                    caption: message.media.caption
+                function recursion() {
+                    userService.addNewUser(message.author)
+                        .then(user => {
+                            this.addNewMessage(channel[0], user[0], message);
+                        })
                 }
             })
-        }
-        return messageModel.findOne({
-            include: ['media'],
-            where: {
-                id: message.id
-            }
+    }
+
+    addNewChannel(channelHistory) {
+        return new Promise(res => {
+            res(channelModel.findOrCreate({
+                where: {
+                    link: channelHistory.link
+                },
+                defaults: {
+                    name: channelHistory.name,
+                    link: channelHistory.link,
+                    channel_type_id: channelHistory.type_id
+                }
+            }));
+        })
+    }
+
+    addNewMessage(channel, user, newMessage) {
+        return new Promise(res => {
+            console.log('1 2 3', newMessage);
+            messageModel.findOrCreate({
+                where: {
+                    post_dt: newMessage.date,
+                    channel_id: channel.id
+                },
+                defaults: {
+                    channel_id: channel.id,
+                    user_id: user.id,
+                    post_dt: newMessage.date,
+                    views_count: newMessage.views_cnt || 0,
+                    message: newMessage.text.trim()
+                }
+            }).then(message => {
+                if (mediaNotEmpty(newMessage.media)) {
+                    mediaModel.findOrCreate({
+                        where: {
+                            [Op.or]: [{
+                                    content_id: message.media.photo.content_id
+                                },
+                                {
+                                    content_id: message.media.video.content_id
+                                },
+                                {
+                                    content_id: message.media.audio.content_id
+                                }
+                            ]
+                        },
+                        defaults: {
+                            message_id: message.id,
+                            type_id: identifyMediaTypeId(newMessage.media),
+                            content_id: message.media.content_id,
+                            caption: message.media.caption
+                        }
+                    })
+                }
+                res(messageModel.findOne({
+                    include: ['media'],
+                    where: {
+                        id: message.id
+                    }
+                }));
+            })
         })
     }
 }
 
 module.exports = ChannelService;
 
-function identifyChannelTypeId (channelType) {
-    switch(channelType) {
-        case 'группа': return 1;
-        case 'супергруппа': return 2;
-        case 'канал': return 3;
-        default: throw 'invalid channel type'
+function identifyChannelTypeId(channelType) {
+    switch (channelType) {
+        case 'группа':
+            return 1;
+        case 'супергруппа':
+            return 2;
+        case 'канал':
+            return 3;
+        default:
+            throw 'invalid channel type'
     }
 }
 
-function identifyMediaTypeId (media) {
+function identifyMediaTypeId(media) {
     if (!!media.photo.content_id) {
         return 1;
     }
@@ -95,11 +121,11 @@ function identifyMediaTypeId (media) {
     }
 }
 
-function mediaNotEmpty (media) {
-    if (!!media.photo.content_id || 
+function mediaNotEmpty(media) {
+    if (!!media.photo.content_id ||
         !!media.video.content_id ||
         !!media.audio.content_id) {
-            return true;
+        return true;
     }
     return false;
 }
