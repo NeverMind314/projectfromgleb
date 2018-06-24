@@ -2,8 +2,8 @@
 
 const userModel = require('../models/user.model');
 
-class UserService{
-    async addNewUser (user) {
+class UserService {
+    async addNewUser(user) {
         return await userModel.findOrCreate({
             where: {
                 login: user.login.trim()

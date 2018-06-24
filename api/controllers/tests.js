@@ -13,78 +13,80 @@ module.exports = {
     devTests(req, res) {
 
         let history = {
-            name: 'channelTest',
-            link: 'linkTest',
-            channel_type: 'супергруппа',
-            messageHistory: [{
-              "date": "2018-06-23T15:33:31.000Z",
-              "views_cnt": "",
-              "author": {
-                "login": "+7 (978) 948-61-27",
-                "name": "Глеб Синани"
-              },
-              "text": "плохо",
-              "media": {
-                "photo": {
-                  "caption": "",
-                  "content_id": null
-                },
-                "video": {
-                  "caption": "",
-                  "content_id": null
-                },
-                "audio": {
-                  "caption": "",
-                  "content_id": ""
-                }
-              }
+          "id": "s1391903125_12730356512979826587",
+          "type_id": 1,
+          "link": "https://web.telegram.org/#/im?p=@breakingmash",
+          "name": "Telegram content test",
+          "description": "Test content",
+          "history": [{
+            "date": "2018-06-24T09:54:55.000Z",
+            "views_cnt": "",
+            "author": {
+              "login": "+7 (978) 870-94-73",
+              "name": "Pavel Tuhar"
             },
-            {
-              "date": "2018-06-23T15:33:21.000Z",
-              "views_cnt": "",
+            "text": "",
+            "media": {
+              "photo": {
+                "caption": null,
+                "content_id": null
+              },
+              "video": {
+                "caption": null,
+                "content_id": null
+              },
+              "audio": {
+                "caption": null,
+                "content_id": null
+              }
+            }
+          },
+          {
+            "date": "2018-06-24T09:54:55.000Z",
+            "views_cnt": "",
+            "author": {
+              "login": "+7 (978) 870-94-73",
+              "name": "Pavel Tuhar"
+            },
+            "text": "",
+            "media": {
+              "photo": {
+                "caption": null,
+                "content_id": null
+              },
+              "video": {
+                "caption": null,
+                "content_id": null
+              },
+              "audio": {
+                "caption": null,
+                "content_id": null
+              }
+            }
+          },
+          {
+            "date": "2018-06-24T09:44:08.000Z",
+            "views_cnt": "",
               "author": {
                 "login": "+7 (978) 870-94-73",
                 "name": "Pavel Tuhar"
               },
-              "text": "Хм, парсер нашел песню и видео, а картинку не видит",
-              "media": {
-                "photo": {
-                  "caption": "",
-                  "content_id": null
-                },
-                "video": {
-                  "caption": "",
-                  "content_id": null
-                },
-                "audio": {
-                  "caption": "",
-                  "content_id": ""
-                }
-              }
-            },
-            {
-              "date": "2018-06-23T15:30:19.000Z",
-              "views_cnt": "",
-              "author": {
-                "login": "+7 (978) 948-61-27",
-                "name": "Глеб Синани"
+            "text": "Нужна одна простая группа и супергруппа",
+            "media": {
+              "photo": {
+                "caption": null,
+                "content_id": null
               },
-              "text": "картинка",
-              "media": {
-                "photo": {
-                  "caption": "",
-                  "content_id": null
-                },
-                "video": {
-                  "caption": "",
-                  "content_id": null
-                },
-                "audio": {
-                  "caption": "",
-                  "content_id": ""
-                }
+              "video": {
+                "caption": null,
+                "content_id": null
+              },
+              "audio": {
+                "caption": null,
+                "content_id": null
               }
-            }]
+            }
+          }]
         };
 
         let channelService = new ChannelService();

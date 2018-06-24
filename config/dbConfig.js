@@ -6,8 +6,10 @@ const db = new Sequelize('prisyazhnuk-andr_tgcrawler', 'prisyazhnuk-andr_tgcrawl
   dialect: 'postgres',
   operatorsAliases: false,
 
+  logging: false,
+
   pool: {
-    max: 50,
+    max: 10,
     min: 0,
     acquire: 30000,
     idle: 10000

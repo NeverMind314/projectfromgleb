@@ -7,42 +7,45 @@ const mediaModel = require('../models/media.model');
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op;
 
+
 class ChannelService{
     async addChannelHistory(channelHistory) {
-        let channel = this.addNewChannel(channelHistory);
+        let channel = await this.addNewChannel(channelHistory);
         let userService = new UserService;
         channelHistory.history.forEach(async message => {
-            let user = userService.addNewUser(message.author);
-            this.addNewMessage(channel, user, message);
+            let user = await userService.addNewUser(message.author);
+            await this.addNewMessage(channel[0], user[0], message);
         })
     }
 
-    async addNewChannel(channelHistory) {
+    async addNewChannel(channel) {
         return await channelModel.findOrCreate({
             where: {
-                link: channelHistory.link.trim()
+                link: channel.link
             },
             defaults: {
-                name: channelHistory.name.trim(),
-                link: channelHistory.link.trim(),
-                channel_type_id: identifyChannelTypeId(channelHistory.channel_type.trim())
+                name: channel.name,
+                link: channel.link,
+                channel_type_id: channel.type_id
             }
         });
     }
 
     async addNewMessage (channel, user, newMessage) {
+        // console.log('channel 11111', channel.id);
+        // console.log('user 2222222', user.id);
+        // console.log('message 333333', newMessage.views_cnt);
         let message = await messageModel.findOrCreate({
             where: {
                 post_dt: newMessage.date,
-                message: newMessage.text,
-                user_id: user.id
+                channel_id: channel.id
             },
-            defaults: {
+            default: {
                 channel_id: channel.id,
                 user_id: user.id,
                 post_dt: newMessage.date,
-                views_count: newMessage.views_cnt,
-                message: newMessage.text.trim()
+                views_count: newMessage.views_cnt || 0,
+                message: newMessage.text
             }
         })
 
@@ -57,33 +60,31 @@ class ChannelService{
                 },
                 defaults: {
                     message_id: message.id,
-                    type_id: identifyMediaTypeId(newMessage.media),
+                    type_id: identifyMediaTypeId(message.media),
                     content_id: message.media.content_id,
                     caption: message.media.caption
                 }
             })
         }
-        return messageModel.findOne({
-            include: ['media'],
-            where: {
-                id: message.id
-            }
-        })
     }
 }
 
 module.exports = ChannelService;
 
-function identifyChannelTypeId (channelType) {
-    switch(channelType) {
-        case 'группа': return 1;
-        case 'супергруппа': return 2;
-        case 'канал': return 3;
-        default: throw 'invalid channel type'
+function identifyChannelTypeId(channelType) {
+    switch (channelType) {
+        case 'группа':
+            return 1;
+        case 'супергруппа':
+            return 2;
+        case 'канал':
+            return 3;
+        default:
+            throw 'invalid channel type'
     }
 }
 
-function identifyMediaTypeId (media) {
+function identifyMediaTypeId(media) {
     if (!!media.photo.content_id) {
         return 1;
     }
@@ -95,11 +96,11 @@ function identifyMediaTypeId (media) {
     }
 }
 
-function mediaNotEmpty (media) {
-    if (!!media.photo.content_id || 
+function mediaNotEmpty(media) {
+    if (!!media.photo.content_id ||
         !!media.video.content_id ||
         !!media.audio.content_id) {
-            return true;
+        return true;
     }
     return false;
 }
