@@ -1,66 +1,149 @@
 'use strict';
 
-const creator = require('../models/userAction');
-const creatorMethods = require('../services/modelsMethods/userAction');
-const channelModel = require('../models/channel');
-const channelMethods = require('../services/modelsMethods/channel');
+const creator = require('../models/message.model');
+const mediaType = require('../models/mediaType.model');
+const channelModel = require('../models/channel.model');
 const sendStatus = require('../services/sendStatus')
-const test = require('../services/channelHistroy');
+const UserService = require('../services/user.service');
+const ChannelService = require('../services/channel.service');
+
 
 
 module.exports = {
     devTests(req, res) {
 
-        let result;
-        test.channelHistory()
-        .then(rslt => {
-            result = rslt;
-            // console.log(result);
-           res.json(sendStatus.responseOk({
-               history: rslt
-            }));
-        });
+        let history = {
+            name: 'channelTest',
+            link: 'linkTest',
+            channel_type: 'супергруппа',
+            messageHistory: [{
+              "date": "2018-06-23T15:33:31.000Z",
+              "views_cnt": "",
+              "author": {
+                "login": "+7 (978) 948-61-27",
+                "name": "Глеб Синани"
+              },
+              "text": "плохо",
+              "media": {
+                "photo": {
+                  "caption": "",
+                  "content_id": null
+                },
+                "video": {
+                  "caption": "",
+                  "content_id": null
+                },
+                "audio": {
+                  "caption": "",
+                  "content_id": ""
+                }
+              }
+            },
+            {
+              "date": "2018-06-23T15:33:21.000Z",
+              "views_cnt": "",
+              "author": {
+                "login": "+7 (978) 870-94-73",
+                "name": "Pavel Tuhar"
+              },
+              "text": "Хм, парсер нашел песню и видео, а картинку не видит",
+              "media": {
+                "photo": {
+                  "caption": "",
+                  "content_id": null
+                },
+                "video": {
+                  "caption": "",
+                  "content_id": null
+                },
+                "audio": {
+                  "caption": "",
+                  "content_id": ""
+                }
+              }
+            },
+            {
+              "date": "2018-06-23T15:30:19.000Z",
+              "views_cnt": "",
+              "author": {
+                "login": "+7 (978) 948-61-27",
+                "name": "Глеб Синани"
+              },
+              "text": "картинка",
+              "media": {
+                "photo": {
+                  "caption": "",
+                  "content_id": null
+                },
+                "video": {
+                  "caption": "",
+                  "content_id": null
+                },
+                "audio": {
+                  "caption": "",
+                  "content_id": ""
+                }
+              }
+            }]
+        };
+
+        let channelService = new ChannelService();
+        channelService.addChannelHistory(history);
+
+        // let userService = new UserService();
+        // userService.addNewUser(history.messageHistory[0].author);
+
+        // creator.findOne({
+        //     include: ['mediaType']
+        // }).then(res => {
+        //     console.log(res.mediaType)
+        // })
+
+        // let a = new ChannelHistory();
+
+        // a.addChannelHistory();
+
+        // let result;
+        // test.channelHistory()
+        // .then(rslt => {
+        //     result = rslt;
+        //     // console.log(result);
+        //    res.json(sendStatus.responseOk({
+        //        history: rslt
+        //     }));
+        // });
 
         // console.log(channelHistory)
-
-        // !!!!!!!!!!!!!! chanel methods work example !!!!!!!!!!!!!!!!!!
-
-        // let channel = {
-        //     name: 'methodTest1',
-        //     link: 'http://test4',
-        //     channel_type_id: '2'
-        // };
-
-        // // channelMethods.addChannel(channel);
-
-        // channelMethods.getChannels(function (channels) {
-        //     console.log(channels);
-        // }, {
-        //     where: {
-        //         link: 'http://test4'
-        //     }
-        // });
 
         // creator.sync({force: true}).then(() => {
         //     // Table created
         //     return [
-        //         creatorMethods.addAction({
-        //             action_dt: new Date(),
-        //             action: 'join',
+        //         creator.create({
+        //             channel_id: 3,
+        //             user_id: 3,
+        //             post_dt: new Date(),
+        //             views_count: 15,
+        //             message: 'msg1'
         //         }),
-        //         creatorMethods.addAction({
-        //             action_dt: new Date(),
-        //             action: 'out',
+        //         creator.create({
+        //             channel_id: 2,
+        //             user_id: 2,
+        //             post_dt: new Date(),
+        //             views_count: 156,
+        //             message: 'msg2'
         //         }),
-        //         creatorMethods.addAction({
-        //             action_dt: new Date(),
-        //             action: 'join',
+        //         creator.create({
+        //             channel_id: 2,
+        //             user_id: 2,
+        //             post_dt: new Date(),
+        //             views_count: 156,
+        //             message: 'msg2'
         //         })
         //     ];
         //   });
 
-        // res.json(sendStatus.responseOk({
-        //     msg: 'белеберда'
-        // }));
+        res.json(sendStatus.responseOk({
+            msg: 'белеберда'
+        }));
     }
 }

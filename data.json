@@ -1,0 +1,768 @@
+{
+  
+  messageHistory: {
+
+  }
+}
+
+[
+  {
+    "date": "2018-06-23T15:33:31.000Z",
+    "views_cnt": "",
+    "author": {
+      "login": "+7 (978) 948-61-27",
+      "name": "Глеб Синани"
+    },
+    "text": "плохо",
+    "media": {
+      "photo": {
+        "caption": "",
+        "content_id": null
+      },
+      "video": {
+        "caption": "",
+        "content_id": null
+      },
+      "audio": {
+        "caption": "",
+        "content_id": ""
+      }
+    }
+  },
+  {
+    "date": "2018-06-23T15:33:21.000Z",
+    "views_cnt": "",
+    "author": {
+      "login": "+7 (978) 870-94-73",
+      "name": "Pavel Tuhar"
+    },
+    "text": "Хм, парсер нашел песню и видео, а картинку не видит",
+    "media": {
+      "photo": {
+        "caption": "",
+        "content_id": null
+      },
+      "video": {
+        "caption": "",
+        "content_id": null
+      },
+      "audio": {
+        "caption": "",
+        "content_id": ""
+      }
+    }
+  },
+  {
+    "date": "2018-06-23T15:30:19.000Z",
+    "views_cnt": "",
+    "author": {
+      "login": "+7 (978) 948-61-27",
+      "name": "Глеб Синани"
+    },
+    "text": "картинка",
+    "media": {
+      "photo": {
+        "caption": "",
+        "content_id": null
+      },
+      "video": {
+        "caption": "",
+        "content_id": null
+      },
+      "audio": {
+        "caption": "",
+        "content_id": ""
+      }
+    }
+  },
+  {
+    "date": "2018-06-23T15:30:05.000Z",
+    "views_cnt": "",
+    "author": {
+      "login": "+7 (978) 870-94-73",
+      "name": "Pavel Tuhar"
+    },
+    "text": "Песня?)",
+    "media": {
+      "photo": {
+        "caption": "",
+        "content_id": null
+      },
+      "video": {
+        "caption": "",
+        "content_id": null
+      },
+      "audio": {
+        "caption": "",
+        "content_id": ""
+      }
+    }
+  },
+  {
+    "date": "2018-06-23T15:29:49.000Z",
+    "views_cnt": "",
+    "author": {
+      "login": "+7 (978) 948-61-27",
+      "name": "Глеб Синани"
+    },
+    "text": "красивая",
+    "media": {
+      "photo": {
+        "caption": "",
+        "content_id": null
+      },
+      "video": {
+        "caption": "",
+        "content_id": null
+      },
+      "audio": {
+        "caption": "",
+        "content_id": ""
+      }
+    }
+  },
+  {
+    "date": "2018-06-23T15:28:22.000Z",
+    "views_cnt": "",
+    "author": {
+      "login": "+7 (978) 870-94-73",
+      "name": "Pavel Tuhar"
+    },
+    "text": "",
+    "media": {
+      "photo": {
+        "caption": "picture 123",
+        "content_id": "img/placeholders/PhotoThumbConversation.gif"
+      },
+      "video": {
+        "caption": "",
+        "content_id": null
+      },
+      "audio": {
+        "caption": "",
+        "content_id": ""
+      }
+    }
+  },
+  {
+    "date": "2018-06-23T15:28:02.000Z",
+    "views_cnt": "",
+    "author": {
+      "login": "+7 (978) 870-94-73",
+      "name": "Pavel Tuhar"
+    },
+    "text": "The problem is you are setting the window.location.hash to an element's ID attribute. It is the expected behavior for the browser to jump to that element, regardless of whether you \"preventDefault()\" or not.",
+    "media": {
+      "photo": {
+        "caption": "",
+        "content_id": null
+      },
+      "video": {
+        "caption": "",
+        "content_id": null
+      },
+      "audio": {
+        "caption": "",
+        "content_id": ""
+      }
+    }
+  },
+  {
+    "date": "2018-06-23T15:15:12.000Z",
+    "views_cnt": "",
+    "author": {
+      "login": "+7 (978) 870-94-73",
+      "name": "Pavel Tuhar"
+    },
+    "text": "",
+    "media": {
+      "photo": {
+        "caption": "",
+        "content_id": null
+      },
+      "video": {
+        "caption": "Javascript sound",
+        "content_id": null
+      },
+      "audio": {
+        "caption": "Javascript sound",
+        "content_id": "tests.js.mp3"
+      }
+    }
+  },
+  {
+    "date": "2018-06-23T15:14:59.000Z",
+    "views_cnt": "",
+    "author": {
+      "login": "+7 (978) 870-94-73",
+      "name": "Pavel Tuhar"
+    },
+    "text": "",
+    "media": {
+      "photo": {
+        "caption": "",
+        "content_id": null
+      },
+      "video": {
+        "caption": "Video description",
+        "content_id": null
+      },
+      "audio": {
+        "caption": "Video description",
+        "content_id": ""
+      }
+    }
+  },
+  {
+    "date": "2018-06-23T15:01:24.000Z",
+    "views_cnt": "",
+    "author": {
+      "login": "+7 (978) 948-61-27",
+      "name": "Глеб Синани"
+    },
+    "text": "100 пудофф",
+    "media": {
+      "photo": {
+        "caption": "",
+        "content_id": null
+      },
+      "video": {
+        "caption": "",
+        "content_id": null
+      },
+      "audio": {
+        "caption": "",
+        "content_id": ""
+      }
+    }
+  },
+  {
+    "date": "2018-06-23T15:01:17.000Z",
+    "views_cnt": "",
+    "author": {
+      "login": "+7 (978) 948-61-27",
+      "name": "Глеб Синани"
+    },
+    "text": "Точно",
+    "media": {
+      "photo": {
+        "caption": "",
+        "content_id": null
+      },
+      "video": {
+        "caption": "",
+        "content_id": null
+      },
+      "audio": {
+        "caption": "",
+        "content_id": ""
+      }
+    }
+  },
+  {
+    "date": "2018-06-23T15:33:31.000Z",
+    "views_cnt": "",
+    "author": {
+      "login": "",
+      "name": ""
+    },
+    "text": "плохо",
+    "media": {
+      "photo": {
+        "caption": "",
+        "content_id": null
+      },
+      "video": {
+        "caption": "",
+        "content_id": null
+      },
+      "audio": {
+        "caption": "",
+        "content_id": ""
+      }
+    }
+  },
+  {
+    "date": "2018-06-23T15:33:21.000Z",
+    "views_cnt": "",
+    "author": {
+      "login": "",
+      "name": ""
+    },
+    "text": "Хм, парсер нашел песню и видео, а картинку не видит",
+    "media": {
+      "photo": {
+        "caption": "",
+        "content_id": null
+      },
+      "video": {
+        "caption": "",
+        "content_id": null
+      },
+      "audio": {
+        "caption": "",
+        "content_id": ""
+      }
+    }
+  },
+  {
+    "date": "2018-06-23T15:30:19.000Z",
+    "views_cnt": "",
+    "author": {
+      "login": "",
+      "name": ""
+    },
+    "text": "картинка",
+    "media": {
+      "photo": {
+        "caption": "",
+        "content_id": null
+      },
+      "video": {
+        "caption": "",
+        "content_id": null
+      },
+      "audio": {
+        "caption": "",
+        "content_id": ""
+      }
+    }
+  },
+  {
+    "date": "2018-06-23T15:30:05.000Z",
+    "views_cnt": "",
+    "author": {
+      "login": "",
+      "name": ""
+    },
+    "text": "Песня?)",
+    "media": {
+      "photo": {
+        "caption": "",
+        "content_id": null
+      },
+      "video": {
+        "caption": "",
+        "content_id": null
+      },
+      "audio": {
+        "caption": "",
+        "content_id": ""
+      }
+    }
+  },
+  {
+    "date": "2018-06-23T15:29:49.000Z",
+    "views_cnt": "",
+    "author": {
+      "login": "",
+      "name": ""
+    },
+    "text": "красивая",
+    "media": {
+      "photo": {
+        "caption": "",
+        "content_id": null
+      },
+      "video": {
+        "caption": "",
+        "content_id": null
+      },
+      "audio": {
+        "caption": "",
+        "content_id": ""
+      }
+    }
+  },
+  {
+    "date": "2018-06-23T15:28:22.000Z",
+    "views_cnt": "",
+    "author": {
+      "login": "",
+      "name": ""
+    },
+    "text": "",
+    "media": {
+      "photo": {
+        "caption": "picture 123",
+        "content_id": "blob:https://web.telegram.org/f1888694-86e5-ae4d-858a-c08cd799be2b"
+      },
+      "video": {
+        "caption": "",
+        "content_id": null
+      },
+      "audio": {
+        "caption": "",
+        "content_id": ""
+      }
+    }
+  },
+  {
+    "date": "2018-06-23T15:28:02.000Z",
+    "views_cnt": "",
+    "author": {
+      "login": "",
+      "name": ""
+    },
+    "text": "The problem is you are setting the window.location.hash to an element's ID attribute. It is the expected behavior for the browser to jump to that element, regardless of whether you \"preventDefault()\" or not.",
+    "media": {
+      "photo": {
+        "caption": "",
+        "content_id": null
+      },
+      "video": {
+        "caption": "",
+        "content_id": null
+      },
+      "audio": {
+        "caption": "",
+        "content_id": ""
+      }
+    }
+  },
+  {
+    "date": "2018-06-23T15:15:12.000Z",
+    "views_cnt": "",
+    "author": {
+      "login": "",
+      "name": ""
+    },
+    "text": "",
+    "media": {
+      "photo": {
+        "caption": "",
+        "content_id": null
+      },
+      "video": {
+        "caption": "Javascript sound",
+        "content_id": null
+      },
+      "audio": {
+        "caption": "Javascript sound",
+        "content_id": "tests.js.mp3"
+      }
+    }
+  },
+  {
+    "date": "2018-06-23T15:14:59.000Z",
+    "views_cnt": "",
+    "author": {
+      "login": "",
+      "name": ""
+    },
+    "text": "",
+    "media": {
+      "photo": {
+        "caption": "",
+        "content_id": null
+      },
+      "video": {
+        "caption": "Video description",
+        "content_id": null
+      },
+      "audio": {
+        "caption": "Video description",
+        "content_id": ""
+      }
+    }
+  },
+  {
+    "date": "2018-06-23T15:01:24.000Z",
+    "views_cnt": "",
+    "author": {
+      "login": "",
+      "name": ""
+    },
+    "text": "100 пудофф",
+    "media": {
+      "photo": {
+        "caption": "",
+        "content_id": null
+      },
+      "video": {
+        "caption": "",
+        "content_id": null
+      },
+      "audio": {
+        "caption": "",
+        "content_id": ""
+      }
+    }
+  },
+  {
+    "date": "2018-06-23T15:01:17.000Z",
+    "views_cnt": "",
+    "author": {
+      "login": "",
+      "name": ""
+    },
+    "text": "Точно",
+    "media": {
+      "photo": {
+        "caption": "",
+        "content_id": null
+      },
+      "video": {
+        "caption": "",
+        "content_id": null
+      },
+      "audio": {
+        "caption": "",
+        "content_id": ""
+      }
+    }
+  },
+  {
+    "date": "2018-06-23T15:01:13.000Z",
+    "views_cnt": "",
+    "author": {
+      "login": "+7 (978) 948-61-27",
+      "name": "Глеб Синани"
+    },
+    "text": "Отвечаю",
+    "media": {
+      "photo": {
+        "caption": "",
+        "content_id": null
+      },
+      "video": {
+        "caption": "",
+        "content_id": null
+      },
+      "audio": {
+        "caption": "",
+        "content_id": ""
+      }
+    }
+  },
+  {
+    "date": "2018-06-23T15:01:09.000Z",
+    "views_cnt": "",
+    "author": {
+      "login": "+7 (978) 948-61-27",
+      "name": "Глеб Синани"
+    },
+    "text": "Сделанно",
+    "media": {
+      "photo": {
+        "caption": "",
+        "content_id": null
+      },
+      "video": {
+        "caption": "",
+        "content_id": null
+      },
+      "audio": {
+        "caption": "",
+        "content_id": ""
+      }
+    }
+  },
+  {
+    "date": "2018-06-23T15:01:06.000Z",
+    "views_cnt": "",
+    "author": {
+      "login": "+7 (978) 948-61-27",
+      "name": "Глеб Синани"
+    },
+    "text": "Будет",
+    "media": {
+      "photo": {
+        "caption": "",
+        "content_id": null
+      },
+      "video": {
+        "caption": "",
+        "content_id": null
+      },
+      "audio": {
+        "caption": "",
+        "content_id": ""
+      }
+    }
+  },
+  {
+    "date": "2018-06-23T15:01:03.000Z",
+    "views_cnt": "",
+    "author": {
+      "login": "+7 (978) 948-61-27",
+      "name": "Глеб Синани"
+    },
+    "text": "Ок",
+    "media": {
+      "photo": {
+        "caption": "",
+        "content_id": null
+      },
+      "video": {
+        "caption": "",
+        "content_id": null
+      },
+      "audio": {
+        "caption": "",
+        "content_id": ""
+      }
+    }
+  },
+  {
+    "date": "2018-06-23T15:00:50.000Z",
+    "views_cnt": "",
+    "author": {
+      "login": "+7 (978) 870-94-73",
+      "name": "Pavel Tuhar"
+    },
+    "text": "Текст )",
+    "media": {
+      "photo": {
+        "caption": "",
+        "content_id": null
+      },
+      "video": {
+        "caption": "",
+        "content_id": null
+      },
+      "audio": {
+        "caption": "",
+        "content_id": ""
+      }
+    }
+  },
+  {
+    "date": "2018-06-23T15:00:44.000Z",
+    "views_cnt": "",
+    "author": {
+      "login": "+7 (978) 870-94-73",
+      "name": "Pavel Tuhar"
+    },
+    "text": "Музыка документы",
+    "media": {
+      "photo": {
+        "caption": "",
+        "content_id": null
+      },
+      "video": {
+        "caption": "",
+        "content_id": null
+      },
+      "audio": {
+        "caption": "",
+        "content_id": ""
+      }
+    }
+  },
+  {
+    "date": "2018-06-23T15:00:39.000Z",
+    "views_cnt": "",
+    "author": {
+      "login": "+7 (978) 870-94-73",
+      "name": "Pavel Tuhar"
+    },
+    "text": "Фото видео",
+    "media": {
+      "photo": {
+        "caption": "",
+        "content_id": null
+      },
+      "video": {
+        "caption": "",
+        "content_id": null
+      },
+      "audio": {
+        "caption": "",
+        "content_id": ""
+      }
+    }
+  },
+  {
+    "date": "2018-06-23T15:00:30.000Z",
+    "views_cnt": "",
+    "author": {
+      "login": "+7 (978) 870-94-73",
+      "name": "Pavel Tuhar"
+    },
+    "text": "И сообщений",
+    "media": {
+      "photo": {
+        "caption": "",
+        "content_id": null
+      },
+      "video": {
+        "caption": "",
+        "content_id": null
+      },
+      "audio": {
+        "caption": "",
+        "content_id": ""
+      }
+    }
+  },
+  {
+    "date": "2018-06-23T15:00:26.000Z",
+    "views_cnt": "",
+    "author": {
+      "login": "+7 (978) 870-94-73",
+      "name": "Pavel Tuhar"
+    },
+    "text": "Нужно накидать сюда разного контента",
+    "media": {
+      "photo": {
+        "caption": "",
+        "content_id": null
+      },
+      "video": {
+        "caption": "",
+        "content_id": null
+      },
+      "audio": {
+        "caption": "",
+        "content_id": ""
+      }
+    }
+  },
+  {
+    "date": "2018-06-22T21:00:00.000Z",
+    "views_cnt": "",
+    "author": {
+      "login": "+7 (978) 870-94-73",
+      "name": "Pavel Tuhar"
+    },
+    "text": "",
+    "media": {
+      "photo": {
+        "caption": "",
+        "content_id": null
+      },
+      "video": {
+        "caption": "",
+        "content_id": null
+      },
+      "audio": {
+        "caption": "",
+        "content_id": ""
+      }
+    }
+  },
+  {
+    "date": "2018-06-22T21:00:00.000Z",
+    "views_cnt": "",
+    "author": {
+      "login": "+7 (978) 870-94-73",
+      "name": "Pavel Tuhar"
+    },
+    "text": "",
+    "media": {
+      "photo": {
+        "caption": "",
+        "content_id": null
+      },
+      "video": {
+        "caption": "",
+        "content_id": null
+      },
+      "audio": {
+        "caption": "",
+        "content_id": ""
+      }
+    }
+  }
+]

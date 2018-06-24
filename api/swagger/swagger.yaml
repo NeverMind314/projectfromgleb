@@ -18,21 +18,18 @@ consumes:
 produces:
   - application/json
 paths:
-  /getChannelHistory:
-    x-swagger-router-controller: channelHistory
-    post:
+  /channel_history:
+    x-swagger-router-controller: channelHistory.controller
+    get:
       description: Returns history of channel founded by requested parameters
       operationId: getChannelHistory
       parameters:
-        - in: body
-          name: channel
-          schema:
-            type: object
-            properties:
-              name:
-                type: string
-              link:
-                type: string
+        - name: key
+          in: query
+          description: id or link of channel
+          required: true
+          type: string
+
       responses:
         "200":
           description: Success

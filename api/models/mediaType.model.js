@@ -2,17 +2,17 @@
 
 const Sequelize = require('sequelize');
 const db = require('../../config/dbConfig');
+const media = require('./media.model')
 
-module.exports = db.define('message', {
+let mediaType = db.define('media_type', {
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
-    channel_id: Sequelize.INTEGER,
-    user_id: Sequelize.INTEGER,
-    post_dt: Sequelize.DATE,
-    message: Sequelize.TEXT
+    name: Sequelize.CHAR,
 }, {
     freezeTableName: true
 });
+
+module.exports = mediaType;
