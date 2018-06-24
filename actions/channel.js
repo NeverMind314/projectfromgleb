@@ -58,6 +58,7 @@ class Channel {
     await this.driver.executeScript('$(".tg_head_btn").click(); ');
     await timeout(1000);
     const channelName = await this.driver.executeScript('return $(".peer_modal_profile_name").text();');
+    const channelLink = await this.driver.executeScript('return window.location.href;');
     const channelID = await this.driver.executeScript('return window.location.hash.split("=").pop();');
     const channelDescription = await this.driver.executeScript('return $(\'span[ng-bind-html="chatFull.rAbout"]\').text();');
     const channelTypeId = await this.driver.executeScript('return $(\'span[my-i18n="channel_modal_info"]\').text() === "" ? 1 : 2;');
@@ -155,6 +156,7 @@ class Channel {
     fs.writeFile("data.json", JSON.stringify({
       id: channelID,
       type_id: channelTypeId,
+      link: channelLink,
       name: channelName,
       description: channelDescription,
       history: messages
