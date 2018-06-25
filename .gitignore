@@ -21,3 +21,4 @@ node_modules
 config/runtime.yaml
 varlamov_tg.json
 test.js
+data.json
