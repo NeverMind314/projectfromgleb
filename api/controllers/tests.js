@@ -63,7 +63,6 @@ module.exports = {
         // })
         // message.sync({force: true})
         // user.sync({force: true})
-        // userAction.sync({force: true})
         // userChannel.sync({force: true})
         // res.json(sendStatus.responseOk());
     }
