@@ -7,11 +7,11 @@ class UserService {
     async addNewUser(user) {
         return await userModel.findOrCreate({
             where: {
-                login: user.login.trim()
+                login: user.login
             },
             defaults: {
-                name: user.name.trim(),
-                login: user.login.trim()
+                name: user.name,
+                login: user.login
             }
         });
     }
