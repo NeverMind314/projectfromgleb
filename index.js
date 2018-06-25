@@ -81,7 +81,7 @@ async function demon() {
 setInterval(demon, 3000);
 
 
-// schedule.push({addr: 'https://t.me/joinchat/E5jwUlL2wZVG7grfCpVaxw'});
+schedule.push({addr: 'https://t.me/joinchat/E5jwUlL2wZVG7grfCpVaxw'});
 // schedule.push({addr: '@breakingmash'});
 // schedule.push({addr: '@lentachold'});
 // schedule.push({addr: '@meduzalive'});
@@ -89,4 +89,4 @@ setInterval(demon, 3000);
 // schedule.push({addr: '@MRZLKVK'});
 // schedule.push({addr: '@DavydovIn'});
 // schedule.push({addr: '@oldlentach'});
-schedule.push({addr: '@varlamov'});
+// schedule.push({addr: '@varlamov'});

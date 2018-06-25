@@ -66,17 +66,27 @@ class Channel {
     await this.driver.executeScript('$(".md_modal_action_close").last().click();');
 
     let messagesInPage = 0;
-    while(messagesInPage < 1000) {
-      messagesInPage = await this.driver.executeScript('return $(".im_history_message_wrap").length;');
-      // if (messagesInPage < 100) {
+    while(messagesInPage < 1000 && loadingTries < 50) {
+      const cnt = await this.driver.executeScript('return $(".im_history_message_wrap").length;');
+      if (messagesInPage === cnt) {
+        loadingTries++;
+        await timeout(300);
+      }
+      messagesInPage = cnt;
       this.driver.executeScript('$(".im_history_scrollable_wrap").scrollTop(100)').then();
-      // }
-      console.log(messagesInPage);
+      // console.log(messagesInPage);
     }
 
+    let cnt = messages.length;
+    loadingTries = 0;
     while (loadingTries < 50) {
       try {
-        await timeout(50);
+        if (cnt === messages.length) {
+          loadingTries++;
+          await timeout(100);
+        }
+        cnt = messages.length;
+        // await timeout(50);
         let messagesCont = await this.driver.findElement(By.className('im_history_messages_peer'));
         let items = await messagesCont.findElements(By.className('im_history_message_wrap'));
         count = 0;
@@ -88,18 +98,16 @@ class Channel {
           'return $(".im_history_messages_peer .im_history_message_wrap .im_message_author").last().text();'
         );
 
-        author = await this.driver.executeScript(
-          '$(".im_history_messages_peer .im_history_message_wrap .im_message_author").last().click(); ' +
-          'var name = $(".peer_modal_profile_name").text(); ' +
-          'var login = $(".md_modal_section_param_value").first().text().trim(); ' +
-          'return {name, login}'
-        );
-        // await timeout(50);
-        await this.driver.executeScript('$(".md_modal_action_close").last().click();');
-
-        if (!author.login && users[userID]) {
+        if (users[userID]) {
           author = users[userID];
-        } else if (author.login) {
+        } else {
+          author = await this.driver.executeScript(
+            '$(".im_history_messages_peer .im_history_message_wrap .im_message_author").last().click(); ' +
+            'var name = $(".peer_modal_profile_name").text(); ' +
+            'var login = $(".md_modal_section_param_value").first().text().trim(); ' +
+            'return {name, login}'
+          );
+          await this.driver.executeScript('$(".md_modal_action_close").last().click();');
           users[userID] = author;
         }
 
@@ -163,13 +171,13 @@ class Channel {
           console.log(name, messages.length);
         }
         // if (messages.length > 500) break;
-        if (count === 0) {
-          await timeout(500);
-          console.log('Loader is not found', loadingTries)
-          loadingTries++;
-        } else {
-          loadingTries = 0;
-        }
+        // if (count === 0) {
+        //   await timeout(500);
+        //   console.log('Loader is not found', loadingTries)
+        //   loadingTries++;
+        // } else {
+        //   loadingTries = 0;
+        // }
       } catch (err) {
         console.log('ERROR', err);
       }
