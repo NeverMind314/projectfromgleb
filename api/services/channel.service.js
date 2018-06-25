@@ -25,6 +25,7 @@ class ChannelService{
             let user = await userService.addNewUser(channelHistory.history[i].author);
             await userService.addNewUserChannel(user[0], channel[0]);
             let message = await this.addNewMessage(channel[0], user[0], channelHistory.history[i]);
+            console.log('New message saved', i);
             if (mediaNotEmpty(channelHistory.history[i].media)) {
                 await this.addNewMedia(channelHistory.history[i].media, message[0])
             }

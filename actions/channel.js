@@ -166,7 +166,7 @@ class Channel {
             media
           });
         }
-        console.log(date, messages.length, messagesInPage);
+        // console.log(date, messages.length, messagesInPage);
         if (messages.length % 100 === 0) {
           console.log(name, messages.length);
         }
@@ -184,8 +184,8 @@ class Channel {
     }
 
 
-    console.log('saving to db');
-    await timeout(20000);
+    console.log('saving to db', messages.length);
+    await timeout(10000);
 
     const channel = {
       id: channelID,
@@ -196,7 +196,6 @@ class Channel {
       history: messages
     };
 
-
     fs.writeFile("data.json", JSON.stringify(channel), function (err) {
       if (err) {
         return console.log(err);
@@ -206,7 +205,8 @@ class Channel {
 
 
     const cs = new channelService();
-    // await cs.addChannelHistory(channel);
+    await cs.addChannelHistory(channel);
+    console.log('Data was saved into db');
   }
 }
 

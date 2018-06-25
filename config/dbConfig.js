@@ -18,18 +18,19 @@
 
 const Sequelize = require('sequelize');
 const db = new Sequelize('postgres', 'postgres', 'root', {
-    host: 'localhost',
-    dialect: 'postgres',
-    operatorsAliases: false,
+  host: '0.tcp.ngrok.io',
+  port: 15311,
+  dialect: 'postgres',
+  operatorsAliases: false,
 
-    logging: false,
+  logging: false,
 
-    pool: {
-        max: 7,
-        min: 0,
-        acquire: 30000,
-        idle: 10000
-    }
+  pool: {
+    max: 7,
+    min: 0,
+    acquire: 30000,
+    idle: 10000
+  }
 });
 
 module.exports = db;

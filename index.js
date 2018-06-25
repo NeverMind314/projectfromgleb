@@ -82,7 +82,7 @@ setInterval(demon, 3000);
 
 
 schedule.push({addr: 'https://t.me/joinchat/E5jwUlL2wZVG7grfCpVaxw'});
-// schedule.push({addr: '@breakingmash'});
+// schedule.push({addr: 'https://t.me/joinchat/Eyrkag_6NROREVCgXfo1cA'});
 // schedule.push({addr: '@lentachold'});
 // schedule.push({addr: '@meduzalive'});
 // schedule.push({addr: '@ru_FTP'});
