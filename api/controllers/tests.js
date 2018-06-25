@@ -7,7 +7,6 @@ const channelType = require('../models/channelType.model');
 const media = require('../models/media.model');
 const mediaType = require('../models/mediaType.model');
 const user = require('../models/user.model');
-const userAction = require('../models/userAction.model');
 const userChannel = require('../models/userChannel.model');
 const sendStatus = require('../services/sendStatus');
 const ChannelService = require('../services/channel.service');

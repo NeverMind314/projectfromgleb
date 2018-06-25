@@ -11,7 +11,8 @@ module.exports = db.define('user_channel', {
     },
     user_id: Sequelize.INTEGER,
     channel_id: Sequelize.INTEGER,
-    user_action_id: Sequelize.INTEGER
+    user_action_id: Sequelize.INTEGER,
+    action_dt: Sequelize.DATE
 }, {
     freezeTableName: true
 });
