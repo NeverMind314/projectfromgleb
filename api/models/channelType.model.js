@@ -2,7 +2,6 @@
 
 const Sequelize = require('sequelize');
 const db = require('../../config/dbConfig');
-const channel = require('./channel.model')
 
 let channelType = db.define('channel_type', {
     id: {

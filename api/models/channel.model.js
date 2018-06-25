@@ -11,6 +11,7 @@ let channel = db.define('channel', {
         autoIncrement: true
     },
     name: Sequelize.CHAR,
+    description: Sequelize.CHAR,
     link: Sequelize.CHAR,
     channel_type_id: Sequelize.INTEGER
 }, {

@@ -2,7 +2,6 @@
 
 const Sequelize = require('sequelize');
 const db = require('../../config/dbConfig');
-const media = require('./media.model')
 
 let mediaType = db.define('media_type', {
     id: {

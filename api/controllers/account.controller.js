@@ -6,7 +6,16 @@ const sendStatus = require('../services/sendStatus')
 module.exports = {
     addAccount(req, res) {
         try {
-            account.create(req.body);
+            account.findOrCreate({
+                where: {
+                    login: req.query.login
+                },
+                defaults: {
+                    name: req.query.name,
+                    login: req.query.login,
+                    phone: req.query.phone
+                }
+            })
             
             res.json(sendStatus.responseOk());
         } catch (e) {
