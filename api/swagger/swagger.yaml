@@ -35,39 +35,27 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/BaseResponse"
-  /addAccount:
-    x-swagger-router-controller: account
-    post:
+  /new_account:
+    x-swagger-router-controller: account.controller
+    get:
       description: Adding row in account table with certain parameters
       operationId: addAccount
       parameters:
-        - in: body
-          name: user
+        - name: name
+          in: query
+          description: account name
           required: true
-          schema:
-            type: object
-            required:
-              - name
-              - login
-              - phone
-            properties:
-              name:
-                type: string
-              login:
-                type: string
-              phone:
-                type: string
-      responses:
-        "200":
-          description: Success
-          schema:
-            $ref: "#/definitions/BaseResponse"
-
-  /channels:
-    x-swagger-router-controller: channel
-    get:
-      description: Returns list of channels to the caller
-      operationId: getChannels
+          type: string
+        - name: login
+          in: query
+          description: account login
+          required: true
+          type: string
+        - name: phone
+          in: query
+          description: account name
+          required: true
+          type: string
       responses:
         "200":
           description: Success

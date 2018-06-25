@@ -5,9 +5,8 @@ const messageModel = require('../models/message.model');
 
 class getChannelHistory {
     async getChannelHistory(key, startFrom) {
-        key = key.trim();
         let param = {};
-        if (typeof key === 'number') {
+        if (+key) {
             param.id = key;
         } else {
             param.link = key;

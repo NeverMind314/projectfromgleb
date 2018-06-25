@@ -11,7 +11,7 @@ module.exports = {
                 res.json(sendStatus.responseOk({history}));
             })
         } catch (e) {
-            res.json(sendStatus.responseErr('error occured at inserting account into DB. ' + e));
+            res.json(sendStatus.responseErr(e));
         }
     }
 }

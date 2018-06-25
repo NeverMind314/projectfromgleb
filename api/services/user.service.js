@@ -1,6 +1,7 @@
 "use strict";
 
 const userModel = require('../models/user.model');
+const userChannelModel = require('../models/userChannel.model');
 
 class UserService {
     async addNewUser(user) {
@@ -13,6 +14,15 @@ class UserService {
                 login: user.login.trim()
             }
         });
+    }
+
+    async addNewUserChannel (user, channel) {
+        return await userChannelModel.findOrCreate({
+            where: {
+                user_id: user.id,
+                channel_id: channel.id
+            }
+        })
     }
 }
 
