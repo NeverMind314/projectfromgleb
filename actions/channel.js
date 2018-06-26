@@ -4,6 +4,7 @@ const md5 = require('md5');
 const tries = 50;
 const fs = require('fs');
 const moment = require('moment');
+const joinchat = require('../actions/constants').joinchat;
 const joinlink = require('../actions/constants').joinlink;
 const joinMask = require('../actions/constants').joinMask;
 const Auth = require('./auth');
@@ -46,8 +47,10 @@ class Channel {
   }
 
   async open(name) {
-    if (~name.indexOf(joinlink)) {
+    if (~name.indexOf(joinchat)) {
       await this.joinByLink(name);
+    } else if (~name.indexOf(joinlink)) {
+      await this.find(name.split('/').pop());
     } else if (name[0] === '@') {
       await this.find(name);
     }
@@ -205,7 +208,7 @@ class Channel {
 
 
     const cs = new channelService();
-    await cs.addChannelHistory(channel);
+    // await cs.addChannelHistory(channel);
     console.log('Data was saved into db');
   }
 }
