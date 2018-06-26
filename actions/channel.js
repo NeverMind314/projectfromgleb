@@ -66,7 +66,7 @@ class Channel {
     await this.driver.executeScript('$(".md_modal_action_close").last().click();');
 
     let messagesInPage = 0;
-    while(messagesInPage < 1000 && loadingTries < 50) {
+    while(loadingTries < 200) {
       const cnt = await this.driver.executeScript('return $(".im_history_message_wrap").length;');
       if (messagesInPage === cnt) {
         loadingTries++;

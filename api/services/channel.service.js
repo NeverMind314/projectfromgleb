@@ -3,6 +3,7 @@
 const messageModel = require('../models/message.model');
 const channelModel = require('../models/channel.model');
 const mediaModel = require('../models/media.model');
+const ChannelHistoryService = require('./channelHistroy.service');
 const UserService = require('./user.service');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
@@ -12,20 +13,13 @@ class ChannelService{
     async addChannelHistory(channelHistory) {
         let channel = await this.addNewChannel(channelHistory);
         let userService = new UserService;
-        // channelHistory.history.forEach(async newMessage => {
-        //     let user = await userService.addNewUser(newMessage.author);
-        //     await userService.addNewUserChannel(user[0], channel[0]);
-        //     console.log('after');
-        //     let message = await this.addNewMessage(channel[0], user[0], newMessage);
-        //     if (mediaNotEmpty(newMessage.media)) {
-        //         await this.addNewMedia(newMessage.media, message[0])
-        //     }
-        // })
         for (let i = 0; i < channelHistory.history.length; i++) {
             let user = await userService.addNewUser(channelHistory.history[i].author);
             await userService.addNewUserChannel(user[0], channel[0]);
             let message = await this.addNewMessage(channel[0], user[0], channelHistory.history[i]);
-            console.log('New message saved', i);
+            if (i % 50 === 0) {
+                console.log('New message saved', i);
+            }
             if (mediaNotEmpty(channelHistory.history[i].media)) {
                 await this.addNewMedia(channelHistory.history[i].media, message[0])
             }
@@ -33,7 +27,6 @@ class ChannelService{
     }
 
     async addNewChannel(channel) {
-        // console.log(channel);
         return await channelModel.findOrCreate({
             where: {
                 link: channel.link
@@ -78,22 +71,19 @@ class ChannelService{
             }
         })
     }
+
+    async getLatestMessage (channelId) {
+        return await messageModel.findAll({
+            limit: 1,
+            where: {
+                channel_id: channelId
+            },
+            order: [['post_dt', 'DESC']]
+        })
+    }
 }
 
 module.exports = ChannelService;
-
-// function identifyChannelTypeId(channelType) {
-//     switch (channelType) {
-//         case 'группа':
-//             return 1;
-//         case 'супергруппа':
-//             return 2;
-//         case 'канал':
-//             return 3;
-//         default:
-//             throw 'invalid channel type'
-//     }
-// }
 
 function identifyMediaType(media) {
     if (!!media.photo.content_id) {
