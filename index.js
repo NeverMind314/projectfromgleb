@@ -25,7 +25,7 @@ const options = new chrome.Options();
 options.addArguments("--no-sandbox");
 options.addArguments("--blink-settings=imagesEnabled=false");
 chrome.setDefaultService(
-  new chrome.ServiceBuilder(join(process.env.PWD, process.env['PATH'], 'chromedriver')).build()
+  new chrome.ServiceBuilder('drivers/windows/chromedriver.exe').build()
 );
 
 function getDriver() {
@@ -96,3 +96,8 @@ schedule.push({addr: 'https://t.me/joinchat/AAAAAEsZ0c7Bl0iy1jIvNg'});
 // schedule.push({addr: '@DavydovIn'});
 // schedule.push({addr: '@oldlentach'});
 // schedule.push({addr: '@varlamov'});
+// schedule.push({addr: 'https://t.me/joinchat/Cox1iA8fFnQ3kLhgKDtj-Q'});
+// schedule.push({addr: 'https://web.telegram.org/#/im?tgaddr=tg:%2F%2Fjoin%3Finvite%3DCox1iEuA3mnVaM_mj0_rQw'});
+// schedule.push({addr: '@souper_group_named'});
+// schedule.push({addr: '@channel_named'});
+// schedule.push({addr: 'p=c1259983310_4597725643994732746'});

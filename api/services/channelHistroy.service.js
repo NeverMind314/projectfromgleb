@@ -14,6 +14,11 @@ class getChannelHistory {
         let channel = await channelModel.findOne({
             where: param
         });
+
+        if (!channel) {
+            return new Error('No channel with such key')
+        }
+
         let messages = await messageModel.findAll({
             include: ['media'],
             where: {

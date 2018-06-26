@@ -97,7 +97,12 @@ module.exports = {
         // };
 
         let channelService = new ChannelService();
-        channelService.addChannelHistory(history);
+        channelService.getLatestMessage(1)
+            .then(message => {
+                res.json(sendStatus.responseOk(message[0]));
+            });
+        // channelService.addChannelHistory(history);
+
 
         // let userService = new UserService();
         // userService.addNewUser(history.messageHistory[0].author);
@@ -133,6 +138,5 @@ module.exports = {
         // user.sync({force: true})
         // userAction.sync({force: true})
         // userChannel.sync({force: true})
-        res.json(sendStatus.responseOk())
     }
 }
