@@ -41,10 +41,10 @@ let runnerBusy = false;
 async function demon() {
   for (let i = 0; i < schedule.length; i++) {
     if (!schedule[i].stage) {
-      schedule[i].startAt = Date.now();
       schedule[i].stage = 0;
     }
     if (schedule[i].stage === 0 && runnerBusy === false) {
+      schedule[i].startAt = Date.now();
       runnerBusy = true;
       console.log('Start: ' + schedule[i].addr);
       schedule[i].driver = getDriver();
@@ -74,13 +74,19 @@ async function demon() {
       schedule[i].stage = 4;
       await schedule[i].driver.quit();
       const workTime = Date.now() - schedule[i].startAt;
+      schedule[i].finishedAt = Date.now();
       console.log('Successfully finished: ' + schedule[i].addr, workTime);
     }
+
+    // if (schedule[i].stage === 4 && (Date.now() - schedule[i].finishedAt) > 10 * 1000 ) {
+    //   console.log('Restart ' + schedule[i].addr);
+    //   schedule[i].stage = 0;
+    // }
   }
 }
 setInterval(demon, 3000);
 
-
+//
 schedule.push({addr: 'https://t.me/joinchat/Cox1iA8fFnQ3kLhgKDtj-Q'});
 schedule.push({addr: 'https://t.me/joinchat/Cox1iEuA3mnVaM_mj0_rQw'});
 schedule.push({addr: 'https://t.me/souper_group_named'});
