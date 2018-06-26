@@ -76,6 +76,7 @@ async function demon() {
       const workTime = Date.now() - schedule[i].startAt;
       schedule[i].finishedAt = Date.now();
       console.log('Successfully finished: ' + schedule[i].addr, workTime);
+      schedule[i].stage = 0;
     }
 
     // if (schedule[i].stage === 4 && (Date.now() - schedule[i].finishedAt) > 10 * 1000 ) {
