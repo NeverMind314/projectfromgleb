@@ -9,6 +9,7 @@ const joinlink = require('../actions/constants').joinlink;
 const joinMask = require('../actions/constants').joinMask;
 const Auth = require('./auth');
 const channelService = require('../api/services/channel.service');
+const cs = new channelService();
 
 class Channel {
   constructor(driver) {
@@ -63,13 +64,13 @@ class Channel {
     await timeout(1000);
     const channelName = await this.driver.executeScript('return $(".peer_modal_profile_name").text();');
     const channelLink = await this.driver.executeScript('return window.location.href;');
-    const channelID = await this.driver.executeScript('return window.location.hash.split("=").pop();');
+    const channelID = await this.driver.executeScript('return window.location.href.split("=").pop();');
     const channelDescription = await this.driver.executeScript('return $(\'span[ng-bind-html="chatFull.rAbout"]\').text();');
     const channelTypeId = await this.driver.executeScript('return $(\'span[my-i18n="channel_modal_info"]\').text() === "" ? 1 : 2;');
     await this.driver.executeScript('$(".md_modal_action_close").last().click();');
 
     let messagesInPage = 0;
-    while(loadingTries < 200) {
+    while(loadingTries < 100) {
       const cnt = await this.driver.executeScript('return $(".im_history_message_wrap").length;');
       if (messagesInPage === cnt) {
         loadingTries++;
@@ -82,6 +83,7 @@ class Channel {
 
     let cnt = messages.length;
     loadingTries = 0;
+    const latestMessage = await cs.getLatestMessageBySignature(channelID);
     while (loadingTries < 50) {
       try {
         if (cnt === messages.length) {
@@ -154,14 +156,21 @@ class Channel {
         if (date || text) {
           const unf = date.split(',').slice(1, 3).join('') + ' ' + time;
           date = moment(unf, 'MMMM DD YYYY hh:mm:ss A').local();
+          const signature = md5(date.unix() + text);
           const duplicates = messages.filter(message => {
-            return message.date.unix() === date.unix()
+            return message.signature === signature
           });
           if (duplicates.length > 0) {
             // console.log(text);
             continue;
           }
+          if (moment(latestMessage.post_dt).unix() > date.unix()) {
+            console.log('>>>>>>', latestMessage.post_dt, date);
+            break;
+          }
+
           messages.push({
+            signature,
             date,
             views_cnt,
             author,
@@ -169,7 +178,9 @@ class Channel {
             media
           });
         }
-        // console.log(date, messages.length, messagesInPage);
+        if (date) {
+          console.log(date, messages.length, messagesInPage);
+        }
         if (messages.length % 100 === 0) {
           console.log(name, messages.length);
         }
@@ -188,10 +199,10 @@ class Channel {
 
 
     console.log('saving to db', messages.length);
-    await timeout(10000);
+    // await timeout(10000);
 
     const channel = {
-      id: channelID,
+      signature: channelID,
       type_id: channelTypeId,
       link: channelLink,
       name: channelName,
@@ -207,7 +218,6 @@ class Channel {
     });
 
 
-    const cs = new channelService();
     await cs.addChannelHistory(channel);
     console.log('Data was saved into db');
   }
