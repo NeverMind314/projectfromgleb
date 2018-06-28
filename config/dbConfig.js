@@ -1,11 +1,6 @@
 'use strict';
 
 const Sequelize = require('sequelize');
-<<<<<<< HEAD
-=======
-
-
->>>>>>> working test
 // const db = new Sequelize('prisyazhnuk-andr_tgcrawler', 'prisyazhnuk-andr_tgcrawler', 'sTa7hJDRctm*', {
 //   host: 'postgresql.prisyazhnuk-andr.myjino.ru',
 //   dialect: 'postgres',
