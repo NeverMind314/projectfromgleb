@@ -6,16 +6,19 @@ const process = require('process');
 const {join} = require('path');
 const os = require('os');
 
+let pathToDriver;
 switch (os.platform()) {
   case 'darwin':
-    process.env['PATH'] = 'drivers/macos';
+    pathToDriver = 'drivers/macos/chromedriver';
     break;
   case 'win32':
-    process.env['PATH'] = 'drivers/windows';
+    pathToDriver = 'drivers/windows/chromedriver.exe';
     break;
   case 'linux':
-    process.env['PATH'] = 'drivers/linux';
+    pathToDriver = 'drivers/linux/chromedriver';
     break;
+  default:
+    throw 'Unsupported platform: ' + os.platform()
 }
 
 const webdriver = require('selenium-webdriver');
@@ -25,7 +28,7 @@ const options = new chrome.Options();
 options.addArguments("--no-sandbox");
 options.addArguments("--blink-settings=imagesEnabled=false");
 chrome.setDefaultService(
-  new chrome.ServiceBuilder('drivers/windows/chromedriver.exe').build()
+  new chrome.ServiceBuilder(join(process.env.PWD, pathToDriver)).build()
 );
 
 function getDriver() {
@@ -52,8 +55,12 @@ async function demon() {
       auth.open().then(() => {
         schedule[i].stage = 1;
         runnerBusy = false;
-      }).catch(err => {
-        console.log(err)
+      }).catch(async err => {
+        runnerBusy = false;
+        console.error('Authentication fail =(', err);
+        await schedule[i].driver.quit();
+        schedule[i].finishedAt = Date.now();
+        schedule[i].stage = 0;
       });
       continue;
     }
@@ -63,8 +70,8 @@ async function demon() {
       const channel = new Channel(schedule[i].driver);
       channel.open(schedule[i].addr).then(() => {
         schedule[i].stage = 3;
-      }).catch(err => {
-        console.log(err)
+      }).catch(async err => {
+        console.error('Runtime error', err);
       });
       schedule[i].stage = 2;
       continue;
@@ -89,10 +96,10 @@ setInterval(demon, 3000);
 
 //
 schedule.push({addr: 'https://t.me/joinchat/Cox1iA8fFnQ3kLhgKDtj-Q'});
-schedule.push({addr: 'https://t.me/joinchat/Cox1iEuA3mnVaM_mj0_rQw'});
-schedule.push({addr: 'https://t.me/souper_group_named'});
-schedule.push({addr: 'https://t.me/channel_named'});
-schedule.push({addr: 'https://t.me/joinchat/AAAAAEsZ0c7Bl0iy1jIvNg'});
+// schedule.push({addr: 'https://t.me/joinchat/Cox1iEuA3mnVaM_mj0_rQw'});
+// schedule.push({addr: 'https://t.me/souper_group_named'});
+// schedule.push({addr: 'https://t.me/channel_named'});
+// schedule.push({addr: 'https://t.me/joinchat/AAAAAEsZ0c7Bl0iy1jIvNg'});
 
 
 // schedule.push({addr: 'https://t.me/joinchat/E5jwUlL2wZVG7grfCpVaxw'});

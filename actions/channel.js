@@ -63,7 +63,7 @@ class Channel {
     await timeout(1000);
     const channelName = await this.driver.executeScript('return $(".peer_modal_profile_name").text();');
     const channelLink = await this.driver.executeScript('return window.location.href;');
-    const channelID = await this.driver.executeScript('return window.location.hash.split("=").pop();');
+    const channelID = await this.driver.executeScript('return window.location.href.split("=").pop();');
     const channelDescription = await this.driver.executeScript('return $(\'span[ng-bind-html="chatFull.rAbout"]\').text();');
     const channelTypeId = await this.driver.executeScript('return $(\'span[my-i18n="channel_modal_info"]\').text() === "" ? 1 : 2;');
     await this.driver.executeScript('$(".md_modal_action_close").last().click();');
@@ -188,7 +188,7 @@ class Channel {
 
 
     console.log('saving to db', messages.length);
-    await timeout(10000);
+    // await timeout(10000);
 
     const channel = {
       id: channelID,
