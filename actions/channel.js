@@ -9,6 +9,7 @@ const joinlink = require('../actions/constants').joinlink;
 const joinMask = require('../actions/constants').joinMask;
 const Auth = require('./auth');
 const channelService = require('../api/services/channel.service');
+const cs = new channelService();
 
 class Channel {
   constructor(driver) {
@@ -69,7 +70,7 @@ class Channel {
     await this.driver.executeScript('$(".md_modal_action_close").last().click();');
 
     let messagesInPage = 0;
-    while(loadingTries < 200) {
+    while(loadingTries < 100) {
       const cnt = await this.driver.executeScript('return $(".im_history_message_wrap").length;');
       if (messagesInPage === cnt) {
         loadingTries++;
@@ -80,9 +81,9 @@ class Channel {
       // console.log(messagesInPage);
     }
 
-    console.log('Get messages');
     let cnt = messages.length;
     loadingTries = 0;
+    const latestMessage = await cs.getLatestMessageBySignature(channelID);
     while (loadingTries < 50) {
       try {
         if (cnt === messages.length) {
@@ -163,6 +164,11 @@ class Channel {
             // console.log(text);
             continue;
           }
+          if (moment(latestMessage.post_dt).unix() > date.unix()) {
+            console.log('>>>>>>', latestMessage.post_dt, date);
+            break;
+          }
+
           messages.push({
             signature,
             date,
@@ -172,7 +178,9 @@ class Channel {
             media
           });
         }
-        console.log(date, messages.length, messagesInPage);
+        if (date) {
+          console.log(date, messages.length, messagesInPage);
+        }
         if (messages.length % 100 === 0) {
           console.log(name, messages.length);
         }
@@ -210,7 +218,6 @@ class Channel {
     });
 
 
-    const cs = new channelService();
     // await cs.addChannelHistory(channel);
     console.log('Data was saved into db');
   }
