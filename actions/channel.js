@@ -80,6 +80,7 @@ class Channel {
       // console.log(messagesInPage);
     }
 
+    console.log('Get messages');
     let cnt = messages.length;
     loadingTries = 0;
     while (loadingTries < 50) {
@@ -154,14 +155,16 @@ class Channel {
         if (date || text) {
           const unf = date.split(',').slice(1, 3).join('') + ' ' + time;
           date = moment(unf, 'MMMM DD YYYY hh:mm:ss A').local();
+          const signature = md5(date.unix() + text);
           const duplicates = messages.filter(message => {
-            return message.date.unix() === date.unix()
+            return message.signature === signature
           });
           if (duplicates.length > 0) {
             // console.log(text);
             continue;
           }
           messages.push({
+            signature,
             date,
             views_cnt,
             author,
@@ -169,7 +172,7 @@ class Channel {
             media
           });
         }
-        // console.log(date, messages.length, messagesInPage);
+        console.log(date, messages.length, messagesInPage);
         if (messages.length % 100 === 0) {
           console.log(name, messages.length);
         }
@@ -191,7 +194,7 @@ class Channel {
     // await timeout(10000);
 
     const channel = {
-      id: channelID,
+      signature: channelID,
       type_id: channelTypeId,
       link: channelLink,
       name: channelName,

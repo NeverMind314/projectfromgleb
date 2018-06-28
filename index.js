@@ -95,8 +95,8 @@ async function demon() {
 setInterval(demon, 3000);
 
 //
-schedule.push({addr: 'https://t.me/joinchat/Cox1iA8fFnQ3kLhgKDtj-Q'});
-// schedule.push({addr: 'https://t.me/joinchat/Cox1iEuA3mnVaM_mj0_rQw'});
+// schedule.push({addr: 'https://t.me/joinchat/Cox1iA8fFnQ3kLhgKDtj-Q'});
+schedule.push({addr: 'https://t.me/joinchat/Cox1iEuA3mnVaM_mj0_rQw'});
 // schedule.push({addr: 'https://t.me/souper_group_named'});
 // schedule.push({addr: 'https://t.me/channel_named'});
 // schedule.push({addr: 'https://t.me/joinchat/AAAAAEsZ0c7Bl0iy1jIvNg'});
