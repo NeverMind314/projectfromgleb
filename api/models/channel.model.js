@@ -10,6 +10,7 @@ let channel = db.define('channel', {
         primaryKey: true,
         autoIncrement: true
     },
+    signature: Sequelize.CHAR,
     name: Sequelize.CHAR,
     description: Sequelize.CHAR,
     link: Sequelize.CHAR,

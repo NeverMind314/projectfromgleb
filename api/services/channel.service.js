@@ -3,13 +3,12 @@
 const messageModel = require('../models/message.model');
 const channelModel = require('../models/channel.model');
 const mediaModel = require('../models/media.model');
-const ChannelHistoryService = require('./channelHistroy.service');
 const UserService = require('./user.service');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
 
-class ChannelService{
+class ChannelService {
     async addChannelHistory(channelHistory) {
         let channel = await this.addNewChannel(channelHistory);
         let userService = new UserService;
@@ -17,7 +16,7 @@ class ChannelService{
             let user = await userService.addNewUser(channelHistory.history[i].author);
             await userService.addNewUserChannel(user[0], channel[0]);
             let message = await this.addNewMessage(channel[0], user[0], channelHistory.history[i]);
-            if (i % 50 === 0) {
+            if (i % 50 == 0) {
                 console.log('New message saved', i);
             }
             if (mediaNotEmpty(channelHistory.history[i].media)) {
@@ -29,7 +28,7 @@ class ChannelService{
     async addNewChannel(channel) {
         return await channelModel.findOrCreate({
             where: {
-                link: channel.link
+                signature: channel.signature
             },
             defaults: {
                 channel_type_id: channel.type_id,
@@ -40,13 +39,14 @@ class ChannelService{
         });
     }
 
-    async addNewMessage (channel, user, message) {
+    async addNewMessage(channel, user, message) {
         return await messageModel.findOrCreate({
             where: {
-                post_dt: message.date,
-                channel_id: channel.id
+                signature: message.signature
             },
             defaults: {
+                post_dt: message.date,
+                channel_id: channel.id,
                 user_id: user.id,
                 views_count: +message.views_cnt || 0,
                 message: message.text
@@ -54,31 +54,114 @@ class ChannelService{
         })
     }
 
-    async addNewMedia(media, message) {
+    async addNewMedia(mediaBlock, message) {
+        let media = identifyMediaType(mediaBlock);
         return await mediaModel.findOrCreate({
             where: {
-                [Op.or]: [
-                    {content_id: media.photo.content_id},
-                    {content_id: media.video.content_id},
-                    {content_id: media.audio.content_id}
-                ]
+                content_id: media.type.content_id
             },
             defaults: {
                 message_id: message.id,
-                type_id: identifyMediaType(media).id,
-                content_id: identifyMediaType(media).type.content_id,
-                caption: identifyMediaType(media).type.caption || ''
+                type_id: media.id,
+                content_id: media.type.content_id,
+                caption: media.type.caption || ''
             }
         })
     }
 
-    async getLatestMessage (channelId) {
-        return await messageModel.findAll({
-            limit: 1,
+    async getChannelHistory(channelKey, startFrom) {
+        let param = {};
+        if (+channelKey) {
+            param.id = channelKey;
+        } else {
+            param.link = channelKey;
+        }
+        let channel = await channelModel.findOne({
+            where: param
+        });
+
+        if (!channel) {
+            return new Error('No channel with such key')
+        }
+
+        let begin = startFrom.moreThan || startFrom.lessThan;
+
+        if (+begin && begin > 0) {
+            let message = await messageModel.findOne({
+                where: {
+                    channel_id: channel.id,
+                    id: begin
+                }
+            });
+            if (!message) {
+                return new Error('No messages later than ' + begin);
+            }
+            begin = message.post_dt;
+        }
+
+        if (startFrom.moreThan) {
+            let messages = await messageModel.findAll({
+                include: ['media'],
+                where: {
+                    channel_id: channel.id,
+                    post_dt: {
+                        [Op.gte]: begin
+                    }
+                }
+            });
+            if (messages.length == 0) {
+                return new Error('No messages later than ' + startFrom.moreThan)
+            }
+            return messages;
+        }
+
+        if (startFrom.lessThan) {
+            let messages = await messageModel.findAll({
+                include: ['media'],
+                where: {
+                    channel_id: channel.id,
+                    post_dt: {
+                        [Op.lte]: begin
+                    }
+                }
+            });
+            if (messages.length == 0) {
+                return new Error('No messages earlier than ' + startFrom.lessThan)
+            }
+            return messages;
+        }
+
+        let messages = await messageModel.findAll({
+            include: ['media'],
+            where: {
+                channel_id: channel.id
+            }
+        });
+
+        return messages;
+    }
+
+    async getLatestMessageBySignature(signature) {
+        let channel = await this.getChannelBySignature(signature);
+        return await this.getLatestMessageById(channel.id);
+    }
+
+    async getLatestMessageById(channelId) {
+        return await messageModel.findOne({
             where: {
                 channel_id: channelId
             },
-            order: [['post_dt', 'DESC']]
+            order: [
+                ['post_dt', 'DESC']
+            ]
+        })
+    }
+
+    async getChannelBySignature(signature) {
+        return await channelModel.findOne({
+            where: {
+                signature: signature
+            }
         })
     }
 }

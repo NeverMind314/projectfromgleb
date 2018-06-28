@@ -12,6 +12,7 @@ let message = db.define('message', {
     },
     channel_id: Sequelize.INTEGER,
     user_id: Sequelize.INTEGER,
+    signature: Sequelize.CHAR,
     post_dt: Sequelize.DATE,
     views_count: Sequelize.INTEGER,
     message: Sequelize.TEXT

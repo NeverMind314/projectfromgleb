@@ -18,6 +18,7 @@ const Sequelize = require('sequelize');
 
 const db = new Sequelize('postgres', 'postgres', 'root', {
     host: 'localhost',
+    port: '5432',
     dialect: 'postgres',
     operatorsAliases: false,
 
@@ -30,6 +31,7 @@ const db = new Sequelize('postgres', 'postgres', 'root', {
         idle: 10000
     }
 });
+
 
 // const db = new Sequelize('postgres', 'postgres', 'root', {
 //   host: '0.tcp.ngrok.io',

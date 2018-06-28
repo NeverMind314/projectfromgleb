@@ -1,0 +1,76 @@
+D:\Programming\Projects\telegram\tgcrawler>node index.js
+Start: https://t.me/joinchat/Cox1iA8fFnQ3kLhgKDtj-Q
+[9492:14884:0627/013259.161:ERROR:install_util.cc(589)] Unable to create registry key HKLM\SOFTWARE\Policies\Google\Chrome for reading result=2
+
+DevTools listening on ws://127.0.0.1:55927/devtools/browser/064205a9-7f5c-42c2-b13a-443ca4e1491b
+[14512:21212:0627/013259.297:ERROR:gl_surface_egl.cc(844)] eglInitialize D3D11 failed with error EGL_NOT_INITIALIZED, trying next display type
+Execute: https://t.me/joinchat/Cox1iA8fFnQ3kLhgKDtj-Q
+Start: https://t.me/joinchat/Cox1iEuA3mnVaM_mj0_rQw
+[492:8244:0627/013310.591:ERROR:install_util.cc(589)] Unable to create registry key HKLM\SOFTWARE\Policies\Google\Chrome for reading result=2
+
+DevTools listening on ws://127.0.0.1:55974/devtools/browser/3c9266ba-fb52-4eda-8272-c29e50d42110
+[16688:16872:0627/013310.765:ERROR:gl_surface_egl.cc(844)] eglInitialize D3D11 failed with error EGL_NOT_INITIALIZED, trying next display type
+[12552:5444:0627/013314.320:ERROR:gl_surface_egl.cc(844)] eglInitialize D3D11 failed with error EGL_NOT_INITIALIZED, trying next display type
+Execute: https://t.me/joinchat/Cox1iEuA3mnVaM_mj0_rQw
+Start: https://t.me/souper_group_named
+[12268:16388:0627/013325.610:ERROR:install_util.cc(589)] Unable to create registry key HKLM\SOFTWARE\Policies\Google\Chrome for reading result=2
+
+DevTools listening on ws://127.0.0.1:56079/devtools/browser/d1fe3dba-5d6a-4d4d-864f-ec6b4cf8b3cb
+[2884:15592:0627/013325.911:ERROR:gl_surface_egl.cc(844)] eglInitialize D3D11 failed with error EGL_NOT_INITIALIZED, trying next display type
+[10620:10512:0627/013325.912:ERROR:gl_surface_egl.cc(844)] eglInitialize D3D11 failed with error EGL_NOT_INITIALIZED, trying next display type
+[13756:17616:0627/013340.786:ERROR:gl_surface_egl.cc(844)] eglInitialize D3D11 failed with error EGL_NOT_INITIALIZED, trying next display type
+Execute: https://t.me/souper_group_named
+Start: https://t.me/channel_named
+[18120:11940:0627/013356.597:ERROR:install_util.cc(589)] Unable to create registry key HKLM\SOFTWARE\Policies\Google\Chrome for reading result=2
+
+DevTools listening on ws://127.0.0.1:56384/devtools/browser/43ca7f03-a2f2-465d-a5de-f99a0ad4735e
+[16332:20944:0627/013356.879:ERROR:gl_surface_egl.cc(844)] eglInitialize D3D11 failed with error EGL_NOT_INITIALIZED, trying next display type
+[18576,5916:21:34:06.184000] Native Client module will be loaded at base address 0x000004c900000000
+[19300:9548:0627/013411.773:ERROR:gl_surface_egl.cc(844)] eglInitialize D3D11 failed with error EGL_NOT_INITIALIZED, trying next display type
+[13100,19640:21:34:17.888000] Native Client module will be loaded at base address 0x000007b300000000
+[12284,4504:21:34:18.044000] Native Client module will be loaded at base address 0x000002cd00000000
+Execute: https://t.me/channel_named
+Start: https://t.me/joinchat/AAAAAEsZ0c7Bl0iy1jIvNg
+[15900:5640:0627/013438.191:ERROR:install_util.cc(589)] Unable to create registry key HKLM\SOFTWARE\Policies\Google\Chrome for reading result=2
+
+DevTools listening on ws://127.0.0.1:56877/devtools/browser/5790821e-ab1e-48f7-8a7b-9619a7a00db8
+[10532:16480:0627/013438.335:ERROR:gl_surface_egl.cc(844)] eglInitialize D3D11 failed with error EGL_NOT_INITIALIZED, trying next display type
+[8236,17160:21:34:38.341000] Native Client module will be loaded at base address 0x000003b200000000
+[12140,12128:21:34:42.269000] Native Client module will be loaded at base address 0x0000018b00000000
+[15852,19584:21:34:42.428000] Native Client module will be loaded at base address 0x0000062500000000
+[15552:5632:0627/013453.380:ERROR:gl_surface_egl.cc(844)] eglInitialize D3D11 failed with error EGL_NOT_INITIALIZED, trying next display type
+saving to db 1
+(node:12684) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 1): Error: ECONNREFUSED connect ECONNREFUSED 127.0.0.1:56617
+(node:12684) [DEP0018] DeprecationWarning: Unhandled promise rejections are deprecated. In the future, promise rejections that are not handled will terminate the Node.js process with a non-zero exit code.
+(node:12684) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 2): Error: ECONNREFUSED connect ECONNREFUSED 127.0.0.1:56617
+Execute: https://t.me/joinchat/AAAAAEsZ0c7Bl0iy1jIvNg
+Data was saved into db
+The file was saved!
+Successfully finished: https://t.me/joinchat/Cox1iA8fFnQ3kLhgKDtj-Q 135080
+[5124,11880:21:35:18.575000] Native Client module will be loaded at base address 0x000000ef00000000
+[9132,17152:21:35:21.000000] Native Client module will be loaded at base address 0x0000037d00000000
+[21208,8772:21:35:21.156000] Native Client module will be loaded at base address 0x000006a600000000
+saving to db 36
+Data was saved into db
+The file was saved!
+Successfully finished: https://t.me/joinchat/Cox1iEuA3mnVaM_mj0_rQw 165045
+[11180,14808:21:35:57.344000] Native Client module will be loaded at base address 0x0000031300000000
+[11544,6044:21:35:58.940000] Native Client module will be loaded at base address 0x000000c000000000
+[1912,19176:21:35:59.128000] Native Client module will be loaded at base address 0x0000075400000000
+[21396,11628:21:36:03.284000] Native Client module will be loaded at base address 0x000007e300000000
+[20372,12640:21:36:04.471000] Native Client module will be loaded at base address 0x0000002e00000000
+[10884,3624:21:36:04.685000] Native Client module will be loaded at base address 0x000003cc00000000
+saving to db 2
+Data was saved into db
+The file was saved!
+Successfully finished: https://t.me/souper_group_named 189129
+saving to db 1
+Data was saved into db
+The file was saved!
+Successfully finished: https://t.me/channel_named 213060
+saving to db 1
+Data was saved into db
+The file was saved!
+[14588:8440:0627/013816.527:ERROR:broker_win.cc(134)] Error sending sync broker message: ╚фхЄ чръЁ√Єшх ърэрыр. (0xE8)
+[14588:8440:0627/013816.527:ERROR:command_buffer_proxy_impl.cc(101)] ContextResult::kFatalFailure: AllocateAndMapSharedMemory failed
+Successfully finished: https://t.me/joinchat/AAAAAEsZ0c7Bl0iy1jIvNg 219069

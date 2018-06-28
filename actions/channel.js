@@ -208,7 +208,7 @@ class Channel {
 
 
     const cs = new channelService();
-    // await cs.addChannelHistory(channel);
+    await cs.addChannelHistory(channel);
     console.log('Data was saved into db');
   }
 }

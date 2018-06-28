@@ -17,91 +17,18 @@ const history = require('../../data.json');
 module.exports = {
     devTests(req, res) {
 
-        // let history = {
-        //     "id": "s1391903125_12730356512979826587",
-        //     "type_id": 1,
-        //     "link": "https://web.telegram.org/#/im?p=@breakingmash",
-        //     "name": "Telegram content test",
-        //     "description": "Test content",
-        //     "history": [
-        //         {
-        //             "date": "2018-06-23T22:27:56.000Z",
-        //             "views_cnt": "91",
-        //             "author": {
-        //                 "login": "https://t.me/breakingmash",
-        //                 "name": "Mash"
-        //             },
-        //             "text": "",
-        //             "media": {
-        //                 "photo": {
-        //                     "caption": null,
-        //                     "content_id": "img/placeholders/PhotoThumbConversation.gif"
-        //                 },
-        //                 "video": {
-        //                     "caption": null,
-        //                     "content_id": null
-        //                 },
-        //                 "audio": {
-        //                     "caption": null,
-        //                     "content_id": null
-        //                 }
-        //             }
-        //         },
-        //         {
-        //             "date": "2018-06-23T22:27:56.000Z",
-        //             "views_cnt": "90",
-        //             "author": {
-        //                 "login": "https://t.me/breakingmash",
-        //                 "name": "Mash"
-        //             },
-        //             "text": "",
-        //             "media": {
-        //                 "photo": {
-        //                     "caption": null,
-        //                     "content_id": "blob:https://web.telegram.org/be1edc34-96d4-4270-a10f-9844649cd86e"
-        //                 },
-        //                 "video": {
-        //                     "caption": null,
-        //                     "content_id": null
-        //                 },
-        //                 "audio": {
-        //                     "caption": null,
-        //                     "content_id": null
-        //                 }
-        //             }
-        //         },
-        //         {
-        //             "date": "2018-06-23T22:27:56.000Z",
-        //             "views_cnt": "90",
-        //             "author": {
-        //                 "login": "https://t.me/breakingmash",
-        //                 "name": "Mash"
-        //             },
-        //             "text": "",
-        //             "media": {
-        //                 "photo": {
-        //                     "caption": null,
-        //                     "content_id": "blob:https://web.telegram.org/557645d7-d80b-4115-98f3-5410d9f14457"
-        //                 },
-        //                 "video": {
-        //                     "caption": null,
-        //                     "content_id": null
-        //                 },
-        //                 "audio": {
-        //                     "caption": null,
-        //                     "content_id": null
-        //                 }
-        //             }
-        //         }
-        //     ]
-        // };
-
         let channelService = new ChannelService();
-        channelService.getLatestMessage(1)
-            .then(message => {
-                res.json(sendStatus.responseOk(message[0]));
-            });
-        // channelService.addChannelHistory(history);
+        // channelService.getLatestMessage(1)
+        //     .then(message => {
+        //         res.json(sendStatus.responseOk(message[0]));
+        //     });
+        // channelService.addChannelHistory(history).then(() => {
+        //     res.json(sendStatus.responseOk());
+        // });
+        // channelService.getLatestMessageById(1).then(message => {
+        //     res.json(sendStatus.responseOk(message));
+        // });;
+
 
 
         // let userService = new UserService();
@@ -138,5 +65,6 @@ module.exports = {
         // user.sync({force: true})
         // userAction.sync({force: true})
         // userChannel.sync({force: true})
+        // res.json(sendStatus.responseOk());
     }
 }

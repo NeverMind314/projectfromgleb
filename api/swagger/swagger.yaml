@@ -29,6 +29,43 @@ paths:
           description: id or link of channel
           required: true
           type: string
+        - name: more_than
+          in: query
+          description: id or date of message
+          required: false
+          type: string
+        - name: less_than
+          in: query
+          description: id or date of message
+          required: false
+          type: string
+
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/BaseResponse"
+  /user_history:
+    x-swagger-router-controller: userHistory.controller
+    get:
+      description: 'Returns history of user messages founded by requested parameters'
+      operationId: getUserHistory
+      parameters:
+        - name: key
+          in: query
+          description: id or name of user
+          required: true
+          type: string
+        - name: more_than
+          in: query
+          description: id or date of message
+          required: false
+          type: string
+        - name: less_than
+          in: query
+          description: id or date of message
+          required: false
+          type: string
 
       responses:
         "200":

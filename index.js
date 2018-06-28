@@ -16,12 +16,14 @@ switch (os.platform()) {
   case 'linux':
     process.env['PATH'] = 'drivers/linux';
     break;
+  default: 
+    throw 'not supported platform: ' + os.platform();
 }
 
 const webdriver = require('selenium-webdriver');
 const options = new chrome.Options();
-// options.addArguments('headless');
-// options.addArguments('disable-gpu');
+options.addArguments('headless');
+options.addArguments('disable-gpu');
 options.addArguments("--no-sandbox");
 options.addArguments("--blink-settings=imagesEnabled=false");
 chrome.setDefaultService(
