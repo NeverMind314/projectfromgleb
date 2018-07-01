@@ -32,7 +32,8 @@ class Channel {
       await timeout(500);
       items.forEach(item => t = 9999); // exit
     }
-    await this.driver.executeScript('$(".im_dialogs_contacts_wrap li a span:contains(\'' + addr + ',\')").mousedown()');
+    await this.driver.executeScript('$(".im_dialogs_contacts_wrap li a span").mousedown()');
+    // await this.driver.executeScript('$(".im_dialogs_contacts_wrap li a span:contains(\'' + addr + ',\')").mousedown()');
   }
 
   async joinByLink(link) {
@@ -45,6 +46,20 @@ class Channel {
       await timeout(500);
       items.forEach(item => t = 9999); // exit
     }
+  }
+
+  async getUsers() {
+    await this.driver.executeScript('$(".tg_head_btn").click(); ');
+    await timeout(200);
+    const users = await this.driver.executeScript(
+      'var users = []; ' +
+      'for(let i = 0; i < $("a.md_modal_list_peer_name").length; i++) { users.push($($("a.md_modal_list_peer_name")[i]).text()) }' +
+      'return users;'
+    );
+    // await this.driver.executeScript('$(".md_modal_action_close").click();');
+    await timeout(200);
+    await this.driver.executeScript('$(".md_modal_action_close").click();');
+    return users;
   }
 
   async open(name) {
@@ -84,6 +99,7 @@ class Channel {
     let cnt = messages.length;
     loadingTries = 0;
     const latestMessage = await cs.getLatestMessageBySignature(channelID);
+    const channelUsers = await this.getUsers();
     while (loadingTries < 50) {
       try {
         if (cnt === messages.length) {
@@ -102,7 +118,6 @@ class Channel {
         const userID = await this.driver.executeScript(
           'return $(".im_history_messages_peer .im_history_message_wrap .im_message_author").last().text();'
         );
-
         if (users[userID]) {
           author = users[userID];
         } else {
@@ -112,6 +127,9 @@ class Channel {
             'var login = $(".md_modal_section_param_value").first().text().trim(); ' +
             'return {name, login}'
           );
+          if (!author.login) {
+            author.login = md5(author.name + channelID);
+          }
           await this.driver.executeScript('$(".md_modal_action_close").last().click();');
           users[userID] = author;
         }
@@ -178,9 +196,9 @@ class Channel {
             media
           });
         }
-        if (date) {
-          console.log(date, messages.length, messagesInPage);
-        }
+        // if (date) {
+        //   console.log(date, messages.length, messagesInPage);
+        // }
         if (messages.length % 100 === 0) {
           console.log(name, messages.length);
         }
@@ -207,6 +225,7 @@ class Channel {
       link: channelLink,
       name: channelName,
       description: channelDescription,
+      users: channelUsers,
       history: messages
     };
 
@@ -218,7 +237,7 @@ class Channel {
     });
 
 
-    await cs.addChannelHistory(channel);
+    // await cs.addChannelHistory(channel);
     console.log('Data was saved into db');
   }
 }
