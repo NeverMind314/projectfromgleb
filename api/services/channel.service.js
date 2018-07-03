@@ -3,6 +3,8 @@
 const messageModel = require('../models/message.model');
 const channelModel = require('../models/channel.model');
 const mediaModel = require('../models/media.model');
+const userModel = require('../models/user.model');
+const userActionModel = require('../models/userAction.model');
 const UserService = require('./user.service');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
@@ -16,6 +18,7 @@ class ChannelService {
             let user = await userService.addNewUser(channelHistory.history[i].author);
             await userService.addNewUserChannel(user[0], channel[0]);
             let message = await this.addNewMessage(channel[0], user[0], channelHistory.history[i]);
+            await userService.addUserActionWrite(channel[0], user[0], channelHistory.history[i]);
             if (i % 50 == 0) {
                 console.log('New message saved', i);
             }
@@ -23,6 +26,9 @@ class ChannelService {
                 await this.addNewMedia(channelHistory.history[i].media, message[0])
             }
         }
+        await userService.addUserActionJoin(channel[0], channelHistory.users)
+        await userService.addUserActionLeft(channel[0], channelHistory.users)
+
     }
 
     async addNewChannel(channel) {
@@ -139,6 +145,90 @@ class ChannelService {
         });
 
         return messages;
+    }
+
+    async getAllChannelUsers(channelKey) {
+        let param = {};
+        if (+channelKey) {
+            param.id = channelKey;
+        } else {
+            param.link = channelKey;
+        }
+        let channel = await channelModel.findOne({
+            where: param
+        });
+
+        if (!channel) {
+            return new Error('No channel with such key')
+        }
+
+        let users = await userModel.findAll({
+            include: ['channelBind']
+        });
+
+        let channelUsers = [];
+        for (let i = 0; i < users.length; i++) {
+            if (users[i].channelBind.channel_id === channel.id) {
+                delete users[i].channelBind;
+                channelUsers.push(users[i]);
+            }
+        }
+
+        return channelUsers
+    }
+
+    async getActualChannelUsers(channelKey, atDate) {
+        let param = {};
+        if (+channelKey) {
+            param.id = channelKey;
+        } else {
+            param.link = channelKey;
+        }
+        let channel = await channelModel.findOne({
+            where: param
+        });
+
+        if (!channel) {
+            return new Error('No channel with such key')
+        }
+
+
+
+        let users = await userModel.findAll({
+            include: ['channelBind']
+        });
+
+        let channelUsers = [];
+        for (let i = 0; i < users.length; i++) {
+            if (users[i].channelBind.channel_id === channel.id) {
+                delete users[i].channelBind;
+                channelUsers.push(users[i]);
+            }
+        }
+
+        let usersAction = [];
+        for (let i = 0; i < channelUsers.length; i++) {
+            usersAction.push(await userActionModel.findOne({
+                where: {
+                    channel_id: channel.id,
+                    user_id: channelUsers[i].id,
+                    action: {
+                        [Op.or]: ['join', 'left']
+                    },
+                    action_dt: {
+                        [Op.lte]: atDate || new Date()
+                    }
+                },
+                Option: ['action_dt', 'DESC']            
+            }));
+        }
+
+
+        return channelUsers.filter((user, i) => {
+            if (usersAction[i].action.trim() != 'left') {
+                return true
+            }
+        })
     }
 
     async getLatestMessageBySignature(signature) {

@@ -3,7 +3,7 @@
 const Sequelize = require('sequelize');
 const db = require('../../config/dbConfig');
 
-module.exports = db.define('user_channel', {
+let userAction = db.define('user_action', {
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -11,6 +11,10 @@ module.exports = db.define('user_channel', {
     },
     user_id: Sequelize.INTEGER,
     channel_id: Sequelize.INTEGER,
+    action: Sequelize.CHAR,
+    action_dt: Sequelize.DATE
 }, {
     freezeTableName: true
 });
+
+module.exports = userAction;
