@@ -1,47 +1,17 @@
-const {Builder} = require('selenium-webdriver');
-const chrome = require('selenium-webdriver/chrome');
 const Auth = require('./actions/auth');
 const Channel = require('./actions/channel');
-const process = require('process');
-const {join} = require('path');
-const os = require('os');
-
-let pathToDriver;
-switch (os.platform()) {
-  case 'darwin':
-    pathToDriver = 'drivers/macos/chromedriver';
-    break;
-  case 'win32':
-    pathToDriver = 'drivers/windows/chromedriver.exe';
-    break;
-  case 'linux':
-    pathToDriver = 'drivers/linux/chromedriver';
-    break;
-  default:
-    throw 'Unsupported platform: ' + os.platform()
-}
-
-const webdriver = require('selenium-webdriver');
-const options = new chrome.Options();
-options.addArguments('headless');
-options.addArguments('disable-gpu');
-options.addArguments("--no-sandbox");
-options.addArguments("--blink-settings=imagesEnabled=false");
-chrome.setDefaultService(
-  new chrome.ServiceBuilder(join(process.env.PWD, pathToDriver)).build()
-);
-
-function getDriver() {
-  return new webdriver.Builder()
-    .forBrowser('chrome')
-    .withCapabilities(webdriver.Capabilities.chrome())
-    .setChromeOptions(options)
-    .build()
-}
+const {getDriver} = require('./commons/driverAdaptor');
+const fs = require('fs');
 
 const schedule = [];
 let runnerBusy = false;
-async function demon() {
+let index = 0;
+async function daemon() {
+  const sessions = fs.readdirSync('storage').map(f => 'storage/' + f);
+  if (sessions.length === 0) {
+    console.warn('Sessions list is empty');
+    return;
+  }
   for (let i = 0; i < schedule.length; i++) {
     if (!schedule[i].stage) {
       schedule[i].stage = 0;
@@ -49,9 +19,12 @@ async function demon() {
     if (schedule[i].stage === 0 && runnerBusy === false) {
       schedule[i].startAt = Date.now();
       runnerBusy = true;
-      console.log('Start: ' + schedule[i].addr);
+      const session = sessions[index];
+      index = ((index+1) === sessions.length) ? 0 : (index+1);
+      // console.log(i, index, session, sessions.length);
+      console.log('Start: ' + schedule[i].addr, session);
       schedule[i].driver = getDriver();
-      const auth = new Auth(schedule[i].driver);
+      const auth = new Auth(schedule[i].driver, session);
       auth.open().then(() => {
         schedule[i].stage = 1;
         runnerBusy = false;
@@ -92,14 +65,15 @@ async function demon() {
     // }
   }
 }
-setInterval(demon, 3000);
+setInterval(daemon, 3000);
 
-//
-// schedule.push({addr: 'https://t.me/joinchat/Cox1iA8fFnQ3kLhgKDtj-Q'});
+
+
+schedule.push({addr: 'https://t.me/joinchat/Cox1iA8fFnQ3kLhgKDtj-Q'});
 schedule.push({addr: 'https://t.me/joinchat/Cox1iEuA3mnVaM_mj0_rQw'});
-// schedule.push({addr: 'https://t.me/souper_group_named'});
-// schedule.push({addr: 'https://t.me/channel_named'});
-// schedule.push({addr: 'https://t.me/joinchat/AAAAAEsZ0c7Bl0iy1jIvNg'});
+schedule.push({addr: 'https://t.me/souper_group_named'});
+schedule.push({addr: 'https://t.me/channel_named'});
+schedule.push({addr: 'https://web.telegram.org/#/im?p=s1100817720_12837046066004865967'});
 
 
 // schedule.push({addr: 'https://t.me/joinchat/E5jwUlL2wZVG7grfCpVaxw'});
@@ -114,4 +88,4 @@ schedule.push({addr: 'https://t.me/joinchat/Cox1iEuA3mnVaM_mj0_rQw'});
 // schedule.push({addr: 'https://web.telegram.org/#/im?tgaddr=tg:%2F%2Fjoin%3Finvite%3DCox1iEuA3mnVaM_mj0_rQw'});
 // schedule.push({addr: '@souper_group_named'});
 // schedule.push({addr: '@channel_named'});
-// schedule.push({addr: 'p=c1259983310_4597725643994732746'});
+// schedule.push({addr: '@incriema'});

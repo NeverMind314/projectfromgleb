@@ -75,6 +75,7 @@ class Channel {
     let count = 0;
     const users = {};
     await timeout(600);
+    await this.driver.executeScript('$("button[ng-click=\'$close(data)\']").click();');
     await this.driver.executeScript('$(".tg_head_btn").click(); ');
     await timeout(1000);
     const channelName = await this.driver.executeScript('return $(".peer_modal_profile_name").text();');
@@ -107,7 +108,7 @@ class Channel {
           await timeout(100);
         }
         cnt = messages.length;
-        // await timeout(50);
+        //
         let messagesCont = await this.driver.findElement(By.className('im_history_messages_peer'));
         let items = await messagesCont.findElements(By.className('im_history_message_wrap'));
         count = 0;
@@ -182,7 +183,7 @@ class Channel {
             // console.log(text);
             continue;
           }
-          if (moment(latestMessage.post_dt).unix() > date.unix()) {
+          if (latestMessage && moment(latestMessage.post_dt).unix() > date.unix()) {
             console.log('>>>>>>', latestMessage.post_dt, date);
             break;
           }
