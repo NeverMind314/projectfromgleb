@@ -13,8 +13,10 @@ const cs = new channelService();
 
 class Channel {
   constructor(driver) {
+    if (!driver) {
+      throw 'Driver is null';
+    }
     this.driver = driver;
-    this.auth = new Auth(driver);
   }
 
   async find(addr) {
@@ -53,7 +55,7 @@ class Channel {
     await timeout(200);
     const users = await this.driver.executeScript(
       'var users = []; ' +
-      'for(let i = 0; i < $("a.md_modal_list_peer_name").length; i++) { users.push($($("a.md_modal_list_peer_name")[i]).text()) }' +
+      'for(let i = 0; i < $("a.md_modal_list_peer_name").length; i++) { users.push({name:$($("a.md_modal_list_peer_name")[i]).text(), isAdmin: 0}) }' +
       'return users;'
     );
     // await this.driver.executeScript('$(".md_modal_action_close").click();');
@@ -99,7 +101,7 @@ class Channel {
 
     let cnt = messages.length;
     loadingTries = 0;
-    const latestMessage = await cs.getLatestMessageBySignature(channelID);
+    const latestMessage = null;//await cs.getLatestMessageBySignature(channelID);
     const channelUsers = await this.getUsers();
     while (loadingTries < 50) {
       try {
