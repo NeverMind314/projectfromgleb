@@ -79,9 +79,12 @@ class UserService {
                     })
                 }
             }
-            if (user[1]) {
-                await this.addNewUserChannel(user[0], channel);
-            }
+            await userChannelModel.findOrCreate({
+                where: {
+                    user_id: user[0].id,
+                    channel_id: channel.id
+                }
+            })
             let userAction = await userActionModel.findOne({
                 where: {
                     channel_id: channel.id,

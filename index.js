@@ -86,11 +86,10 @@ async function daemon() {
 setInterval(daemon, 3000);
 
 
-schedule.push({addr: 'https://t.me/joinchat/Cox1iA8fFnQ3kLhgKDtj-Q'});
-// schedule.push({addr: 'https://t.me/joinchat/Cox1iEuA3mnVaM_mj0_rQw'});
+// schedule.push({addr: 'https://t.me/joinchat/Cox1iA8fFnQ3kLhgKDtj-Q'});
+schedule.push({addr: 'https://t.me/joinchat/Cox1iEuA3mnVaM_mj0_rQw'});
 // schedule.push({addr: 'https://t.me/souper_group_named'});
 // schedule.push({addr: 'https://t.me/channel_named'});
-// schedule.push({addr: 'https://web.telegram.org/#/im?p=s1100817720_12837046066004865967'});
 
 
 // schedule.push({addr: 'https://t.me/joinchat/E5jwUlL2wZVG7grfCpVaxw'});
@@ -102,7 +101,6 @@ schedule.push({addr: 'https://t.me/joinchat/Cox1iA8fFnQ3kLhgKDtj-Q'});
 // schedule.push({addr: '@oldlentach'});
 // schedule.push({addr: '@varlamov'});
 // schedule.push({addr: 'https://t.me/joinchat/Cox1iA8fFnQ3kLhgKDtj-Q'});
-// schedule.push({addr: 'https://web.telegram.org/#/im?tgaddr=tg:%2F%2Fjoin%3Finvite%3DCox1iEuA3mnVaM_mj0_rQw'});
 // schedule.push({addr: '@souper_group_named'});
 // schedule.push({addr: '@channel_named'});
 // schedule.push({addr: '@incriema'});

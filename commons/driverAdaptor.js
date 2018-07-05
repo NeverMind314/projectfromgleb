@@ -17,7 +17,6 @@ switch (os.platform()) {
   default:
     throw 'Unsupported platform: ' + os.platform()
 }
-
 const webdriver = require('selenium-webdriver');
 const options = new chrome.Options();
 // options.addArguments('headless');
@@ -25,7 +24,7 @@ const options = new chrome.Options();
 options.addArguments("--no-sandbox");
 options.addArguments("--blink-settings=imagesEnabled=false");
 chrome.setDefaultService(
-  new chrome.ServiceBuilder(join(process.env.PWD, pathToDriver)).build()
+  new chrome.ServiceBuilder(join('./', pathToDriver)).build()
 );
 
 module.exports.getDriver = () => {
