@@ -25,7 +25,7 @@ const db = new Sequelize('postgres', 'postgres', 'root', {
     logging: false,
 
     pool: {
-        max: 7,
+        max: 10,
         min: 0,
         acquire: 30000,
         idle: 10000

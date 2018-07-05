@@ -1,9 +1,10 @@
 'use strict';
 
+const userChannelModel = require('./userChannel.model');
 const Sequelize = require('sequelize');
 const db = require('../../config/dbConfig');
 
-module.exports = db.define('user', {
+let userModel = db.define('user', {
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -14,3 +15,7 @@ module.exports = db.define('user', {
 }, {
     freezeTableName: true
 });
+
+userModel.hasOne(userChannelModel, {as: 'channelBind', foreignKey: 'user_id'});
+
+module.exports = userModel;
