@@ -21,7 +21,7 @@ class UserService {
         if (!user[1] && !user[0].login) {
             await userModel.update({
                 login: newUser.login
-            },{
+            }, {
                 where: {
                     name: newUser.name
                 }
@@ -50,36 +50,53 @@ class UserService {
         });
     }
 
-    async addUserActionJoin(channel, userNames) {
-        let users = [];
-        for (let i = 0; i < userNames.length; i++) {
+    async addUserActionJoinAdmin(channel, channelUsers) {
+        for (let i = 0; i < channelUsers.length; i++) {
             let user = await userModel.findOrCreate({
                 where: {
-                    name: userNames[i]
+                    name: channelUsers[i].name
                 }
             });
+            if (+channelUsers[i].isAdmin) {
+                let isAdmin = await userActionModel.findOne({
+                    where: {
+                        channel_id: channel.id,
+                        user_id: user[0].id,
+                        action: {
+                            [Op.or]: ['isAdmin', 'isNotAdmin']
+                        }
+                    },
+                    order: [
+                        ['action_dt', 'DESC']
+                    ]
+                })
+                if (!isAdmin || isAdmin.action.trim() === 'isNotAdmin') {
+                    await userActionModel.create({
+                        user_id: user[0].id,
+                        channel_id: channel.id,
+                        action: 'isAdmin',
+                        action_dt: new Date()
+                    })
+                }
+            }
             if (user[1]) {
                 await this.addNewUserChannel(user[0], channel);
             }
-            users.push(user[0]);
-        }
-        let userIds = users.map(user => {
-            return user.id
-        })
-        for (let i = 0; i < userIds.length; i++) {
             let userAction = await userActionModel.findOne({
                 where: {
                     channel_id: channel.id,
-                    user_id: userIds[i],
+                    user_id: user[0].id,
                     action: {
                         [Op.or]: ['join', 'left']
                     }
                 },
-                Option: ['action_dt', 'DESC']
+                order: [
+                    ['action_dt', 'DESC']
+                ]
             });
-            if (!userAction || userAction.action === 'left') {
+            if (!userAction || userAction.action.trim() === 'left') {
                 await userActionModel.create({
-                    user_id: userIds[i],
+                    user_id: user[0].id,
                     channel_id: channel.id,
                     action: 'join',
                     action_dt: new Date()
@@ -88,26 +105,81 @@ class UserService {
         }
     }
 
-    async addUserActionLeft(channel, userNames) {
+    async addUserActionLeftNotAdmin(channel, channelUsers) {
         let users = await userModel.findAll({
-            include: ['channelBind']
+            include: [{
+                model: userChannelModel,
+                as: 'channelBind',
+                where: {
+                    channel_id: channel.id
+                }
+            }]
+        });
+
+        let userNames = channelUsers.map(user => {
+            return user.name
         });
 
         let leftUsers = users.filter(user => {
-            if (user.channelBind.channel_id === channel.id) {
-                if (!~userNames.indexOf(user.name.trim())) {
-                console.log(user.name.trim())
-                    return true
+            if (!~userNames.indexOf(user.name.trim())) {
+                return true
+            }
+        });
+        for (let i = 0; i < leftUsers.length; i++) {
+            let lastUserAction = await userActionModel.findOne({
+                where: {
+                    channel_id: channel.id,
+                    user_id: leftUsers[i].id,
+                    action: {
+                        [Op.or]: ['join', 'left']
+                    }
+                },
+                order: [
+                    ['action_dt', 'DESC']
+                ]
+            });
+            if (lastUserAction && lastUserAction.action.trim() === 'join') {
+                await userActionModel.create({
+                    user_id: leftUsers[i].id,
+                    channel_id: channel.id,
+                    action: 'left',
+                    action_dt: new Date()
+                });
+            }
+        }
+        for (let i = 0; i < users.length; i++) {
+            let isAdmin = await userActionModel.findOne({
+                where: {
+                    channel_id: channel.id,
+                    user_id: users[i].id,
+                    action: {
+                        [Op.or]: ['isAdmin', 'isNotAdmin']
+                    }
+                },
+                order: [
+                    ['action_dt', 'DESC']
+                ]
+            });
+            if (isAdmin && isAdmin.action.trim() === 'isAdmin') {
+                let dbNotAdmin = await userModel.findOne({
+                    where: {
+                        id: isAdmin.user_id
+                    }
+                });
+                let notAdmin = channelUsers.filter(user => {
+                    if (user.name === dbNotAdmin.name.trim()) {
+                        return true
+                    }
+                })
+                if (notAdmin.length == 0 || !+notAdmin[0].isAdmin) {
+                    await userActionModel.create({
+                        user_id: users[i].id,
+                        channel_id: channel.id,
+                        action: 'isNotAdmin',
+                        action_dt: new Date()
+                    });
                 }
             }
-        })
-        for (let i = 0; i < leftUsers.length; i++) {
-            await userActionModel.create({
-                user_id: leftUsers[i].id,
-                channel_id: channel.id,
-                action: 'left',
-                action_dt: new Date()
-            })
         }
     }
 

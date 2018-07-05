@@ -2,7 +2,7 @@
 
 const Sequelize = require('sequelize');
 const db = require('../../config/dbConfig');
-const channelType = require('./channelType.model');
+const channelLink = require('./channelLink.model');
 
 let channel = db.define('channel', {
     id: {
@@ -13,12 +13,11 @@ let channel = db.define('channel', {
     signature: Sequelize.CHAR,
     name: Sequelize.CHAR,
     description: Sequelize.CHAR,
-    link: Sequelize.CHAR,
     channel_type_id: Sequelize.INTEGER
 }, {
     freezeTableName: true
 });
 
-channel.hasOne(channelType, {as: 'channelType', foreignKey: 'id'})
+channel.hasMany(channelLink, {as: 'links', foreignKey: 'channel_id'});
 
 module.exports = channel;

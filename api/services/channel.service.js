@@ -5,6 +5,8 @@ const channelModel = require('../models/channel.model');
 const mediaModel = require('../models/media.model');
 const userModel = require('../models/user.model');
 const userActionModel = require('../models/userAction.model');
+const userChannelModel = require('../models/userChannel.model');
+const channelLinkModel = require('../models/channelLink.model');
 const UserService = require('./user.service');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
@@ -26,23 +28,32 @@ class ChannelService {
                 await this.addNewMedia(channelHistory.history[i].media, message[0])
             }
         }
-        await userService.addUserActionJoin(channel[0], channelHistory.users)
-        await userService.addUserActionLeft(channel[0], channelHistory.users)
+        await userService.addUserActionJoinAdmin(channel[0], channelHistory.users)
+        await userService.addUserActionLeftNotAdmin(channel[0], channelHistory.users)
 
     }
 
     async addNewChannel(channel) {
-        return await channelModel.findOrCreate({
+        let dbChannel = await channelModel.findOrCreate({
             where: {
                 signature: channel.signature
             },
             defaults: {
                 channel_type_id: channel.type_id,
-                link: channel.link,
                 name: channel.name,
                 description: channel.description
             }
         });
+        await channelLinkModel.findOrCreate({
+            where: {
+                link: channel.link
+            },
+            defaults: {
+                channel_id: dbChannel[0].id
+            }
+        })
+
+        return dbChannel;
     }
 
     async addNewMessage(channel, user, message) {
@@ -80,7 +91,12 @@ class ChannelService {
         if (+channelKey) {
             param.id = channelKey;
         } else {
-            param.link = channelKey;
+            let channeLink = await channelLinkModel.findOne({
+                where: {
+                    link: channelKey
+                }
+            })
+            param.id = channeLink.channel_id;
         }
         let channel = await channelModel.findOne({
             where: param
@@ -152,7 +168,12 @@ class ChannelService {
         if (+channelKey) {
             param.id = channelKey;
         } else {
-            param.link = channelKey;
+            let channeLink = await channelLinkModel.findOne({
+                where: {
+                    link: channelKey
+                }
+            })
+            param.id = channeLink.channel_id;
         }
         let channel = await channelModel.findOne({
             where: param
@@ -163,18 +184,16 @@ class ChannelService {
         }
 
         let users = await userModel.findAll({
-            include: ['channelBind']
+            include: [{
+                model: userChannelModel,
+                as: 'channelBind',
+                where: {
+                    channel_id: channel.id
+                }
+            }]
         });
 
-        let channelUsers = [];
-        for (let i = 0; i < users.length; i++) {
-            if (users[i].channelBind.channel_id === channel.id) {
-                delete users[i].channelBind;
-                channelUsers.push(users[i]);
-            }
-        }
-
-        return channelUsers
+        return users
     }
 
     async getActualChannelUsers(channelKey, atDate) {
@@ -182,29 +201,32 @@ class ChannelService {
         if (+channelKey) {
             param.id = channelKey;
         } else {
-            param.link = channelKey;
+            let channeLink = await channelLinkModel.findOne({
+                where: {
+                    link: channelKey
+                }
+            })
+            param.id = channeLink.channel_id;
         }
+
         let channel = await channelModel.findOne({
             where: param
         });
-
         if (!channel) {
             return new Error('No channel with such key')
         }
 
 
 
-        let users = await userModel.findAll({
-            include: ['channelBind']
+        let channelUsers = await userModel.findAll({
+            include: [{
+                model: userChannelModel,
+                as: 'channelBind',
+                where: {
+                    channel_id: channel.id
+                }
+            }]
         });
-
-        let channelUsers = [];
-        for (let i = 0; i < users.length; i++) {
-            if (users[i].channelBind.channel_id === channel.id) {
-                delete users[i].channelBind;
-                channelUsers.push(users[i]);
-            }
-        }
 
         let usersAction = [];
         for (let i = 0; i < channelUsers.length; i++) {
@@ -219,13 +241,12 @@ class ChannelService {
                         [Op.lte]: atDate || new Date()
                     }
                 },
-                Option: ['action_dt', 'DESC']            
+                order: [['action_dt', 'DESC']]           
             }));
         }
-
-
+        
         return channelUsers.filter((user, i) => {
-            if (usersAction[i].action.trim() != 'left') {
+            if (usersAction[i] && usersAction[i].action.trim() != 'left') {
                 return true
             }
         })
@@ -241,9 +262,7 @@ class ChannelService {
             where: {
                 channel_id: channelId
             },
-            order: [
-                ['post_dt', 'DESC']
-            ]
+            order: [['post_dt', 'DESC']]
         })
     }
 
