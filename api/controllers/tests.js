@@ -25,9 +25,9 @@ module.exports = {
         //     .then(message => {
         //         res.json(sendStatus.responseOk(message[0]));
         //     });
-        // channelService.addChannelHistory(history).then(() => {
-        //     res.json(sendStatus.responseOk());
-        // });
+        channelService.addChannelHistory(history).then(() => {
+            res.json(sendStatus.responseOk());
+        });
         // channelService.getLatestMessageById(1).then(message => {
         //     res.json(sendStatus.responseOk(message));
         // });;
@@ -69,7 +69,7 @@ module.exports = {
         // userChannel.sync({force: true});
         // channel.sync({force: true});
         // channelLink.sync({force: true});
-        channelQueue.sync({force: true});
+        // channelQueue.sync({force: true});
         // res.json(sendStatus.responseOk());
     }
 }

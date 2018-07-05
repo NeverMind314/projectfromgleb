@@ -53,7 +53,7 @@ paths:
       parameters:
         - name: key
           in: query
-          description: id or name of user
+          description: id or login of user
           required: true
           type: string
         - name: more_than
