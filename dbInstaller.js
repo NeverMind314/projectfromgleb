@@ -3,12 +3,16 @@
 
 const Sequelize = require('sequelize');
 const db = require('./config/dbConfig');
-const channelLink = require('./api/models/channelLink.model');
-const channelQueue = require('./api/models/channelQueue.model');
-const channelType = require('./api/models/channelType.model');
-const mediaType = require('./api/models/mediaType.model');
-const UserAction = require('./api/models/userAction.model');
-const userChannel = require('./api/models/userChannel.model');
+// const newChannel = require('./api/models/channel.model');
+// const newChannelLink = require('./api/models/channelLink.model');
+// const newChannelQueue = require('./api/models/channelQueue.model');
+// const newChannelType = require('./api/models/channelType.model');
+// const newMedia = require('./api/models/media.model');
+// const newMediaType = require('./api/models/mediaType.model');
+// const newMessage = require('./api/models/message.model');
+// const newUser = require('./api/models/user.model');
+// const newUserAction = require('./api/models/userAction.model');
+// const newUserChannel = require('./api/models/userChannel.model');
 
 class Installer {
     async install () {
@@ -53,7 +57,7 @@ class Installer {
         }, {
             freezeTableName: true
         });
-        let newUserModel = db.define('user', {
+        let newUser = db.define('user', {
             id: {
                 type: Sequelize.INTEGER,
                 primaryKey: true,
@@ -64,43 +68,109 @@ class Installer {
         }, {
             freezeTableName: true
         });
-
-        await  channelType.sync({force: true})
+        let newMediaType = db.define('media_type', {
+            id: {
+                type: Sequelize.INTEGER,
+                primaryKey: true,
+                autoIncrement: true
+            },
+            name: Sequelize.CHAR,
+        }, {
+            freezeTableName: true
+        });
+        let newUserAction = db.define('user_action', {
+            id: {
+                type: Sequelize.INTEGER,
+                primaryKey: true,
+                autoIncrement: true
+            },
+            user_id: Sequelize.INTEGER,
+            channel_id: Sequelize.INTEGER,
+            action: Sequelize.CHAR,
+            action_dt: Sequelize.DATE
+        }, {
+            freezeTableName: true
+        });
+        let newUserChannel = db.define('user_channel', {
+            id: {
+                type: Sequelize.INTEGER,
+                primaryKey: true,
+                autoIncrement: true
+            },
+            user_id: Sequelize.INTEGER,
+            channel_id: Sequelize.INTEGER,
+        }, {
+            freezeTableName: true
+        });
+        let newChannelLink = db.define('channel_link', {
+            id: {
+                type: Sequelize.INTEGER,
+                primaryKey: true,
+                autoIncrement: true
+            },
+            channel_id: Sequelize.INTEGER,
+            link: Sequelize.CHAR,
+        }, {
+            freezeTableName: true
+        });
+        let newChannelQueue = db.define('channel_queue', {
+            id: {
+                type: Sequelize.INTEGER,
+                primaryKey: true,
+                autoIncrement: true
+            },
+            link: Sequelize.CHAR,
+        }, {
+            freezeTableName: true
+        });
+        let newChannelType = db.define('channel_type', {
+            id: {
+                type: Sequelize.INTEGER,
+                primaryKey: true,
+                autoIncrement: true
+            },
+            name: Sequelize.CHAR,
+        }, {
+            freezeTableName: true
+        });
+        await newMedia.sync({force: true});
+        await newMessage.sync({force: true});
+        await newChannel.sync({force: true});
+        await newUser.sync({force: true});
+        await newUserAction.sync({force: true});
+        await newUserChannel.sync({force: true});
+        await newChannelLink.sync({force: true});
+        await newChannelQueue.sync({force: true});
+        await newChannelType.sync({force: true})
         .then(() => {
-            return [channelType.create({
+            return [newChannelType.create({
                 name: 'group'
             }),
-            channelType.create({
+            newChannelType.create({
                 name: 'supergroup'
             }),
-            channelType.create({
+            newChannelType.create({
                 name: 'channel'
             })];
         });
-        await  mediaType.sync({force: true})
+        await  newMediaType.sync({force: true})
         .then(() => {
-            return [mediaType.create({
+            return [newMediaType.create({
                 name: 'photo'
             }),
-            mediaType.create({
+            newMediaType.create({
                 name: 'video'
             }),
-            mediaType.create({
+            newMediaType.create({
                 name: 'audio'
-            })] 
-        })
-        await newMedia.sync({force: true});
-        await newMessage.sync({force: true});
-        await newUserModel.sync({force: true});
-        await UserAction.sync({force: true});
-        await userChannel.sync({force: true});
-        await newChannel.sync({force: true});
-        await channelLink.sync({force: true});
-        await channelQueue.sync({force: true});
+            })]
+        });
     }
 }
 
 let installer = new Installer;
-installer.install();
-console.log('successfully created');
-process.exit(0);
+installer.install()
+.then(() => {
+    console.log('successfully created');
+    process.exit(0);
+});

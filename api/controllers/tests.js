@@ -21,7 +21,8 @@ module.exports = {
         //     res.json(sendStatus.responseOk(message));
         // });;
 
-
+        // let installer = new Installer();
+        // installer.install();
 
         // let userService = new UserService();
         // userService.addNewUser(history.messageHistory[0].author);
