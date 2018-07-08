@@ -1,9 +1,9 @@
-#Telegram crawler
+# Telegram crawler
 
 Progrem that obtain full telegram channels/groups/supergroups users and message history. Also it may refresh 
 alredy recieved data.
 
-##Installing
+## Installing
 
 1) Clone repository.
 
@@ -23,7 +23,7 @@ npm install
 npm run create-tables
 ```
 
-##Running swagger routes documentation
+## Running swagger routes documentation
 
 Run following commands in separate command promts from root
 
@@ -33,7 +33,7 @@ node swagger project start
 node swagger project edit
 ```
 
-##Start crawling
+## Start crawling
 
 1)Set account which will crawl
 
