@@ -23,7 +23,6 @@ async function daemon() {
     console.warn('Session list is empty');
     return;
   }
-  console.log('Index', currentChannelIndex, schedule.length)
   if (!schedule[currentChannelIndex].stage) {
     schedule[currentChannelIndex].stage = 0;
   }

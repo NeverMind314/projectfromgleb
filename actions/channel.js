@@ -249,7 +249,7 @@ class Channel {
     });
 
 
-    await cs.addChannelHistory(channel);
+    // await cs.addChannelHistory(channel);
     console.log('Data was saved into db');
   }
 }
