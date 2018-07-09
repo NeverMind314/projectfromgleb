@@ -2,6 +2,7 @@
 node_modules/
 .vscode/
 api-service/
+storage/*
 config/dbConfig.json
 yarn.lock
 package-lock.json
