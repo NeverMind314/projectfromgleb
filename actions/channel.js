@@ -107,7 +107,7 @@ class Channel {
 
     await this.driver.executeScript(
       '$(".im_message_author_admin").show(); ' +
-      '$(".im_service_message").remove(); ' +
+      '$(".im_service_message .im_message_author").remove(); ' +
       'delete XMLHttpRequest;'
     );
 
@@ -154,7 +154,6 @@ class Channel {
         let date = await this.driver.executeScript(
           'return $(".im_history_messages_peer .im_history_message_wrap .im_message_date_split_text").last().text()'
         );
-        // console.log(date)
         let text = await this.driver.executeScript(
           'return $(".im_history_messages_peer .im_history_message_wrap .im_message_text").last().text()'
         );
