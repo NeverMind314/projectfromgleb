@@ -94,7 +94,7 @@ class Channel {
       const cnt = await this.driver.executeScript('return $(".im_history_message_wrap").length;');
       if (messagesInPage === cnt) {
         loadingTries++;
-        await timeout(100);
+        await timeout(500);
       }
       messagesInPage = cnt;
       this.driver.executeScript('$(".im_history_scrollable_wrap").scrollTop(100)').then();
@@ -103,7 +103,7 @@ class Channel {
 
     let cnt = messages.length;
     loadingTries = 0;
-    const latestMessage = null;//await cs.getLatestMessageBySignature(channelID);
+    const latestMessage = await cs.getLatestMessageBySignature(channelID);
 
     await this.driver.executeScript(
       '$(".im_message_author_admin").show(); ' +
@@ -182,11 +182,11 @@ class Channel {
         );
 
         await this.driver.executeScript('$(".im_history_messages_peer .im_history_message_wrap").last().remove()');
-
+        if (!author.name) continue;
         if (date || text) {
           const unf = date.split(',').slice(1, 3).join('') + ' ' + time;
           date = moment(unf, 'MMMM DD YYYY hh:mm:ss A').local();
-          const signature = md5(date.unix() + text);
+          const signature = md5(time + text);
           const duplicates = messages.filter(message => {
             return message.signature === signature
           });

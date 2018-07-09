@@ -78,7 +78,7 @@ class Auth {
         // console.log(this.session[i].key)
         await this.driver.executeScript('localStorage.setItem(\'' + this.session[i].key + '\', \'' + this.session[i].value + '\');');
       }
-      await timeout(1000);
+      await timeout(5000);
       isSigned = await this.driver.executeScript('return $(".login_form_head").length === 0');
       if (!isSigned) {
         console.log('Sign in fail. Tries #' + (t+1));

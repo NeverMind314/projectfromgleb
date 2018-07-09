@@ -4,6 +4,7 @@ const {getDriver} = require('./commons/driverAdaptor');
 const fs = require('fs');
 const {timeout} = require('./commons/helper');
 const config = require('./config/config.json');
+const Queue = require('./api/services/channelQueue.service')
 
 
 function conveyor(users, channels) {
@@ -27,33 +28,36 @@ function getUsers() {
     .map(f => 'storage/' + f);
 }
 
-function getChannels() {
-  const schedule = require('./config/channels.json');
+async function getChannels() {
+  const queue = new Queue();
+  const schedule = await queue.getQueue();
   return schedule;
 }
 
-const users = getUsers();
-const channels = getChannels();
-const order = conveyor(users.slice(0, config.queue), channels);
-
-Object.keys(order).forEach(async user => {
-  let i = 0;
-  while(true) {
-    const channel = order[user][i++];
-    try {
+(async () => {
+  const users = getUsers();
+  const channels = await getChannels();
+  const order = conveyor(users.slice(0, config.queue), channels);
+  Object.keys(order).forEach(async user => {
+    let i = 0;
+    while(true) {
+      const channel = order[user][i++];
       const driver = getDriver();
-      const auth = new Auth(driver, user);
-      await auth.open();
-      const c = new Channel(driver);
-      await c.invoke(channel.link);
-      await driver.quit();
-    } catch (e) {
-      console.error('ERROR', user, 'channel #' + i);
-      console.error(e);
+      try {
+        const auth = new Auth(driver, user);
+        await auth.open();
+        const c = new Channel(driver);
+        await c.invoke(channel.link.trim());
+        await driver.quit();
+      } catch (e) {
+        await driver.quit();
+        console.error('ERROR', user, 'channel #' + i);
+        console.error(e);
+      }
+      if (i === order[user].length) {
+        i = 0;
+      }
+      await timeout(config.time_interval * 1000);
     }
-    if (i === order[user].length) {
-      i = 0;
-    }
-    await timeout(config.time_interval * 1000);
-  }
-});
+  });
+})();

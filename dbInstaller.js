@@ -147,9 +147,6 @@ class Installer {
                 name: 'group'
             }),
             newChannelType.create({
-                name: 'supergroup'
-            }),
-            newChannelType.create({
                 name: 'channel'
             })];
         });

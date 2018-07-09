@@ -86,6 +86,10 @@ class ChannelService {
         })
     }
 
+    async getChannels () {
+        return channelModel.findAll();
+    }
+
     async getChannelHistory(channelKey, startFrom) {
         let param = {};
         if (+channelKey) {
@@ -254,7 +258,10 @@ class ChannelService {
 
     async getLatestMessageBySignature(signature) {
         let channel = await this.getChannelBySignature(signature);
-        return await this.getLatestMessageById(channel.id);
+        if (channel) {
+            return await this.getLatestMessageById(channel.id);
+        }
+        return null
     }
 
     async getLatestMessageById(channelId) {

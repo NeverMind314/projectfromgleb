@@ -22,11 +22,7 @@ class QueueService {
     }
 
     async getQueue() {
-        let channelQueue = await channelQueueModel.findAll();
-        if (channelQueue.length === 0) {
-            return 'channel queue is empty';
-        }
-        return channelQueue;
+        return channelQueueModel.findAll();
     }
 }
 
