@@ -3,7 +3,7 @@ node_modules/
 .vscode/
 api-service/
 storage/*
-config/dbConfig.json
+config/dbCrendetails.json
 yarn.lock
 package-lock.json
 swagger.txt
