@@ -24,6 +24,7 @@
     "supertest": "^1.0.0"
   },
   "scripts": {
+    "add-account": "node account.js",
     "crawler": "node index.js",
     "api": "node app.js",
     "create-tables": "node dbInstaller.js"
