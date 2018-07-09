@@ -24,7 +24,8 @@
     "supertest": "^1.0.0"
   },
   "scripts": {
-    "start": "node app.js",
-    "test": "swagger project test"
+    "crawler": "node index.js",
+    "api": "node app.js",
+    "create-tables": "node dbInstaller.js"
   }
 }

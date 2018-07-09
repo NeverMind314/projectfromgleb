@@ -53,7 +53,7 @@ paths:
       parameters:
         - name: key
           in: query
-          description: id or name of user
+          description: id or login of user
           required: true
           type: string
         - name: more_than
@@ -72,27 +72,108 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/BaseResponse"
-  /new_account:
-    x-swagger-router-controller: account.controller
+  /all_channel_users:
+    x-swagger-router-controller: allChannelUsers.controller
     get:
-      description: Adding row in account table with certain parameters
-      operationId: addAccount
+      description: Return all users of requested channel
+      operationId: getAllChannelUsers
       parameters:
-        - name: name
+        - name: key
           in: query
-          description: account name
+          description: id or link of channel
           required: true
           type: string
-        - name: login
+
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/BaseResponse"
+  /actual_channel_users:
+    x-swagger-router-controller: actualChannelUsers.controller
+    get:
+      description: Return actual users of requested channel
+      operationId: getActualChannelUsers
+      parameters:
+        - name: key
           in: query
-          description: account login
+          description: id or link of channel
           required: true
           type: string
-        - name: phone
+        - name: date
           in: query
-          description: account name
+          description: date of channel users state
+          required: false
+          type: string
+
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/BaseResponse"
+  # /new_account:
+  #   x-swagger-router-controller: account.controller
+  #   get:
+  #     description: Adding row in account table with certain parameters
+  #     operationId: addAccount
+  #     parameters:
+  #       - name: name
+  #         in: query
+  #         description: account name
+  #         required: true
+  #         type: string
+  #       - name: login
+  #         in: query
+  #         description: account login
+  #         required: true
+  #         type: string
+  #       - name: phone
+  #         in: query
+  #         description: account name
+  #         required: true
+  #         type: string
+  #     responses:
+  #       "200":
+  #         description: Success
+  #         schema:
+  #           $ref: "#/definitions/BaseResponse"
+  /new_queue_item:
+    x-swagger-router-controller: addToChannelQueue.controller
+    get:
+      description: Adding row in queue table with the link
+      operationId: addToQueue
+      parameters:
+        - name: link
+          in: query
+          description: channel link
           required: true
           type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/BaseResponse"
+  /remove_queue_item:
+    x-swagger-router-controller: removeFromChannelQueue.controller
+    get:
+      description: Removes row from queue table with the link
+      operationId: removeFromQueue
+      parameters:
+        - name: link
+          in: query
+          description: channel link
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/BaseResponse"
+  /queue:
+    x-swagger-router-controller: getChannelQueue.controller
+    get:
+      description: Get all queue
+      operationId: getQueue
       responses:
         "200":
           description: Success
