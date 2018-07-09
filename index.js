@@ -14,7 +14,7 @@ async function daemon() {
   if (schedule.filter(item => item.stage > 0).length < config.queue) {
     currentChannelIndex++;
   }
-  const sessions = fs.readdirSync('storage').map(f => 'storage/' + f);
+  const sessions = fs.readdirSync('storage').filter(f => f[0] !== '.').map(f => 'storage/' + f);
   if (currentChannelIndex === schedule.length) {
     console.log('Reset counter');
     currentChannelIndex = 0;
