@@ -64,7 +64,7 @@ class Channel {
     return users;
   }
 
-  async open(name) {
+  async invoke(name) {
     if (~name.indexOf(joinchat)) {
       await this.joinByLink(name);
     } else if (~name.indexOf(joinlink)) {
@@ -208,20 +208,6 @@ class Channel {
             media
           });
         }
-        // if (date) {
-        //   console.log(date, messages.length, messagesInPage);
-        // }
-        if (messages.length % 100 === 0) {
-          console.log(name, messages.length);
-        }
-        // if (messages.length > 500) break;
-        // if (count === 0) {
-        //   await timeout(500);
-        //   console.log('Loader is not found', loadingTries)
-        //   loadingTries++;
-        // } else {
-        //   loadingTries = 0;
-        // }
       } catch (err) {
         console.log('ERROR', err);
       }
