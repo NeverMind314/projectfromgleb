@@ -16,6 +16,7 @@ async function daemon() {
   }
   const sessions = fs.readdirSync('storage').map(f => 'storage/' + f);
   if (currentChannelIndex === schedule.length) {
+    console.log('Reset counter');
     currentChannelIndex = 0;
   }
   if (sessions.length === 0) {
@@ -35,6 +36,9 @@ async function daemon() {
     // console.log(currentChannelIndex, index, session, sessions.length);
     console.log('Start: ' + schedule[currentChannelIndex].addr, session);
     schedule[currentChannelIndex].driver = getDriver();
+    if(!schedule[currentChannelIndex].driver) {
+      console.log('Wow!', currentChannelIndex)
+    }
     try {
       const auth = new Auth(schedule[currentChannelIndex].driver, session);
       auth.open().then(() => {
@@ -55,6 +59,11 @@ async function daemon() {
   }
   if (schedule[currentChannelIndex].stage === 1) {
     console.log('Execute: ' + schedule[currentChannelIndex].addr);
+    if (!schedule[currentChannelIndex].driver) {
+      console.log('Driver is null');
+      schedule[currentChannelIndex].driver = getDriver();
+      return;
+    }
     const channel = new Channel(schedule[currentChannelIndex].driver);
     channel.open(schedule[currentChannelIndex].addr).then(() => {
       schedule[currentChannelIndex].stage = 3;
@@ -86,10 +95,11 @@ async function daemon() {
 setInterval(daemon, 3000);
 
 
-// schedule.push({addr: 'https://t.me/joinchat/Cox1iA8fFnQ3kLhgKDtj-Q'});
+schedule.push({addr: 'https://t.me/joinchat/Cox1iA8fFnQ3kLhgKDtj-Q'});
 schedule.push({addr: 'https://t.me/joinchat/Cox1iEuA3mnVaM_mj0_rQw'});
-// schedule.push({addr: 'https://t.me/souper_group_named'});
-// schedule.push({addr: 'https://t.me/channel_named'});
+schedule.push({addr: 'https://t.me/souper_group_named'});
+schedule.push({addr: 'https://t.me/channel_named'});
+schedule.push({addr: 'https://web.telegram.org/#/im?p=s1100817720_12837046066004865967'});
 
 
 // schedule.push({addr: 'https://t.me/joinchat/E5jwUlL2wZVG7grfCpVaxw'});
@@ -101,6 +111,7 @@ schedule.push({addr: 'https://t.me/joinchat/Cox1iEuA3mnVaM_mj0_rQw'});
 // schedule.push({addr: '@oldlentach'});
 // schedule.push({addr: '@varlamov'});
 // schedule.push({addr: 'https://t.me/joinchat/Cox1iA8fFnQ3kLhgKDtj-Q'});
+// schedule.push({addr: 'https://web.telegram.org/#/im?tgaddr=tg:%2F%2Fjoin%3Finvite%3DCox1iEuA3mnVaM_mj0_rQw'});
 // schedule.push({addr: '@souper_group_named'});
 // schedule.push({addr: '@channel_named'});
 // schedule.push({addr: '@incriema'});
