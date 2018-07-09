@@ -85,6 +85,7 @@ class Auth {
         await this.driver.navigate().refresh();
       }
     }
+    console.log('Signed', isSigned);
     if (!isSigned) {
       throw 'Login fail';
     }

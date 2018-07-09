@@ -87,12 +87,14 @@ class Channel {
     const channelTypeId = await this.driver.executeScript('return $(\'span[my-i18n="channel_modal_info"]\').text() === "" ? 1 : 2;');
     await this.driver.executeScript('$(".md_modal_action_close").last().click();');
 
+
+    const channelUsers = await this.getUsers();
     let messagesInPage = 0;
-    while(loadingTries < 100) {
+    while (loadingTries < 100) {
       const cnt = await this.driver.executeScript('return $(".im_history_message_wrap").length;');
       if (messagesInPage === cnt) {
         loadingTries++;
-        await timeout(300);
+        await timeout(100);
       }
       messagesInPage = cnt;
       this.driver.executeScript('$(".im_history_scrollable_wrap").scrollTop(100)').then();
@@ -102,41 +104,48 @@ class Channel {
     let cnt = messages.length;
     loadingTries = 0;
     const latestMessage = null;//await cs.getLatestMessageBySignature(channelID);
-    const channelUsers = await this.getUsers();
+
+    await this.driver.executeScript(
+      '$(".im_message_author_admin").show(); ' +
+      '$(".im_service_message").remove(); ' +
+      'delete XMLHttpRequest;'
+    );
+
     while (loadingTries < 50) {
       try {
         if (cnt === messages.length) {
           loadingTries++;
-          await timeout(100);
+        } else {
+          loadingTries = 0;
         }
         cnt = messages.length;
         //
-        let messagesCont = await this.driver.findElement(By.className('im_history_messages_peer'));
-        let items = await messagesCont.findElements(By.className('im_history_message_wrap'));
-        count = 0;
-        items.forEach(() => count++);
+        count = await this.driver.executeScript('return $(".im_history_message_wrap").length;');
 
         // get user info (use caching)
         let author = {};
         const userID = await this.driver.executeScript(
           'return $(".im_history_messages_peer .im_history_message_wrap .im_message_author").last().text();'
         );
-        if (users[userID]) {
-          author = users[userID];
-        } else {
-          author = await this.driver.executeScript(
-            '$(".im_history_messages_peer .im_history_message_wrap .im_message_author").last().click(); ' +
-            'var name = $(".peer_modal_profile_name").text(); ' +
-            'var login = $(".md_modal_section_param_value").first().text().trim(); ' +
-            'return {name, login}'
-          );
-          if (!author.login) {
-            author.login = md5(author.name + channelID);
+        author = await this.driver.executeScript(
+          '$(".im_history_messages_peer .im_history_message_wrap .im_message_author").last().click(); ' +
+          'var name = $(".peer_modal_profile_name").text(); ' +
+          'var login = $(".md_modal_section_param_value").first().text().trim(); ' +
+          'return {name, login}'
+        );
+        const isAdmin = await this.driver.executeScript('return $(".im_message_author_admin").last().text() === "admin"');
+        if (isAdmin) {
+          for (let i = 0; i < channelUsers.length; i++) {
+            if (channelUsers[i].name === author.name) {
+              channelUsers[i].isAdmin = 1;
+            }
           }
-          await this.driver.executeScript('$(".md_modal_action_close").last().click();');
-          users[userID] = author;
         }
-
+        if (!author.login) {
+          author.login = md5(author.name + channelID);
+        }
+        await this.driver.executeScript('$(".md_modal_action_close").last().click();');
+        users[userID] = author;
 
         // im_message_from_photo
         let time = await this.driver.executeScript(
@@ -145,6 +154,7 @@ class Channel {
         let date = await this.driver.executeScript(
           'return $(".im_history_messages_peer .im_history_message_wrap .im_message_date_split_text").last().text()'
         );
+        // console.log(date)
         let text = await this.driver.executeScript(
           'return $(".im_history_messages_peer .im_history_message_wrap .im_message_text").last().text()'
         );
@@ -182,7 +192,6 @@ class Channel {
             return message.signature === signature
           });
           if (duplicates.length > 0) {
-            // console.log(text);
             continue;
           }
           if (latestMessage && moment(latestMessage.post_dt).unix() > date.unix()) {
