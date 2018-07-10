@@ -23,7 +23,12 @@ npm install
 npm run create-tables
 ```
 
-6) You should have chrome browser installed
+6) You should have chrome browser version not less than 66.0.3359.0 installed.
+You may see instruction for installation of this version of browser for CentOs 7 on:
+
+```
+https://www.tecmint.com/install-google-chrome-on-redhat-centos-fedora-linux/
+```
 
 ## Start crawling
 

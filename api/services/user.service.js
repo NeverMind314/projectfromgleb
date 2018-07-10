@@ -164,13 +164,8 @@ class UserService {
                 ]
             });
             if (isAdmin && isAdmin.action.trim() === 'isAdmin') {
-                let dbNotAdmin = await userModel.findOne({
-                    where: {
-                        id: isAdmin.user_id
-                    }
-                });
                 let notAdmin = channelUsers.filter(user => {
-                    if (user.name === dbNotAdmin.name.trim()) {
+                    if (user.name.trim() === users[i].name.trim()) {
                         return true
                     }
                 })

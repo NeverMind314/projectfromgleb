@@ -98,7 +98,6 @@ class Channel {
       }
       messagesInPage = cnt;
       this.driver.executeScript('$(".im_history_scrollable_wrap").scrollTop(100)').then();
-      // console.log(messagesInPage);
     }
 
     let cnt = messages.length;
