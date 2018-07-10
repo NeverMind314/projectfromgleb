@@ -23,6 +23,8 @@ npm install
 npm run create-tables
 ```
 
+6) You should have chrome browser installed
+
 ## Start crawling
 
 1)Call process that will add account which will crawl
