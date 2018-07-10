@@ -44,7 +44,7 @@ Optional: running swagger routes documentation
 npm run doc
 ```
 
-Then you may see documentation by adress <yourserver>:45000
+Then you may see documentation by adress "your_server":45000
 
 3)Start crawler core
 
