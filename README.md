@@ -27,14 +27,14 @@ npm run create-tables
 
 ## Start crawling
 
-1)Call process that will add account which will crawl
+1) Call process that will add account which will crawl
 
 ```
 npm run add-account
 ```
 
 
-2)Raise API
+2) Raise API
 
 ```
 npm run api
@@ -48,7 +48,7 @@ npm run doc
 
 Then you may see documentation by adress "your_server":45000
 
-3)Start crawler core
+3) Start crawler core
 
 ```
 npm run crawler
