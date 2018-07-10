@@ -23,22 +23,6 @@ npm install
 npm run create-tables
 ```
 
-6) To see swagger documentation of project: global swagger installation
-
-```
-npm install -g swagger
-```
-
-## Running swagger routes documentation
-
-Run following commands in separate command promts from root
-
-```
-swagger project start
-
-swagger project edit
-```
-
 ## Start crawling
 
 1)Call process that will add account which will crawl
@@ -47,11 +31,20 @@ swagger project edit
 npm run add-account
 ```
 
+
 2)Raise API
 
 ```
 npm run api
 ```
+
+Optional: running swagger routes documentation
+
+```
+npm run doc
+```
+
+Then you may see documentation by adress <yourserver>:45000
 
 3)Start crawler core
 
