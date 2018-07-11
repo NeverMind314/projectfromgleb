@@ -81,7 +81,7 @@ class Auth {
       await timeout(5000);
       isSigned = await this.driver.executeScript('return $(".login_form_head").length === 0');
       if (!isSigned) {
-        console.log('Sign in fail. Tries #' + (t+1));
+        console.log('Sign in try #' + (t+1));
         await this.driver.navigate().refresh();
       }
     }

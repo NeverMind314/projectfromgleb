@@ -42,6 +42,7 @@ async function getChannels() {
     let i = 0;
     while(true) {
       const channel = order[user][i++];
+      console.log(channel.link);
       const driver = getDriver();
       try {
         const auth = new Auth(driver, user);

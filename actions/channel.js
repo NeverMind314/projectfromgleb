@@ -109,7 +109,7 @@ class Channel {
       '$(".im_service_message .im_message_author").remove(); ' +
       'delete XMLHttpRequest;'
     );
-
+    console.log('mesaages in page', messagesInPage);
     while (loadingTries < 50) {
       try {
         if (cnt === messages.length) {
