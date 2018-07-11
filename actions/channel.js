@@ -196,7 +196,9 @@ class Channel {
             console.log('>>>>>>', latestMessage.post_dt, dt);
             break;
           }
-
+          if (messages.length % 10 === 0) {
+            console.log(messages.length, name, dt.format());
+          } 
           messages.push({
             signature,
             date: dt.format(),

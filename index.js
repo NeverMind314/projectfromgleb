@@ -45,8 +45,10 @@ async function getChannels() {
       console.log(channel.link);
       const driver = getDriver();
       try {
+        console.log('Starting authentication');
         const auth = new Auth(driver, user);
         await auth.open();
+        console.log('authenticated');
         const c = new Channel(driver);
         await c.invoke(channel.link.trim());
         await driver.quit();
