@@ -150,7 +150,7 @@ class Channel {
         let time = await this.driver.executeScript(
           'return $(".im_history_messages_peer .im_history_message_wrap .im_message_date_text").last().attr("data-content")'
         );
-        let date = await this.driver.executeScript(
+        const date = await this.driver.executeScript(
           'return $(".im_history_messages_peer .im_history_message_wrap .im_message_date_split_text").last().text()'
         );
         let text = await this.driver.executeScript(
@@ -184,7 +184,7 @@ class Channel {
         if (!author.name) continue;
         if (date || text) {
           const unf = date.split(',').slice(1, 3).join('') + ' ' + time;
-          date = moment(unf, 'MMMM DD YYYY hh:mm:ss A').local();
+          const dt = moment(unf, 'MMMM DD YYYY hh:mm:ss A').local();
           const signature = md5(time + text);
           const duplicates = messages.filter(message => {
             return message.signature === signature
@@ -192,14 +192,14 @@ class Channel {
           if (duplicates.length > 0) {
             continue;
           }
-          if (latestMessage && moment(latestMessage.post_dt).unix() > date.unix()) {
-            console.log('>>>>>>', latestMessage.post_dt, date);
+          if (latestMessage && moment(latestMessage.post_dt).unix() > dt.unix()) {
+            console.log('>>>>>>', latestMessage.post_dt, dt);
             break;
           }
 
           messages.push({
             signature,
-            date,
+            date: dt.format(),
             views_cnt,
             author,
             text,
