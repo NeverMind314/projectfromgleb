@@ -197,6 +197,24 @@ class ChannelService {
             }]
         });
 
+        for (let i = 0; i < users.length; i++) {
+            let isAdmin = await userActionModel.findOne({
+                where: {
+                    channel_id: channel.id,
+                    user_id: users[i].id,
+                    action: {
+                        [Op.or]: ['isAdmin', 'noLongerAdmin']
+                    }
+                },
+                order: [
+                    ['action_dt', 'DESC']
+                ]
+            });
+            if (isAdmin) {
+                users[i].dataValues.isAdmin = isAdmin.action.trim();
+            }
+        }
+
         return users
     }
 
@@ -247,6 +265,21 @@ class ChannelService {
                 },
                 order: [['action_dt', 'DESC']]           
             }));
+            let isAdmin = await userActionModel.findOne({
+                where: {
+                    channel_id: channel.id,
+                    user_id: channelUsers[i].id,
+                    action: {
+                        [Op.or]: ['isAdmin', 'noLongerAdmin']
+                    }
+                },
+                order: [
+                    ['action_dt', 'DESC']
+                ]
+            });
+            if (isAdmin) {
+                channelUsers[i].dataValues.isAdmin = isAdmin.action.trim();
+            }
         }
         
         return channelUsers.filter((user, i) => {

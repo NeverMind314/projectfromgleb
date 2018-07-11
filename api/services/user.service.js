@@ -63,14 +63,14 @@ class UserService {
                         channel_id: channel.id,
                         user_id: user[0].id,
                         action: {
-                            [Op.or]: ['isAdmin', 'isNotAdmin']
+                            [Op.or]: ['isAdmin', 'noLongerAdmin']
                         }
                     },
                     order: [
                         ['action_dt', 'DESC']
                     ]
                 })
-                if (!isAdmin || isAdmin.action.trim() === 'isNotAdmin') {
+                if (!isAdmin || isAdmin.action.trim() === 'noLongerAdmin') {
                     await userActionModel.create({
                         user_id: user[0].id,
                         channel_id: channel.id,
@@ -156,7 +156,7 @@ class UserService {
                     channel_id: channel.id,
                     user_id: users[i].id,
                     action: {
-                        [Op.or]: ['isAdmin', 'isNotAdmin']
+                        [Op.or]: ['isAdmin', 'noLongerAdmin']
                     }
                 },
                 order: [
@@ -173,7 +173,7 @@ class UserService {
                     await userActionModel.create({
                         user_id: users[i].id,
                         channel_id: channel.id,
-                        action: 'isNotAdmin',
+                        action: 'noLongerAdmin',
                         action_dt: new Date()
                     });
                 }
