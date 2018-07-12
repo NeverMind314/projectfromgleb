@@ -58,10 +58,13 @@ class Channel {
       'for(let i = 0; i < $("a.md_modal_list_peer_name").length; i++) { users.push({name:$($("a.md_modal_list_peer_name")[i]).text(), isAdmin: 0}) }' +
       'return users;'
     );
-    // await this.driver.executeScript('$(".md_modal_action_close").click();');
+    const usersCnt = await this.driver.executeScript('return $(".peer_modal_profile_description ng-pluralize").text().split(" ")[0];');
     await timeout(200);
     await this.driver.executeScript('$(".md_modal_action_close").click();');
-    return users;
+    return {
+      users: users,
+      usersCnt: usersCnt
+    };
   }
 
   async invoke(name) {
@@ -88,7 +91,9 @@ class Channel {
     await this.driver.executeScript('$(".md_modal_action_close").last().click();');
 
 
-    const channelUsers = await this.getUsers();
+    const chInfo = await this.getUsers();
+    const channelUsers = chInfo.users;
+    const usersCnt = chInfo.usersCnt;
     let messagesInPage = 0;
     while (loadingTries < 100) {
       const cnt = await this.driver.executeScript('return $(".im_history_message_wrap").length;');
@@ -224,6 +229,7 @@ class Channel {
       name: channelName,
       description: channelDescription,
       users: channelUsers,
+      usersCnt: usersCnt,
       history: messages
     };
 
