@@ -65,10 +65,13 @@ class ChannelService {
             },
             order: [['check_dt', 'DESC']]
         })
+        if (!channel.usersCnt) {
+            let usersCnt = channel.users.length;
+        }
         if (!lastUserCount || lastUserCount.user_count !== +channel.usersCnt) {
             return channelUsersModel.create({
                 channel_id: channelId.id,
-                user_count: +channel.usersCnt,
+                user_count: +channel.usersCnt || usersCnt,
                 check_dt: new Date()
             })
         }
@@ -76,6 +79,10 @@ class ChannelService {
     }
 
     async addNewMessage(channel, user, message) {
+        if (!+message.views_cnt) {
+            let num = message.views_cnt.split('к')[0];
+            let views_cnt = num + '000';
+        }
         return await messageModel.findOrCreate({
             where: {
                 signature: message.signature
@@ -84,7 +91,7 @@ class ChannelService {
                 post_dt: message.date,
                 channel_id: channel.id,
                 user_id: user.id,
-                views_count: +message.views_cnt || 0,
+                views_count: +message.views_cnt || views_cnt,
                 message: message.text
             }
         })
