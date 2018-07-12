@@ -16,6 +16,18 @@ const db = require('./config/dbConfig');
 
 class Installer {
     async install () {
+        let newChannelUsers = db.define('channel_users', {
+            id: {
+                type: Sequelize.INTEGER,
+                primaryKey: true,
+                autoIncrement: true
+            },
+            channel_id: Sequelize.INTEGER,
+            user_count: Sequelize.INTEGER,
+            check_dt: Sequelize.DATE
+        }, {
+            freezeTableName: true
+        });
         let newChannel = db.define('channel', {
             id: {
                 type: Sequelize.INTEGER,
@@ -133,6 +145,7 @@ class Installer {
         }, {
             freezeTableName: true
         });
+        await newChannelUsers.sync({force:true});
         await newMedia.sync({force: true});
         await newMessage.sync({force: true});
         await newChannel.sync({force: true});

@@ -7,6 +7,7 @@ const userModel = require('../models/user.model');
 const userActionModel = require('../models/userAction.model');
 const userChannelModel = require('../models/userChannel.model');
 const channelLinkModel = require('../models/channelLink.model');
+const channelUsersModel = require('../models/channelUsers.model');
 const UserService = require('./user.service');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
@@ -25,12 +26,12 @@ class ChannelService {
                 console.log('New message saved', i);
             }
             if (mediaNotEmpty(channelHistory.history[i].media)) {
-                await this.addNewMedia(channelHistory.history[i].media, message[0])
+                await this.addNewMedia(channelHistory.history[i].media, message[0]);
             }
         }
-        await userService.addUserActionJoinAdmin(channel[0], channelHistory.users)
-        await userService.addUserActionLeftNotAdmin(channel[0], channelHistory.users)
-
+        await this.addChannelUsers(channelHistory);
+        await userService.addUserActionJoinAdmin(channel[0], channelHistory.users);
+        await userService.addUserActionLeftNotAdmin(channel[0], channelHistory.users);
     }
 
     async addNewChannel(channel) {
@@ -54,6 +55,24 @@ class ChannelService {
         })
 
         return dbChannel;
+    }
+
+    async addChannelUsers (channel) {
+        let channelId = await this.getChannelBySignature(channel.signature);
+        let lastUserCount = await channelUsersModel.findOne({
+            where: {
+                channel_id: channelId.id
+            },
+            order: [['check_dt', 'DESC']]
+        })
+        if (!lastUserCount || lastUserCount.user_count !== +channel.user_count) {
+            return channelUsersModel.create({
+                channel_id: channelId.id,
+                user_count: +channel.user_count,
+                check_dt: new Date()
+            })
+        }
+        return null
     }
 
     async addNewMessage(channel, user, message) {
@@ -281,12 +300,24 @@ class ChannelService {
                 channelUsers[i].dataValues.isAdmin = isAdmin.action.trim();
             }
         }
+
+        let user_count = await channelUsersModel.findOne({
+            where: {
+                channel_id: channel.id,
+                check_dt: {
+                    [Op.lte]: atDate || new Date()
+                }
+            },
+            order: [['check_dt', 'DESC']]
+        })
         
-        return channelUsers.filter((user, i) => {
+        return {
+            user_count: user_count,
+            channel_users: channelUsers.filter((user, i) => {
             if (usersAction[i] && usersAction[i].action.trim() != 'left') {
                 return true
             }
-        })
+        })}
     }
 
     async getLatestMessageBySignature(signature) {
