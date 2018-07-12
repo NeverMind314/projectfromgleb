@@ -13,22 +13,39 @@ alredy recieved data.
 npm install
 ```
 
-3) Create PostgreSQL databse with max connections not less than 100
-
-4) Type your DB crendetails in /config/dbCrendetails.json
-
-5) Run following command to create necessary tables
+3) Run following command to create necessary tables
 
 ```
 npm run create-tables
 ```
 
-6) You should have chrome browser version not less than 66.0.3359.0 installed.
+4) You should have chrome browser version not less than 66.0.3359.0 installed.
 You may see instruction for installation of this version of browser for CentOs 7 on:
 
 ```
 https://www.tecmint.com/install-google-chrome-on-redhat-centos-fedora-linux/
 ```
+
+## Configuration
+
+Create PostgreSQL databse with max connections not less than 100
+
+Type your DB crendetails in ./config/dbCrendetails.json
+
+Example:
+
+```
+{
+    "database": "postgres",
+    "username": "postgres",
+    "password": "root",
+    "host": "localhost",
+    "port": "5432"
+}
+```
+
+You may set number of simultaneous instances of crawler in ./config/config.json field "queue"
+Each instance may take average 350Mb of operating memory.
 
 ## Start crawling
 
