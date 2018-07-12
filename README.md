@@ -65,7 +65,7 @@ npm run add-account
 npm run api
 ```
 
-Optional: running swagger routes documentation(only on linux system)
+3) Running swagger routes documentation(only on linux system)
 
 ```
 npm run doc
@@ -73,7 +73,13 @@ npm run doc
 
 Then you may see documentation by adress "your_server_domain":45000
 
-3) Start crawler core
+OR
+
+go to https://editor.swagger.io/ and upload file swagger.yaml, path to this file: ./api/swagger/
+
+4) Add channel to queue table. How to do this you may see in swagger documentation(step 3)
+
+5) Start crawler core
 
 ```
 npm run crawler
