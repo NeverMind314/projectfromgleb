@@ -65,10 +65,10 @@ class ChannelService {
             },
             order: [['check_dt', 'DESC']]
         })
-        if (!lastUserCount || lastUserCount.user_count !== +channel.user_count) {
+        if (!lastUserCount || lastUserCount.user_count !== +channel.usersCnt) {
             return channelUsersModel.create({
                 channel_id: channelId.id,
-                user_count: +channel.user_count,
+                user_count: +channel.usersCnt,
                 check_dt: new Date()
             })
         }
