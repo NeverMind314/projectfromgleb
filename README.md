@@ -5,6 +5,9 @@ alredy recieved data.
 
 ## Installing
 
+For the program to work properly server must have installed postgres server 
+and nodeJS version not less than v.8.9.4
+
 1) Clone repository.
 
 2) Install dependecies.
