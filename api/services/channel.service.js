@@ -54,6 +54,15 @@ class ChannelService {
             }
         })
 
+        await channelLinkModel.findOrCreate({
+            where: {
+                link: channel.queueLink
+            },
+            defaults: {
+                channel_id: dbChannel[0].id
+            }
+        })
+
         return dbChannel;
     }
 
@@ -65,7 +74,7 @@ class ChannelService {
             },
             order: [['check_dt', 'DESC']]
         })
-        if (!channel.usersCnt) {
+        if (!+channel.usersCnt) {
             let usersCnt = channel.users.length;
         }
         if (!lastUserCount || lastUserCount.user_count !== +channel.usersCnt) {

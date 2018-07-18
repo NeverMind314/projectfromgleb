@@ -225,6 +225,7 @@ class Channel {
     const channel = {
       signature: channelID,
       type_id: channelTypeId,
+      queueLink: name,
       link: channelLink,
       name: channelName,
       description: channelDescription,
