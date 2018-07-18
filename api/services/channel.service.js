@@ -126,6 +126,9 @@ class ChannelService {
                     link: channelKey
                 }
             })
+            if (!channeLink) {
+                return new Error('No channel with such key')
+            }
             param.id = channeLink.channel_id;
         }
         let channel = await channelModel.findOne({
@@ -203,6 +206,9 @@ class ChannelService {
                     link: channelKey
                 }
             })
+            if (!channeLink) {
+                return new Error('No channel with such key')
+            }
             param.id = channeLink.channel_id;
         }
         let channel = await channelModel.findOne({
@@ -254,6 +260,9 @@ class ChannelService {
                     link: channelKey
                 }
             })
+            if (!channeLink) {
+                return new Error('No channel with such key')
+            }
             param.id = channeLink.channel_id;
         }
 

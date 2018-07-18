@@ -8,7 +8,15 @@ module.exports = {
         let queueService = new QueueService();
         queueService.addToQueue(req.query.link).then(result => {
             try {
-                res.json(sendStatus.responseOk({result}));
+                if (result[1]) {
+                    res.json(sendStatus.responseOk({
+                        message: 'channell successfully created',
+                        created_channel: result[0]
+                    }));
+                }
+                res.json(sendStatus.responseOk({
+                    message: 'this channels aredy in queue',
+                }));
             } catch (e) {
                 res.json(sendStatus.responseErr(e.message))
             }

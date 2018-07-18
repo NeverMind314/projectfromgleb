@@ -4,8 +4,10 @@ const channelQueueModel = require('../models/channelQueue.model');
 
 class QueueService {
     async addToQueue(newLink) {
-        return await channelQueueModel.create({
-            link: newLink.trim()
+        return await channelQueueModel.findOrCreate({
+            where: {
+                link: newLink.trim()
+            }
         });
     }
 
