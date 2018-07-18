@@ -219,7 +219,8 @@ class UserService {
                     post_dt: {
                         [Op.gte]: begin
                     }
-                }
+                },
+                order: [['post_dt', 'DESC']]
             });
             if (messages.length == 0) {
                 return new Error('No messages later than ' + startFrom.moreThan)
@@ -235,7 +236,8 @@ class UserService {
                     post_dt: {
                         [Op.lte]: begin
                     }
-                }
+                },
+                order: [['post_dt', 'DESC']]
             });
             if (messages.length == 0) {
                 return new Error('No messages earlier than ' + startFrom.lessThan)
@@ -247,7 +249,8 @@ class UserService {
             include: ['media'],
             where: {
                 user_id: user.id
-            }
+            },
+            order: [['post_dt', 'DESC']]
         });
 
         return messages;

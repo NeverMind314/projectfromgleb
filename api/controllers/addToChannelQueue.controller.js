@@ -13,8 +13,9 @@ module.exports = {
                         message: 'channell successfully created',
                         created_channel: result[0]
                     }));
+                } else {
+                    res.json(sendStatus.responseErr('this channel aredy in queue'));
                 }
-                res.json(sendStatus.responseErr('this channel aredy in queue'));
             } catch (e) {
                 res.json(sendStatus.responseErr(e.message));
             }

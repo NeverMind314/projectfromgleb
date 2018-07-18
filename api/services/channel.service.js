@@ -174,7 +174,8 @@ class ChannelService {
                     post_dt: {
                         [Op.gte]: begin
                     }
-                }
+                },
+                order: [['post_dt', 'DESC']]
             });
             if (messages.length == 0) {
                 return new Error('No messages later than ' + startFrom.moreThan)
@@ -190,7 +191,8 @@ class ChannelService {
                     post_dt: {
                         [Op.lte]: begin
                     }
-                }
+                },
+                order: [['post_dt', 'DESC']]
             });
             if (messages.length == 0) {
                 return new Error('No messages earlier than ' + startFrom.lessThan)
@@ -202,7 +204,8 @@ class ChannelService {
             include: ['media'],
             where: {
                 channel_id: channel.id
-            }
+            },
+            order: [['post_dt', 'DESC']]
         });
 
         return messages;

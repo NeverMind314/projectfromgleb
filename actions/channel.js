@@ -84,6 +84,10 @@ class Channel {
     await this.driver.executeScript('$(".tg_head_btn").click(); ');
     await timeout(1000);
     const channelName = await this.driver.executeScript('return $(".peer_modal_profile_name").text();');
+    if (!channelName.trim()) {
+      console.log('got empty channel name')
+      return;
+    }
     const channelLink = await this.driver.executeScript('return window.location.href;');
     const channelID = await this.driver.executeScript('return window.location.href.split("=").pop();');
     const channelDescription = await this.driver.executeScript('return $(\'span[ng-bind-html="chatFull.rAbout"]\').text();');
