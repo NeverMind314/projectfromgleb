@@ -16,8 +16,9 @@ module.exports = {
         channelHistory.getChannelHistory(req.query.key, startFrom).then(result => {
             if (result instanceof Error) {
                 res.json(sendStatus.responseErr(result.message));
+            } else {
+                res.json(sendStatus.responseOk({result}));
             }
-            res.json(sendStatus.responseOk({result}));
         })
     }
 }

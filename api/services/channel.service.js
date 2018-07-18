@@ -8,6 +8,7 @@ const userActionModel = require('../models/userAction.model');
 const userChannelModel = require('../models/userChannel.model');
 const channelLinkModel = require('../models/channelLink.model');
 const channelUsersModel = require('../models/channelUsers.model');
+const channelQueue = require('../models/channelQueue.model');
 const UserService = require('./user.service');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
@@ -139,6 +140,15 @@ class ChannelService {
                 }
             })
             if (!channeLink) {
+                let queueLink = await channelQueue.findOne({
+                    where: {
+                        link: channelKey
+                    }
+                });
+                if (queueLink) {
+                    // if channel already in queue but still not crawled
+                    return []
+                }
                 return new Error('No channel with such key')
             }
             param.id = channeLink.channel_id;
@@ -167,37 +177,11 @@ class ChannelService {
         }
 
         if (startFrom.moreThan) {
-            let messages = await messageModel.findAll({
-                include: ['media'],
-                where: {
-                    channel_id: channel.id,
-                    post_dt: {
-                        [Op.gte]: begin
-                    }
-                },
-                order: [['post_dt', 'DESC']]
-            });
-            if (messages.length == 0) {
-                return new Error('No messages later than ' + startFrom.moreThan)
-            }
-            return messages;
+            return getChannelMessagesFromDate(channel, true, begin);
         }
 
         if (startFrom.lessThan) {
-            let messages = await messageModel.findAll({
-                include: ['media'],
-                where: {
-                    channel_id: channel.id,
-                    post_dt: {
-                        [Op.lte]: begin
-                    }
-                },
-                order: [['post_dt', 'DESC']]
-            });
-            if (messages.length == 0) {
-                return new Error('No messages earlier than ' + startFrom.lessThan)
-            }
-            return messages;
+            return getChannelMessagesFromDate(channel, false, begin);
         }
 
         let messages = await messageModel.findAll({
@@ -222,6 +206,15 @@ class ChannelService {
                 }
             })
             if (!channeLink) {
+                let queueLink = await channelQueue.findOne({
+                    where: {
+                        link: channelKey
+                    }
+                });
+                if (queueLink) {
+                    // if channel already in queue but still not crawled
+                    return []
+                }
                 return new Error('No channel with such key')
             }
             param.id = channeLink.channel_id;
@@ -276,6 +269,15 @@ class ChannelService {
                 }
             })
             if (!channeLink) {
+                let queueLink = await channelQueue.findOne({
+                    where: {
+                        link: channelKey
+                    }
+                });
+                if (queueLink) {
+                    // if channel already in queue but still not crawled
+                    return []
+                }
                 return new Error('No channel with such key')
             }
             param.id = channeLink.channel_id;
@@ -378,6 +380,38 @@ class ChannelService {
 }
 
 module.exports = ChannelService;
+
+async function getChannelMessagesFromDate(channel, greater, begin) {
+    let messages = [];
+    if (greater) {
+        messages = await messageModel.findAll({
+            include: ['media'],
+            where: {
+                channel_id: channel.id,
+                post_dt: {
+                    [Op.gte]: begin
+                }
+            },
+            order: [['post_dt', 'DESC']]
+        });
+    }
+    if (!greater) {
+        messages = await messageModel.findAll({
+            include: ['media'],
+            where: {
+                channel_id: channel.id,
+                post_dt: {
+                    [Op.lte]: begin
+                }
+            },
+            order: [['post_dt', 'DESC']]
+        });
+    }
+    if (messages.length == 0) {
+        return new Error('No messages later than ' + begin)
+    }
+    return messages;
+}
 
 function identifyMediaType(media) {
     if (!!media.photo.content_id) {
