@@ -74,9 +74,12 @@ class ChannelService {
             },
             order: [['check_dt', 'DESC']]
         })
-        if (!+channel.usersCnt) {
-            let usersCnt = channel.users.length;
+        console.log('channel views count before', channel.usersCnt);
+        let usersCnt = 0;
+        if (!+channel.usersCnt) { // may be ""
+            usersCnt = channel.users.length;
         }
+        console.log('channel views count after', channel.usersCnt);
         if (!lastUserCount || lastUserCount.user_count !== +channel.usersCnt) {
             return channelUsersModel.create({
                 channel_id: channelId.id,
@@ -88,10 +91,14 @@ class ChannelService {
     }
 
     async addNewMessage(channel, user, message) {
-        if (!+message.views_cnt) {
-            let num = message.views_cnt.split('к')[0];
-            let views_cnt = num + '000';
+        console.log('messages views count before', message.views_cnt);
+        let num = '';
+        let views_cnt = '';
+        if (!+message.views_cnt && message.views_cnt !== 0) { // may be 0
+            num = message.views_cnt.split('к')[0];
+            views_cnt = num + '000';
         }
+        console.log('messages views count after', message.views_cnt);
         return await messageModel.findOrCreate({
             where: {
                 signature: message.signature
@@ -100,7 +107,7 @@ class ChannelService {
                 post_dt: message.date,
                 channel_id: channel.id,
                 user_id: user.id,
-                views_count: +message.views_cnt || views_cnt,
+                views_count: +message.views_cnt || +views_cnt,
                 message: message.text
             }
         })
