@@ -5,6 +5,9 @@ alredy recieved data.
 
 ## Installing
 
+For the program to work properly server must have installed postgres server 
+and nodeJS version not less than v.8.9.4
+
 1) Clone repository.
 
 2) Install dependecies.
@@ -13,22 +16,39 @@ alredy recieved data.
 npm install
 ```
 
-3) Create PostgreSQL databse with max connections not less than 100
-
-4) Type your DB crendetails in /config/dbCrendetails.json
-
-5) Run following command to create necessary tables
+3) Run following command to create necessary tables
 
 ```
 npm run create-tables
 ```
 
-6) You should have chrome browser version not less than 66.0.3359.0 installed.
+4) You should have chrome browser version not less than 66.0.3359.0 installed.
 You may see instruction for installation of this version of browser for CentOs 7 on:
 
 ```
 https://www.tecmint.com/install-google-chrome-on-redhat-centos-fedora-linux/
 ```
+
+## Configuration
+
+Create PostgreSQL databse with max connections not less than 100
+
+Type your DB crendetails in ./config/dbCrendetails.json
+
+Example:
+
+```
+{
+    "database": "postgres",
+    "username": "postgres",
+    "password": "root",
+    "host": "localhost",
+    "port": "5432"
+}
+```
+
+You may set number of simultaneous instances of crawler in ./config/config.json field "queue"
+Each instance may take average 350Mb of operating memory.
 
 ## Start crawling
 
@@ -45,7 +65,7 @@ npm run add-account
 npm run api
 ```
 
-Optional: running swagger routes documentation(only on linux system)
+3) Running swagger routes documentation
 
 ```
 npm run doc
@@ -53,7 +73,13 @@ npm run doc
 
 Then you may see documentation by adress "your_server_domain":45000
 
-3) Start crawler core
+OR
+
+go to https://editor.swagger.io/ and upload file swagger.yaml, path to this file: ./api/swagger/
+
+4) Add channel to queue table. How to do this you may see in swagger documentation(step 3)
+
+5) Start crawler core
 
 ```
 npm run crawler

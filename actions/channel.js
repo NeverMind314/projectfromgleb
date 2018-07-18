@@ -58,10 +58,13 @@ class Channel {
       'for(let i = 0; i < $("a.md_modal_list_peer_name").length; i++) { users.push({name:$($("a.md_modal_list_peer_name")[i]).text(), isAdmin: 0}) }' +
       'return users;'
     );
-    // await this.driver.executeScript('$(".md_modal_action_close").click();');
+    const usersCnt = await this.driver.executeScript('return $(".peer_modal_profile_description ng-pluralize").text().split(" ")[0];');
     await timeout(200);
     await this.driver.executeScript('$(".md_modal_action_close").click();');
-    return users;
+    return {
+      users: users,
+      usersCnt: usersCnt
+    };
   }
 
   async invoke(name) {
@@ -81,6 +84,10 @@ class Channel {
     await this.driver.executeScript('$(".tg_head_btn").click(); ');
     await timeout(1000);
     const channelName = await this.driver.executeScript('return $(".peer_modal_profile_name").text();');
+    if (!channelName.trim()) {
+      console.log('got empty channel name')
+      return;
+    }
     const channelLink = await this.driver.executeScript('return window.location.href;');
     const channelID = await this.driver.executeScript('return window.location.href.split("=").pop();');
     const channelDescription = await this.driver.executeScript('return $(\'span[ng-bind-html="chatFull.rAbout"]\').text();');
@@ -88,7 +95,9 @@ class Channel {
     await this.driver.executeScript('$(".md_modal_action_close").last().click();');
 
 
-    const channelUsers = await this.getUsers();
+    const chInfo = await this.getUsers();
+    const channelUsers = chInfo.users;
+    const usersCnt = chInfo.usersCnt;
     let messagesInPage = 0;
     while (loadingTries < 100) {
       const cnt = await this.driver.executeScript('return $(".im_history_message_wrap").length;');
@@ -109,7 +118,7 @@ class Channel {
       '$(".im_service_message .im_message_author").remove(); ' +
       'delete XMLHttpRequest;'
     );
-
+    console.log('mesaages in page', messagesInPage);
     while (loadingTries < 50) {
       try {
         if (cnt === messages.length) {
@@ -196,7 +205,9 @@ class Channel {
             console.log('>>>>>>', latestMessage.post_dt, dt);
             break;
           }
-
+          if (messages.length % 10 === 0) {
+            console.log(messages.length, name, dt.format());
+          } 
           messages.push({
             signature,
             date: dt.format(),
@@ -213,15 +224,18 @@ class Channel {
 
 
     console.log('saving to db', messages.length);
+    console.log('channel name "' + channelName + '"');
     // await timeout(10000);
 
     const channel = {
       signature: channelID,
       type_id: channelTypeId,
+      queueLink: name,
       link: channelLink,
       name: channelName,
       description: channelDescription,
       users: channelUsers,
+      usersCnt: usersCnt,
       history: messages
     };
 

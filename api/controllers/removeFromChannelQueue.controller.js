@@ -10,8 +10,9 @@ module.exports = {
             try {
                 if (result instanceof Error) {
                     res.json(sendStatus.responseErr(result.message));
+                } else {
+                    res.json(sendStatus.responseOk({result}));
                 }
-                res.json(sendStatus.responseOk({result}));
             } catch (e) {
                 res.json(sendStatus.responseErr(e.message));
             }

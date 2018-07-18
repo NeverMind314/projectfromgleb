@@ -212,42 +212,19 @@ class UserService {
         }
 
         if (startFrom.moreThan) {
-            let messages = await messageModel.findAll({
-                include: ['media'],
-                where: {
-                    user_id: user.id,
-                    post_dt: {
-                        [Op.gte]: begin
-                    }
-                }
-            });
-            if (messages.length == 0) {
-                return new Error('No messages later than ' + startFrom.moreThan)
-            }
-            return messages;
+            return await getUserMessagesFromDate(user, true, begin);
         }
 
         if (startFrom.lessThan) {
-            let messages = await messageModel.findAll({
-                include: ['media'],
-                where: {
-                    user_id: user.id,
-                    post_dt: {
-                        [Op.lte]: begin
-                    }
-                }
-            });
-            if (messages.length == 0) {
-                return new Error('No messages earlier than ' + startFrom.lessThan)
-            }
-            return messages;
+            return await getUserMessagesFromDate(user, false, begin);
         }
 
         let messages = await messageModel.findAll({
             include: ['media'],
             where: {
                 user_id: user.id
-            }
+            },
+            order: [['post_dt', 'DESC']]
         });
 
         return messages;
@@ -255,3 +232,35 @@ class UserService {
 }
 
 module.exports = UserService;
+
+async function getUserMessagesFromDate(user, greater, begin) {
+    let messages = [];
+    if (greater) {
+        messages = await messageModel.findAll({
+            include: ['media'],
+            where: {
+                user_id: user.id,
+                post_dt: {
+                    [Op.gte]: begin
+                }
+            },
+            order: [['post_dt', 'DESC']]
+        });
+    }
+    if (!greater) {
+        messages = await messageModel.findAll({
+            include: ['media'],
+            where: {
+                user_id: user.id,
+                post_dt: {
+                    [Op.lte]: begin
+                }
+            },
+            order: [['post_dt', 'DESC']]
+        });
+    }
+    if (messages.length == 0) {
+        return new Error('No messages later than ' + begin)
+    }
+    return messages;
+}

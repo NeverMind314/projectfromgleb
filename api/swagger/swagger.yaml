@@ -21,7 +21,7 @@ paths:
   /channels:
     x-swagger-router-controller: getChannels.controller
     get:
-      description: Returns history of channel founded by requested parameters
+      description: Returns all channels that have ever been added to the queue
       operationId: getChannels
 
       responses:

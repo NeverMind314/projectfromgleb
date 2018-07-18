@@ -7,6 +7,8 @@ const userModel = require('../models/user.model');
 const userActionModel = require('../models/userAction.model');
 const userChannelModel = require('../models/userChannel.model');
 const channelLinkModel = require('../models/channelLink.model');
+const channelUsersModel = require('../models/channelUsers.model');
+const channelQueue = require('../models/channelQueue.model');
 const UserService = require('./user.service');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
@@ -25,12 +27,12 @@ class ChannelService {
                 console.log('New message saved', i);
             }
             if (mediaNotEmpty(channelHistory.history[i].media)) {
-                await this.addNewMedia(channelHistory.history[i].media, message[0])
+                await this.addNewMedia(channelHistory.history[i].media, message[0]);
             }
         }
-        await userService.addUserActionJoinAdmin(channel[0], channelHistory.users)
-        await userService.addUserActionLeftNotAdmin(channel[0], channelHistory.users)
-
+        await this.addChannelUsers(channelHistory);
+        await userService.addUserActionJoinAdmin(channel[0], channelHistory.users);
+        await userService.addUserActionLeftNotAdmin(channel[0], channelHistory.users);
     }
 
     async addNewChannel(channel) {
@@ -53,10 +55,47 @@ class ChannelService {
             }
         })
 
+        await channelLinkModel.findOrCreate({
+            where: {
+                link: channel.queueLink
+            },
+            defaults: {
+                channel_id: dbChannel[0].id
+            }
+        })
+
         return dbChannel;
     }
 
+    async addChannelUsers (channel) {
+        let channelId = await this.getChannelBySignature(channel.signature);
+        let lastUserCount = await channelUsersModel.findOne({
+            where: {
+                channel_id: channelId.id
+            },
+            order: [['check_dt', 'DESC']]
+        })
+        let usersCnt = 0;
+        if (!+channel.usersCnt) { // may be ""
+            usersCnt = channel.users.length;
+        }
+        if (!lastUserCount || lastUserCount.user_count !== +channel.usersCnt) {
+            return channelUsersModel.create({
+                channel_id: channelId.id,
+                user_count: +channel.usersCnt || usersCnt,
+                check_dt: new Date()
+            })
+        }
+        return null
+    }
+
     async addNewMessage(channel, user, message) {
+        let num = '';
+        let views_cnt = '';
+        if (!+message.views_cnt && message.views_cnt !== 0) { // may be 0
+            num = message.views_cnt.split('к')[0];
+            views_cnt = num + '000';
+        }
         return await messageModel.findOrCreate({
             where: {
                 signature: message.signature
@@ -65,7 +104,7 @@ class ChannelService {
                 post_dt: message.date,
                 channel_id: channel.id,
                 user_id: user.id,
-                views_count: +message.views_cnt || 0,
+                views_count: +message.views_cnt || +views_cnt,
                 message: message.text
             }
         })
@@ -100,6 +139,18 @@ class ChannelService {
                     link: channelKey
                 }
             })
+            if (!channeLink) {
+                let queueLink = await channelQueue.findOne({
+                    where: {
+                        link: channelKey
+                    }
+                });
+                if (queueLink) {
+                    // if channel already in queue but still not crawled
+                    return []
+                }
+                return new Error('No channel with such key')
+            }
             param.id = channeLink.channel_id;
         }
         let channel = await channelModel.findOne({
@@ -126,42 +177,19 @@ class ChannelService {
         }
 
         if (startFrom.moreThan) {
-            let messages = await messageModel.findAll({
-                include: ['media'],
-                where: {
-                    channel_id: channel.id,
-                    post_dt: {
-                        [Op.gte]: begin
-                    }
-                }
-            });
-            if (messages.length == 0) {
-                return new Error('No messages later than ' + startFrom.moreThan)
-            }
-            return messages;
+            return getChannelMessagesFromDate(channel, true, begin);
         }
 
         if (startFrom.lessThan) {
-            let messages = await messageModel.findAll({
-                include: ['media'],
-                where: {
-                    channel_id: channel.id,
-                    post_dt: {
-                        [Op.lte]: begin
-                    }
-                }
-            });
-            if (messages.length == 0) {
-                return new Error('No messages earlier than ' + startFrom.lessThan)
-            }
-            return messages;
+            return getChannelMessagesFromDate(channel, false, begin);
         }
 
         let messages = await messageModel.findAll({
             include: ['media'],
             where: {
                 channel_id: channel.id
-            }
+            },
+            order: [['post_dt', 'DESC']]
         });
 
         return messages;
@@ -177,6 +205,18 @@ class ChannelService {
                     link: channelKey
                 }
             })
+            if (!channeLink) {
+                let queueLink = await channelQueue.findOne({
+                    where: {
+                        link: channelKey
+                    }
+                });
+                if (queueLink) {
+                    // if channel already in queue but still not crawled
+                    return []
+                }
+                return new Error('No channel with such key')
+            }
             param.id = channeLink.channel_id;
         }
         let channel = await channelModel.findOne({
@@ -228,6 +268,18 @@ class ChannelService {
                     link: channelKey
                 }
             })
+            if (!channeLink) {
+                let queueLink = await channelQueue.findOne({
+                    where: {
+                        link: channelKey
+                    }
+                });
+                if (queueLink) {
+                    // if channel already in queue but still not crawled
+                    return []
+                }
+                return new Error('No channel with such key')
+            }
             param.id = channeLink.channel_id;
         }
 
@@ -281,12 +333,24 @@ class ChannelService {
                 channelUsers[i].dataValues.isAdmin = isAdmin.action.trim();
             }
         }
+
+        let user_count = await channelUsersModel.findOne({
+            where: {
+                channel_id: channel.id,
+                check_dt: {
+                    [Op.lte]: atDate || new Date()
+                }
+            },
+            order: [['check_dt', 'DESC']]
+        })
         
-        return channelUsers.filter((user, i) => {
+        return {
+            user_count: user_count,
+            channel_users: channelUsers.filter((user, i) => {
             if (usersAction[i] && usersAction[i].action.trim() != 'left') {
                 return true
             }
-        })
+        })}
     }
 
     async getLatestMessageBySignature(signature) {
@@ -316,6 +380,38 @@ class ChannelService {
 }
 
 module.exports = ChannelService;
+
+async function getChannelMessagesFromDate(channel, greater, begin) {
+    let messages = [];
+    if (greater) {
+        messages = await messageModel.findAll({
+            include: ['media'],
+            where: {
+                channel_id: channel.id,
+                post_dt: {
+                    [Op.gte]: begin
+                }
+            },
+            order: [['post_dt', 'DESC']]
+        });
+    }
+    if (!greater) {
+        messages = await messageModel.findAll({
+            include: ['media'],
+            where: {
+                channel_id: channel.id,
+                post_dt: {
+                    [Op.lte]: begin
+                }
+            },
+            order: [['post_dt', 'DESC']]
+        });
+    }
+    if (messages.length == 0) {
+        return new Error('No messages later than ' + begin)
+    }
+    return messages;
+}
 
 function identifyMediaType(media) {
     if (!!media.photo.content_id) {

@@ -1,7 +1,7 @@
 const chrome = require('selenium-webdriver/chrome');
-const process = require('process');
 const {join} = require('path');
 const os = require('os');
+const config = require('../config/config.json'); 
 
 let pathToDriver;
 switch (os.platform()) {
@@ -19,8 +19,10 @@ switch (os.platform()) {
 }
 const webdriver = require('selenium-webdriver');
 const options = new chrome.Options();
-options.addArguments('headless');
-options.addArguments('disable-gpu');
+if (!config.window_mode) {
+  options.addArguments('headless');
+  options.addArguments('disable-gpu');
+}
 options.addArguments("--no-sandbox");
 options.addArguments("--blink-settings=imagesEnabled=false");
 chrome.setDefaultService(
