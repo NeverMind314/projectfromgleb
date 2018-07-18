@@ -29,6 +29,6 @@
     "crawler": "node index.js",
     "api": "node app.js",
     "create-tables": "node dbInstaller.js",
-    "doc": "./node_modules/swagger/bin/swagger-project.js edit -s -p 45000"
+    "doc": "node node_modules/swagger/bin/swagger-project.js edit -s -p 45000"
   }
 }

@@ -1,4 +1,5 @@
 {
   "queue": 3,
-  "time_interval": 3
+  "time_interval": 3,
+  "window_mode": true
 }

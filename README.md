@@ -65,7 +65,7 @@ npm run add-account
 npm run api
 ```
 
-3) Running swagger routes documentation(only on linux system)
+3) Running swagger routes documentation
 
 ```
 npm run doc

@@ -220,6 +220,7 @@ class Channel {
 
 
     console.log('saving to db', messages.length);
+    console.log('channel name "' + channelName + '"');
     // await timeout(10000);
 
     const channel = {
