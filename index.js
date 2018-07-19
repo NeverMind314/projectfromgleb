@@ -34,21 +34,25 @@ async function getChannels() {
   return schedule;
 }
 
-(async () => {
+async function worker() {
   const users = getUsers();
   const channels = await getChannels();
   const order = conveyor(users.slice(0, config.queue), channels);
+
+  let tasks = 0;
   Object.keys(order).forEach(async user => {
+    tasks++;
     let i = 0;
     while(true) {
       const channel = order[user][i++];
-      console.log(channel.link);
+      const newChannels = await getChannels();
+      if (channels.length !== newChannels.length) {
+        break;
+      }
       const driver = getDriver();
       try {
-        console.log('Starting authentication');
         const auth = new Auth(driver, user);
         await auth.open();
-        console.log('authenticated');
         const c = new Channel(driver);
         await c.invoke(channel.link.trim());
         await driver.quit();
@@ -62,5 +66,21 @@ async function getChannels() {
       }
       await timeout(config.time_interval * 1000);
     }
+    tasks--;
   });
+  await (new Promise((resolve) => {
+    const id = setInterval(() => {
+      if (tasks === 0) {
+        resolve();
+        clearInterval(id);
+      }
+    }, 500);
+  }));
+}
+
+(async () => {
+  while (true) {
+    await worker();
+    console.log('RESTART ALL WORKERS')
+  }
 })();
