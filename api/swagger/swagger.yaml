@@ -1,20 +1,14 @@
-swagger: "2.0"
+swagger: '2.0'
 info:
-  version: "0.0.1"
+  version: 0.0.1
   title: Api Service
-# during dev, should point to your local machine
-host: localhost:10010
-# basePath prefixes all resource paths 
+host: 'localhost:10010'
 basePath: /
-# 
 schemes:
-  # tip: remove http to make production-grade
   - http
   - https
-# format of bodies a client can send (Content-Type)
 consumes:
   - application/json
-# format of the responses to the client (Accepts)
 produces:
   - application/json
 paths:
@@ -23,12 +17,31 @@ paths:
     get:
       description: Returns all channels that have ever been added to the queue
       operationId: getChannels
-
       responses:
-        "200":
+        '200':
           description: Success
+          examples: 
+            application/json:
+              current_timestamp: '2018-07-19T11:05:11.033Z'
+              error: null
+              data:
+                result:
+                  - id: 1
+                    signature: 's1355596537_12260482449189892684  '
+                    name: 'Telegram content test 4'
+                    description: ''
+                    channel_type_id: 1
+                    createdAt: '2018-07-18T19:31:19.911Z'
+                    updatedAt: '2018-07-18T19:31:19.911Z'
+                  - id: 2
+                    signature: 'g268055827  '
+                    name: 'Telegram content test 3'
+                    description: ''
+                    channel_type_id: 1
+                    createdAt: '2018-07-18T19:32:53.733Z'
+                    updatedAt: '2018-07-18T19:32:53.733Z'
           schema:
-            $ref: "#/definitions/BaseResponse"
+            $ref: '#/definitions/BaseResponse'
   /channel_history:
     x-swagger-router-controller: channelHistory.controller
     get:
@@ -50,16 +63,51 @@ paths:
           description: id or date of message
           required: false
           type: string
-
       responses:
-        "200":
+        '200':
           description: Success
+          examples: 
+            application/json:
+              current_timestamp: '2018-07-19T11:11:58.840Z'
+              error: null
+              data:
+                result:
+                  - id: 143
+                    channel_id: 1
+                    user_id: 2
+                    signature: 'c5f6ea04ad3ebe4c313e989b903a91ee  '
+                    post_dt: '2018-07-18T20:30:42.000Z'
+                    views_count: 37
+                    message: '3'
+                    createdAt: '2018-07-18T20:35:12.938Z'
+                    updatedAt: '2018-07-18T20:35:12.938Z'
+                    media: null
+                  - id: 144
+                    channel_id: 1
+                    user_id: 2
+                    signature: '72a53f934267b5f14702db1c9c95e3c4  '
+                    post_dt: '2018-07-18T20:30:42.000Z'
+                    views_count: 37
+                    message: '2'
+                    createdAt: '2018-07-18T20:35:12.966Z'
+                    updatedAt: '2018-07-18T20:35:12.966Z'
+                    media: null
+                  - id: 145
+                    channel_id: 1
+                    user_id: 2
+                    signature: 'f1a4ab7e5fcaecd34e291ac7cda26d39  '
+                    post_dt: '2018-07-18T20:30:42.000Z'
+                    views_count: 37
+                    message: '1'
+                    createdAt: '2018-07-18T20:35:12.978Z'
+                    updatedAt: '2018-07-18T20:35:12.978Z'
+                    media: null
           schema:
-            $ref: "#/definitions/BaseResponse"
+            $ref: '#/definitions/BaseResponse'
   /user_history:
     x-swagger-router-controller: userHistory.controller
     get:
-      description: 'Returns history of user messages founded by requested parameters'
+      description: Returns history of user messages founded by requested parameters
       operationId: getUserHistory
       parameters:
         - name: key
@@ -77,12 +125,48 @@ paths:
           description: id or date of message
           required: false
           type: string
-
       responses:
-        "200":
+        '200':
           description: Success
+          examples:
+            application/json:
+              current_timestamp: '2018-07-19T11:14:44.787Z'
+              error: null
+              data:
+                result:
+                  - id: 1
+                    channel_id: 1
+                    user_id: 1
+                    signature: 'd47e27d63b447c5f72d31334def2cc5b  '
+                    post_dt: '2018-07-18T12:21:23.000Z'
+                    views_count: 37
+                    message: Запинил
+                    createdAt: '2018-07-18T19:31:19.957Z'
+                    updatedAt: '2018-07-18T19:31:19.957Z'
+                    media: null
+                  - id: 40
+                    channel_id: 1
+                    user_id: 1
+                    signature: 'e38d1d819773736f77ce6fcf7f1a3703  '
+                    post_dt: '2018-07-11T19:07:24.000Z'
+                    views_count: 37
+                    message: 'https://stackoverflow.com/questions/22938045/selenium-webdriver-node-js-take-screenshot-and-save-test-results'
+                    createdAt: '2018-07-18T19:31:20.480Z'
+                    updatedAt: '2018-07-18T19:31:20.480Z'
+                    media: null
+                  - id: 8
+                    channel_id: 1
+                    user_id: 1
+                    signature: '05ad42496a0eecfdd9d3d3a996632c5e  '
+                    post_dt: '2018-07-11T10:13:30.000Z'
+                    views_count: 37
+                    message: Last blood
+                    createdAt: '2018-07-18T19:31:20.071Z'
+                    updatedAt: '2018-07-18T19:31:20.071Z'
+                    media: null
+              
           schema:
-            $ref: "#/definitions/BaseResponse"
+            $ref: '#/definitions/BaseResponse'
   /all_channel_users:
     x-swagger-router-controller: allChannelUsers.controller
     get:
@@ -94,12 +178,52 @@ paths:
           description: id or link of channel
           required: true
           type: string
-
       responses:
-        "200":
+        '200':
           description: Success
+          examples: 
+            application/json:
+            current_timestamp: '2018-07-19T11:16:36.722Z'
+            error: null
+            data:
+              result:
+                - id: 1
+                  name: 'Паша  '
+                  login: '+7 (978) 870-94-73  '
+                  createdAt: '2018-07-18T19:31:19.944Z'
+                  updatedAt: '2018-07-18T19:31:19.944Z'
+                  channelBind:
+                    id: 1
+                    user_id: 1
+                    channel_id: 1
+                    createdAt: '2018-07-18T19:31:19.950Z'
+                    updatedAt: '2018-07-18T19:31:19.950Z'
+                  isAdmin: noLongerAdmin
+                - id: 2
+                  name: 'Gleb Sinani  '
+                  login: '+7 (978) 948-61-27  '
+                  createdAt: '2018-07-18T19:31:19.970Z'
+                  updatedAt: '2018-07-18T19:31:19.970Z'
+                  channelBind:
+                    id: 2
+                    user_id: 2
+                    channel_id: 1
+                    createdAt: '2018-07-18T19:31:19.975Z'
+                    updatedAt: '2018-07-18T19:31:19.975Z'
+                  isAdmin: isAdmin
+                - id: 3
+                  name: 'Evgeniy Strinja  '
+                  login: null
+                  createdAt: '2018-07-18T19:31:21.049Z'
+                  updatedAt: '2018-07-18T19:31:21.049Z'
+                  channelBind:
+                    id: 3
+                    user_id: 3
+                    channel_id: 1
+                    createdAt: '2018-07-18T19:31:21.051Z'
+                    updatedAt: '2018-07-18T19:31:21.051Z'
           schema:
-            $ref: "#/definitions/BaseResponse"
+            $ref: '#/definitions/BaseResponse'
   /actual_channel_users:
     x-swagger-router-controller: actualChannelUsers.controller
     get:
@@ -116,38 +240,60 @@ paths:
           description: date of channel users state
           required: false
           type: string
-
       responses:
-        "200":
+        '200':
           description: Success
+          examples: 
+            application/json:
+              current_timestamp: '2018-07-19T11:19:00.234Z'
+              error: null
+              data:
+                result:
+                  user_count:
+                    id: 5
+                    channel_id: 1
+                    user_count: 6
+                    check_dt: '2018-07-18T20:35:13.038Z'
+                    createdAt: '2018-07-18T20:35:13.038Z'
+                    updatedAt: '2018-07-18T20:35:13.038Z'
+                  channel_users:
+                    - id: 1
+                      name: 'Паша  '
+                      login: '+7 (978) 870-94-73  '
+                      createdAt: '2018-07-18T19:31:19.944Z'
+                      updatedAt: '2018-07-18T19:31:19.944Z'
+                      channelBind:
+                        id: 1
+                        user_id: 1
+                        channel_id: 1
+                        createdAt: '2018-07-18T19:31:19.950Z'
+                        updatedAt: '2018-07-18T19:31:19.950Z'
+                      isAdmin: noLongerAdmin
+                    - id: 2
+                      name: 'Gleb Sinani  '
+                      login: '+7 (978) 948-61-27  '
+                      createdAt: '2018-07-18T19:31:19.970Z'
+                      updatedAt: '2018-07-18T19:31:19.970Z'
+                      channelBind:
+                        id: 2
+                        user_id: 2
+                        channel_id: 1
+                        createdAt: '2018-07-18T19:31:19.975Z'
+                        updatedAt: '2018-07-18T19:31:19.975Z'
+                      isAdmin: isAdmin
+                    - id: 3
+                      name: 'Evgeniy Strinja  '
+                      login: null
+                      createdAt: '2018-07-18T19:31:21.049Z'
+                      updatedAt: '2018-07-18T19:31:21.049Z'
+                      channelBind:
+                        id: 3
+                        user_id: 3
+                        channel_id: 1
+                        createdAt: '2018-07-18T19:31:21.051Z'
+                        updatedAt: '2018-07-18T19:31:21.051Z'
           schema:
-            $ref: "#/definitions/BaseResponse"
-  # /new_account:
-  #   x-swagger-router-controller: account.controller
-  #   get:
-  #     description: Adding row in account table with certain parameters
-  #     operationId: addAccount
-  #     parameters:
-  #       - name: name
-  #         in: query
-  #         description: account name
-  #         required: true
-  #         type: string
-  #       - name: login
-  #         in: query
-  #         description: account login
-  #         required: true
-  #         type: string
-  #       - name: phone
-  #         in: query
-  #         description: account name
-  #         required: true
-  #         type: string
-  #     responses:
-  #       "200":
-  #         description: Success
-  #         schema:
-  #           $ref: "#/definitions/BaseResponse"
+            $ref: '#/definitions/BaseResponse'
   /new_queue_item:
     x-swagger-router-controller: addToChannelQueue.controller
     get:
@@ -160,10 +306,21 @@ paths:
           required: true
           type: string
       responses:
-        "200":
+        '200':
           description: Success
+          examples: 
+            application/json:
+              current_timestamp: '2018-07-19T11:20:27.952Z'
+              error: null
+              data:
+                message: channell successfully created
+                created_channel:
+                  id: 4
+                  link: 'https://www.test.link.com  '
+                  updatedAt: '2018-07-19T11:20:27.828Z'
+                  createdAt: '2018-07-19T11:20:27.828Z'
           schema:
-            $ref: "#/definitions/BaseResponse"
+            $ref: '#/definitions/BaseResponse'
   /remove_queue_item:
     x-swagger-router-controller: removeFromChannelQueue.controller
     get:
@@ -176,33 +333,42 @@ paths:
           required: true
           type: string
       responses:
-        "200":
+        '200':
           description: Success
+          examples:
+            application/json:
+              current_timestamp: '2018-07-19T11:21:59.488Z'
+              error: null
+              data:
+                result: successfully deleted from queue
           schema:
-            $ref: "#/definitions/BaseResponse"
+            $ref: '#/definitions/BaseResponse'
   /queue:
     x-swagger-router-controller: getChannelQueue.controller
     get:
       description: Get all queue
       operationId: getQueue
       responses:
-        "200":
+        '200':
           description: Success
+          examples: 
+            application/json:
+              current_timestamp: '2018-07-19T11:23:17.187Z'
+              error: null
+              data:
+                result:
+                  - id: 1
+                    link: 'https://t.me/joinchat/EyrkalDMwvkySGOEpzuBnQ  '
+                    createdAt: '2018-07-18T19:27:47.079Z'
+                    updatedAt: '2018-07-18T19:27:47.079Z'
+                  - id: 2
+                    link: 'https://t.me/joinchat/Eyrkag_6NROREVCgXfo1cA  '
+                    createdAt: '2018-07-18T19:28:00.937Z'
+                    updatedAt: '2018-07-18T19:28:00.937Z'
           schema:
-            $ref: "#/definitions/BaseResponse"
-  /tests:
-    x-swagger-router-controller: tests
-    get:
-      description: For testing and development. Must be deleted on production stage
-      operationId: devTests
-      responses:
-        "200":
-          description: Success
-          schema:
-            $ref: "#/definitions/BaseResponse"
+            $ref: '#/definitions/BaseResponse'
   /swagger:
     x-swagger-pipe: swagger_raw
-# complex objects have schema definitions
 definitions:
   BaseResponse:
     required:
@@ -213,10 +379,10 @@ definitions:
       current_timestamp:
         type: string
       error:
-        type: 
+        type:
           - object
           - 'null'
       data:
-        type: 
+        type:
           - object
           - 'null'
